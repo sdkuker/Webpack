@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import * as DomainStore from '../types/stores/domainStore';
 
 @observer
-class Hello extends React.Component {
+class Map extends React.Component {
 
   render() {
     return (
