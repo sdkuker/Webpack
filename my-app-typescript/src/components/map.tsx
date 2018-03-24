@@ -22,7 +22,7 @@ class Map extends React.Component {
 
 }
 
-export default Hello;
+export default Map;
 
 // helpers
 

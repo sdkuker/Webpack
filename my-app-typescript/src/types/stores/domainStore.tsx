@@ -18,4 +18,6 @@ class DomainState {
     }
 }
 
-export const domainState = new DomainState('Stevie', 1);
+const newLocal = 'Stevie';
+
+export const domainState = new DomainState(newLocal, 1);
