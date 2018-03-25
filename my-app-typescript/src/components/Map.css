@@ -1,0 +1,28 @@
+.map {
+    text-align: center;
+    font-size: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .l {
+      fill:#FFFFDD;
+      stroke:black;
+      stroke-linejoin: round
+  }
+  
+  .w {
+    fill:#99CCFF;
+    stroke:black;
+    stroke-linejoin: round
+}
+
+.s {
+    fill:#DDDDDD;
+    stroke:black;
+    stroke-linejoin: round
+}
+
+.Austria {
+    fill:#FF0000;
+    stroke:black
+}

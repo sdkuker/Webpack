@@ -10,7 +10,7 @@ class Hello extends React.Component {
     return (
       <div className="hello">
         <div className="greeting">
-          Hello {DomainStore.domainState.name + getExclamationMarks(DomainStore.domainState.enthusiasmLevel)}
+          Hi There {DomainStore.domainState.name + getExclamationMarks(DomainStore.domainState.enthusiasmLevel)}
         </div>
         <div>
           <button onClick={DomainStore.domainState.incrementEnthusiasmLevel}>+</button>
