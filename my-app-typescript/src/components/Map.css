@@ -22,6 +22,12 @@
     stroke-linejoin: round
 }
 
+.unowned {
+    fill:#FFFFDD; 
+    stroke:black; 
+    stroke-linejoin:round
+}
+
 .Austria {
     fill:#FF0000;
     stroke:black
