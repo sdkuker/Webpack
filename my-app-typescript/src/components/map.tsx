@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './Map.css';
 import Circle from './Circle';
+import Fleet from './Fleet';
 
 class Map extends React.Component {
 
@@ -272,20 +273,10 @@ class Map extends React.Component {
               168,296 160,298 147,295 145,281 150,277 153,271"
           />
           <text x="160" y="280">Lon</text>
-          <Circle x="162" y="290" className="Austria"/>
         </g>
 
-        <g id="A">
-          <path d="M9,-6 L2,0 M9,6 L0,0"/>
-          <path d="M-11,-6 v4 h17 a2,2 0,0 0 0,-4z"/>
-          <circle r="6"/>
-        </g>
-
-        <g id="F">
-          <polygon points="-2,-3 10,-3 -2,-13"/>
-          <polygon points="-12,-1 -6,5 6,5 12,-1"/>
-        </g>
-
+        <Circle x="162" y="290" className="Austria"/>
+        <Fleet x="162" y="281" className="Austria"/>
       </svg>
     );
   }
