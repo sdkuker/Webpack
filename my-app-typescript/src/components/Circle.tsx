@@ -1,8 +1,8 @@
 import * as React from 'react';
 import './Map.css';
-import { ICircleProperties } from './PropertyInterfaces';
+import { IPositioningProperties } from './PropertyInterfaces';
 
-class Circle extends React.Component<ICircleProperties> {
+class Circle extends React.Component<IPositioningProperties> {
 
   render() {
     return (

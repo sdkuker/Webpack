@@ -1,5 +1,5 @@
-// Interface for the Circle Propertis
-export interface ICircleProperties {
+// Interface for Propertis for objects that need positioning
+export interface IPositioningProperties {
     x : string,
     y : string,
     className : string

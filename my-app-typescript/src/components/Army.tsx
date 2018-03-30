@@ -2,18 +2,18 @@ import * as React from 'react';
 import './Map.css';
 import { IPositioningProperties } from './PropertyInterfaces';
 
-class Fleet extends React.Component<IPositioningProperties> {
+class Army extends React.Component<IPositioningProperties> {
 
     render() {
         return (
             <g className={this.props.className} transform={'translate(' + this.props.x + ', ' + this.props.y + ')'}>
-                <polygon points="-2,-3 10,-3 -2,-13" />
-                <polygon points="-12,-1 -6,5 6,5 12,-1" />
+                <path d="M9,-6 L2,0 M9,6 L0,0" />
+                <path d="M-11,-6 v4 h17 a2,2 0,0 0 0,-4z" />
+                <circle r="6" />
             </g>
-
         );
     }
 
 }
 
-export default Fleet;
+export default Army;
