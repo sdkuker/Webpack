@@ -1,9 +1,9 @@
 import * as React from 'react';
 import './Map.css';
-import Circle from './Circle';
-import Fleet from './Fleet';
+// import Circle from './Circle';
+// import Fleet from './Fleet';
 
-class Map extends React.Component {
+export class Map extends React.Component {
 
   render() {
     return ( // 610 560
@@ -282,7 +282,7 @@ class Map extends React.Component {
               221,385 227,390 229,385 243,388 245,384 241,378 234,374 234,366 
               232,363 225,362 222,365"
           />
-          <text x="215" y="378">Swi</text>
+          <text x="206" y="381">Swi</text>
         </g>
         <g>
         <title>Albania</title>
@@ -832,12 +832,13 @@ class Map extends React.Component {
           />
           <text x="350" y="304">War</text>
         </g> 
-        <Circle x="162" y="290" className="Austria"/>
-        <Fleet x="162" y="281" className="Austria"/>
       </svg>
     );
   }
 
 }
+
+// <Circle x="162" y="290" className="Austria"/>
+// <Fleet x="162" y="281" className="Austria"/>
 
 export default Map;

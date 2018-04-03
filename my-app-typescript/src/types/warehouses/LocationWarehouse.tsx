@@ -6,23 +6,35 @@ class LocationWarehouse {
         CAPITAL: " - Capital",
         PIECE : " - Piece"
     });
-   
+
+    locations = new Map<String, Location>();
+
+    constructor() {
+        this.initilizeLocations();
+    };
+
     public getLocations = () => {
-        const myMap = {};
-        myMap['Switzerland' + this.LocationTypes.PIECE] = new Location('219', '376');
-        myMap['Adriatic_Sea' + this.LocationTypes.PIECE] = new Location('296', '441');
-        myMap['Aegean_Sea' + this.LocationTypes.PIECE] = new Location('403', '524');
-        myMap['Albania' + this.LocationTypes.PIECE] = new Location('339', '469');
-        myMap['Ankara' + this.LocationTypes.CAPITAL] = new Location('482', '469');
-        myMap['Ankara' + this.LocationTypes.PIECE] = new Location('500', '460');
+        return this.locations;
+    }
+   
+    initilizeLocations = () => {
+
+        const myMap = new Map<String, Location>();
+
+        myMap.set('Switzerland' + this.LocationTypes.PIECE, new Location('219', '376'));
+        myMap.set('Adriatic_Sea' + this.LocationTypes.PIECE, new Location('296', '441'));
+        myMap.set('Aegean_Sea' + this.LocationTypes.PIECE, new Location('403', '524'));
+        myMap.set('Albania' + this.LocationTypes.PIECE, new Location('339', '469'));
+        myMap.set('Ankara' + this.LocationTypes.CAPITAL, new Location('482', '469'));
+        myMap.set('Ankara' + this.LocationTypes.PIECE, new Location('500', '460'));
 
 
-        myMap['London' + this.LocationTypes.CAPITAL] = new Location('162', '290');
-        myMap['London' + this.LocationTypes.PIECE] = new Location('162', '281');
+        myMap.set('London' + this.LocationTypes.CAPITAL, new Location('162', '290'));
+        myMap.set('London' + this.LocationTypes.PIECE,  new Location('162', '281'));
 
-        return [myMap];
+        this.locations = myMap;
     }
 
 }
 
-export const myWarehouse = new LocationWarehouse();
+export const Warehouse = new LocationWarehouse();
