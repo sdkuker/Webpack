@@ -3,15 +3,15 @@ import { Location } from './Location';
 class LocationWarehouse {
 
     LocationTypes = Object.freeze({
-        CAPITAL: " - Capital",
-        PIECE : " - Piece"
+        CAPITAL: ' - Capital',
+        PIECE : '- Piece'
     });
 
     locations = new Map<String, Location>();
 
     constructor() {
         this.initilizeLocations();
-    };
+    }
 
     public getLocations = () => {
         return this.locations;
@@ -27,7 +27,6 @@ class LocationWarehouse {
         myMap.set('Albania' + this.LocationTypes.PIECE, new Location('339', '469'));
         myMap.set('Ankara' + this.LocationTypes.CAPITAL, new Location('482', '469'));
         myMap.set('Ankara' + this.LocationTypes.PIECE, new Location('500', '460'));
-
 
         myMap.set('London' + this.LocationTypes.CAPITAL, new Location('162', '290'));
         myMap.set('London' + this.LocationTypes.PIECE,  new Location('162', '281'));

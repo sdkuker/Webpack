@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './Map.css';
+import MapBuilder from './MapBuilder';
 // import Circle from './Circle';
 // import Fleet from './Fleet';
 
@@ -832,6 +833,7 @@ export class Map extends React.Component {
           />
           <text x="350" y="304">War</text>
         </g> 
+        <MapBuilder/>
       </svg>
     );
   }

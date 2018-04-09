@@ -6,9 +6,7 @@ class Circle extends React.Component<IPositioningProperties> {
 
   render() {
     return (
-        <g> 
-          <circle r="4" cx={this.props.x} cy={this.props.y} className={this.props.className}/>
-        </g>
+      <circle r="4" cx={this.props.x} cy={this.props.y} className={this.props.className} />
     );
   }
 
