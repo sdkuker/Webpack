@@ -77,6 +77,30 @@ class LocationWarehouse {
         myMap.set('Marseilles' + this.LocationTypes.PIECE, new Location('184', '402'));
         myMap.set('Marseilles' + this.LocationTypes.CAPITAL, new Location('186', '417'));
         myMap.set('Mid_Atlantic_Ocean' + this.LocationTypes.PIECE, new Location('23', '355'));
+        myMap.set('Moscow' + this.LocationTypes.PIECE, new Location('505', '226'));
+        myMap.set('Moscow' + this.LocationTypes.CAPITAL, new Location('481', '234'));
+        myMap.set('Munich' + this.LocationTypes.PIECE, new Location('243', '347'));
+        myMap.set('Munich' + this.LocationTypes.CAPITAL, new Location('258', '359'));
+        myMap.set('Naples' + this.LocationTypes.PIECE, new Location('299', '505'));
+        myMap.set('Naples' + this.LocationTypes.CAPITAL, new Location('278', '469'));
+        myMap.set('North_Atlantic_Ocean' + this.LocationTypes.PIECE, new Location('65', '140'));
+        myMap.set('North_Africa' + this.LocationTypes.PIECE, new Location('100', '536'));
+        myMap.set('North_Sea' + this.LocationTypes.PIECE, new Location('204', '215'));
+        myMap.set('Norway' + this.LocationTypes.PIECE, new Location('264', '160'));
+        myMap.set('Norawy' + this.LocationTypes.CAPITAL, new Location('270', '187'));
+        myMap.set('Norwegian_Sea' + this.LocationTypes.PIECE, new Location('220', '90'));
+        myMap.set('Paris' + this.LocationTypes.PIECE, new Location('162', '346'));
+        myMap.set('Paris' + this.LocationTypes.CAPITAL, new Location('173', '334'));
+        myMap.set('Picardy' + this.LocationTypes.PIECE, new Location('168', '319'));
+        myMap.set('Piedmont' + this.LocationTypes.PIECE, new Location('220', '399'));
+        myMap.set('Portugal' + this.LocationTypes.PIECE, new Location('34', '417'));
+        myMap.set('Portugal' + this.LocationTypes.CAPITAL, new Location('15', '434'));
+        myMap.set('Prussia' + this.LocationTypes.PIECE, new Location('315', '283'));
+        myMap.set('Rome' + this.LocationTypes.PIECE, new Location('264', '452'));
+        myMap.set('Rome' + this.LocationTypes.CAPITAL, new Location('252', '443'));
+        myMap.set('Ruhr' + this.LocationTypes.PIECE, new Location('223', '320'));
+        myMap.set('Rumania' + this.LocationTypes.PIECE, new Location('415', '405'));
+        myMap.set('Rumania' + this.LocationTypes.CAPITAL, new Location('402', '413'));
 
         this.locations = myMap;
     }
