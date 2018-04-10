@@ -16,7 +16,8 @@ class CapitalWarehouse {
         const myMap = new Map<String, Capital>();
         const myLocations = LocationWarehouse.getLocations();
 
-        this.insertCapital(myMap, myLocations, 'London', 'Austria');
+        this.insertCapital(myMap, myLocations, 'London', 'England');
+        this.insertCapital(myMap, myLocations, 'Edinburgh', 'England');
         
         // myMap.set('London' + this.LocationTypes.PIECE,  new Location('162', '281'));
 
@@ -29,7 +30,7 @@ class CapitalWarehouse {
         const theLocation: Location | undefined =  locationMap.get(capitalKey);
         if (theLocation) {
             const theCapital = new Capital(capitalName, countryName, theLocation);
-            capitalMap.set('London' + LocationWarehouse.LocationTypes.PIECE, theCapital);
+            capitalMap.set(capitalName + LocationWarehouse.LocationTypes.PIECE, theCapital);
         }
     }
 

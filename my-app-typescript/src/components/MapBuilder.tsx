@@ -7,17 +7,19 @@ import Circle from './Circle';
 class MapBuilder extends React.Component {
 
     render() {
+        // tslint:disable-next-line
         let theReturn: any = [];
         let mine: Map<String, Capital> = CapitalWarehouse.capitals;
         mine.forEach((value: Capital, key: string) => {
             theReturn.push(
-                <circle r="4" 
-                    cx={value.location.x} 
-                    cy={value.location.y} 
-                    className={value.owningCountry} 
+                <circle 
+                    r="4"
+                    cx={value.location.x}
+                    cy={value.location.y}
+                    className={value.owningCountry}
                 />);
         });
-        return (  
+        return (
             <g>
                 {theReturn}
             </g>
