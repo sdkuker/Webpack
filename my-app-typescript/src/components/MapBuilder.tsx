@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Map as GameMap } from './Map';
 import { warehouse as CapitalWarehouse } from '../types/warehouses/CapitalWarehouse';
 import { Capital } from '../types/warehouses/Capital';
-import Circle from './Circle';
 
 class MapBuilder extends React.Component {
 
