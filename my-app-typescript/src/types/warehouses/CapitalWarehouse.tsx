@@ -2,6 +2,7 @@ import { Capital } from './Capital';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
 import { Location } from './Location';
 import { observable } from 'mobx';
+import { LocationTypes } from './DomainTypes';
 
 class CapitalWarehouse {
    
@@ -51,12 +52,12 @@ class CapitalWarehouse {
     }
 
     insertCapital = (capitalMap: Map<String, Capital>, locationMap: Map<String, Location>, 
-                     capitalName: string, countryName: string) => {
-        const capitalKey: string  = capitalName + LocationWarehouse.LocationTypes.CAPITAL;
+                     locationName: string, countryName: string) => {
+        const capitalKey: string  = locationName + LocationTypes.CAPITAL;
         const theLocation: Location | undefined =  locationMap.get(capitalKey);
         if (theLocation) {
-            const theCapital = new Capital(capitalName, countryName, theLocation);
-            capitalMap.set(capitalName + LocationWarehouse.LocationTypes.PIECE, theCapital);
+            const theCapital = new Capital(locationName, countryName, theLocation);
+            capitalMap.set(locationName + LocationTypes.PIECE, theCapital);
         }
     }
 

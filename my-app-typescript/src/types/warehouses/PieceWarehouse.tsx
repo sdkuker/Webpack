@@ -1,62 +1,61 @@
-import { Capital } from './Capital';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
-import { Location } from './Location';
+import { Piece } from './Piece';
 import { observable } from 'mobx';
+import { PieceTypes, LocationTypes } from './DomainTypes';
+import { Location } from './Location';
 
 class PieceWarehouse {
    
-    @observable capitals: Map<String, Capital>;
+    @observable pieces: Map<String, Piece>;
 
     constructor() {
-        this.initilizeCapitals();
+        this.initializePieces();
     }
 
-    initilizeCapitals = () => {
+    initializePieces = () => {
 
-        const myMap = new Map<String, Capital>();
+        const myMap = new Map<String, Piece>();
         const myLocations = LocationWarehouse.getLocations();
 
-        this.insertCapital(myMap, myLocations, 'Vienna', 'Austria');
-        this.insertCapital(myMap, myLocations, 'Budapest', 'Austria');
-        this.insertCapital(myMap, myLocations, 'Trieste', 'Austria');
+        this.insertPiece(myMap, myLocations, 'Vienna', 'Austria', 'Army');
+        this.insertPiece(myMap, myLocations, 'Budapest', 'Austria', 'Army');
+        this.insertPiece(myMap, myLocations, 'Trieste', 'Austria', 'Fleet');
 
-        this.insertCapital(myMap, myLocations, 'London', 'England');
-        this.insertCapital(myMap, myLocations, 'Edinburgh', 'England');
-        this.insertCapital(myMap, myLocations, 'Liverpool', 'England');
+        this.insertPiece(myMap, myLocations, 'London', 'England', 'Fleet');
+        this.insertPiece(myMap, myLocations, 'Edinburgh', 'England', 'Fleet');
+        this.insertPiece(myMap, myLocations, 'Liverpool', 'England', 'Army');
 
-        this.insertCapital(myMap, myLocations, 'Paris', 'France');
-        this.insertCapital(myMap, myLocations, 'Marseilles', 'France');
-        this.insertCapital(myMap, myLocations, 'Brest', 'France');
+        this.insertPiece(myMap, myLocations, 'Paris', 'France', 'Army');
+        this.insertPiece(myMap, myLocations, 'Marseilles', 'France', 'Army');
+        this.insertPiece(myMap, myLocations, 'Brest', 'France', 'Fleet');
 
-        this.insertCapital(myMap, myLocations, 'Berlin', 'Germany');
-        this.insertCapital(myMap, myLocations, 'Munich', 'Germany');
-        this.insertCapital(myMap, myLocations, 'Kiel', 'Germany');
+        this.insertPiece(myMap, myLocations, 'Berlin', 'Germany', 'Army');
+        this.insertPiece(myMap, myLocations, 'Munich', 'Germany', 'Army');
+        this.insertPiece(myMap, myLocations, 'Kiel', 'Germany', 'Fleet');
 
-        this.insertCapital(myMap, myLocations, 'Rome', 'Italy');
-        this.insertCapital(myMap, myLocations, 'Venice', 'Italy');
-        this.insertCapital(myMap, myLocations, 'Naples', 'Italy');
+        this.insertPiece(myMap, myLocations, 'Rome', 'Italy', 'Army');
+        this.insertPiece(myMap, myLocations, 'Venice', 'Italy', 'Army');
+        this.insertPiece(myMap, myLocations, 'Naples', 'Italy', 'Fleet');
 
-        this.insertCapital(myMap, myLocations, 'Moscow', 'Russia');
-        this.insertCapital(myMap, myLocations, 'Sevastopol', 'Russia');
-        this.insertCapital(myMap, myLocations, 'StPetersburg', 'Russia');
-        this.insertCapital(myMap, myLocations, 'Warsaw', 'Russia');
+        this.insertPiece(myMap, myLocations, 'Moscow', 'Russia', 'Army');
+        this.insertPiece(myMap, myLocations, 'Sevastopol', 'Russia', 'Fleet');
+        this.insertPiece(myMap, myLocations, 'StPetersburg', 'Russia', 'Fleet');
+        this.insertPiece(myMap, myLocations, 'Warsaw', 'Russia', 'Army');
 
-        this.insertCapital(myMap, myLocations, 'Ankara', 'Turkey');
-        this.insertCapital(myMap, myLocations, 'Constantinople', 'Turkey');
-        this.insertCapital(myMap, myLocations, 'Smyrna', 'Turkey');
-        
-        // myMap.set('London' + this.LocationTypes.PIECE,  new Location('162', '281'));
+        this.insertPiece(myMap, myLocations, 'Ankara', 'Turkey', 'Fleet');
+        this.insertPiece(myMap, myLocations, 'Constantinople', 'Turkey', 'Army');
+        this.insertPiece(myMap, myLocations, 'Smyrna', 'Turkey', 'Army');
 
-        this.capitals = myMap;
+        this.pieces = myMap;
     }
 
-    insertCapital = (capitalMap: Map<String, Capital>, locationMap: Map<String, Location>, 
-                     capitalName: string, countryName: string) => {
-        const capitalKey: string  = capitalName + LocationWarehouse.LocationTypes.CAPITAL;
-        const theLocation: Location | undefined =  locationMap.get(capitalKey);
+    insertPiece = (pieceMap: Map<String, Piece>, locationMap: Map<String, Location>, 
+                   locationName: string, countryName: string, type: string) => {
+        const pieceKey: string  = locationName + LocationTypes.PIECE;
+        const theLocation: Location | undefined =  locationMap.get(pieceKey);
         if (theLocation) {
-            const theCapital = new Capital(capitalName, countryName, theLocation);
-            capitalMap.set(capitalName + LocationWarehouse.LocationTypes.PIECE, theCapital);
+            const thePiece = new Piece(locationName, countryName, theLocation, type);
+            pieceMap.set(locationName + type, thePiece);
         }
     }
 
