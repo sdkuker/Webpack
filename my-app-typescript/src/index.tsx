@@ -1,16 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import './index.css';
-// import Hello from './components/Hello';
-import Map from './components/Map';
+import './map.css';
+import Main from './components/Main';
 
-/*ReactDOM.render(
-  <Hello/>,
-  document.getElementById('root') as HTMLElement
-); */
 ReactDOM.render(
-  <Map/>,
-  document.getElementById('map') as HTMLElement
+  <Main/>,
+  document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();

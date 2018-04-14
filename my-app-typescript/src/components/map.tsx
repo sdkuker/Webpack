@@ -1,8 +1,6 @@
 import * as React from 'react';
-import './Map.css';
+import '../map.css';
 import MapBuilder from './MapBuilder';
-// import Circle from './Circle';
-// import Fleet from './Fleet';
 
 export class Map extends React.Component {
 
