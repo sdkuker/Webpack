@@ -53,11 +53,11 @@ class CapitalWarehouse {
 
     insertCapital = (capitalMap: Map<String, Capital>, locationMap: Map<String, Location>, 
                      locationName: string, countryName: string) => {
-        const capitalKey: string  = locationName + LocationTypes.CAPITAL;
+        const capitalKey: string  = locationName + LocationTypes.Capital;
         const theLocation: Location | undefined =  locationMap.get(capitalKey);
         if (theLocation) {
             const theCapital = new Capital(locationName, countryName, theLocation);
-            capitalMap.set(locationName + LocationTypes.PIECE, theCapital);
+            capitalMap.set(locationName + LocationTypes.Piece, theCapital);
         }
     }
 

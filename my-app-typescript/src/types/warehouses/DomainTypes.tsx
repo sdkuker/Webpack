@@ -1,9 +1,9 @@
-export const PieceTypes = Object.freeze({
-    FLEET: 'Fleet',
-    ARMY : 'Army'
-});
+export enum PieceTypes {
+    Fleet,
+    Army
+}
 
-export const LocationTypes = Object.freeze({
-    CAPITAL: ' - Capital',
-    PIECE : '- Piece'
-});
+export enum LocationTypes {
+    Capital,
+    Piece
+}

@@ -51,7 +51,7 @@ class PieceWarehouse {
 
     insertPiece = (pieceMap: Map<String, Piece>, locationMap: Map<String, Location>, 
                    locationName: string, countryName: string, type: string) => {
-        const pieceKey: string  = locationName + LocationTypes.PIECE;
+        const pieceKey: string  = locationName + LocationTypes.Piece;
         const theLocation: Location | undefined =  locationMap.get(pieceKey);
         if (theLocation) {
             const thePiece = new Piece(locationName, countryName, theLocation, type);
