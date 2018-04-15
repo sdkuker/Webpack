@@ -5,8 +5,8 @@ import MapBuilder from './MapBuilder';
 export class Map extends React.Component {
 
   render() {
-    return ( // 610 560
-      <svg viewBox="0 0 915 840">
+    return ( // 610 560  915 840
+      <svg viewBox="0 0 610 560">
         <g>
           <title>North Atlantic Ocean</title>
           <polygon
