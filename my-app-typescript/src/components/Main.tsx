@@ -5,9 +5,19 @@ import '../map.css';
 class Main extends React.Component {
     render() {
         return (
-            <div>
+            <div className="container">
                 <h1>Stevieware Diplomacy</h1>
-                <GameMap />
+                <div className="row">
+                    <div className="col-md-8">
+                        <GameMap />
+                    </div>
+                    <div className="col-md-2">
+                        <span>steve</span>
+                    </div>
+                    <div className="col-md-2">
+                        <span>Marie</span>
+                    </div>
+                </div>
             </div>
         );
     }
