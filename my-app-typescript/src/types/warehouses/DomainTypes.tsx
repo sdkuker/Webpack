@@ -1,9 +1,9 @@
 export enum PieceTypes {
-    Fleet,
-    Army
+    Fleet = 'FLEET',
+    Army = 'ARMY'
 }
 
 export enum LocationTypes {
-    Capital,
-    Piece
+    Capital = 'CAPITAL',
+    Piece = 'PIECE'
 }
