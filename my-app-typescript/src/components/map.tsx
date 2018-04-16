@@ -465,7 +465,7 @@ export class Map extends React.Component {
               382,483 381,477 386,478 380,472 392,472 388,460 376,464 369,464 361,467 
               356,471 350,471 350,477"
           />
-          <text x="344" y="500">Gre</text>
+          <text x="351" y="490">Gre</text>
         </g>
         <g>
         <title>Holland</title>

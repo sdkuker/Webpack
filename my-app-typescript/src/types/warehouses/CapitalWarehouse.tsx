@@ -45,8 +45,19 @@ class CapitalWarehouse {
         this.insertCapital(myMap, myLocations, 'Ankara', 'Turkey');
         this.insertCapital(myMap, myLocations, 'Constantinople', 'Turkey');
         this.insertCapital(myMap, myLocations, 'Smyrna', 'Turkey');
-        
-        // myMap.set('London' + this.LocationTypes.PIECE,  new Location('162', '281'));
+
+        this.insertCapital(myMap, myLocations, 'Portugal', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Spain', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Norway', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Sweden', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Denmark', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Rumania', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Serbia', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Bulgaria', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Greece', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Tunis', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Holland', 'unowned');
+        this.insertCapital(myMap, myLocations, 'Belgium', 'unowned');
 
         this.capitals = myMap;
     }

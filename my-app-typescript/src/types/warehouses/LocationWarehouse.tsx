@@ -38,7 +38,7 @@ class LocationWarehouse {
         myMap.set('Budapest' + LocationTypes.Piece, new Location('353', '370'));
         myMap.set('Budapest' + LocationTypes.Capital, new Location('326', '376'));
         myMap.set('Bulgaria' + LocationTypes.Piece, new Location('395', '443'));
-        myMap.set('Bulgaria' + LocationTypes.Capital, new Location('377', '444'));
+        myMap.set('Bulgaria' + LocationTypes.Capital, new Location('415', '437'));
         myMap.set('Bulgaria_East_Coast' + LocationTypes.Piece, new Location('410', '440'));
         myMap.set('Bulgaria_South_Coast' + LocationTypes.Piece, new Location('399', '462'));
         myMap.set('Burgundy' + LocationTypes.Piece, new Location('191', '360'));
@@ -83,7 +83,7 @@ class LocationWarehouse {
         myMap.set('North_Africa' + LocationTypes.Piece, new Location('100', '536'));
         myMap.set('North_Sea' + LocationTypes.Piece, new Location('204', '215'));
         myMap.set('Norway' + LocationTypes.Piece, new Location('264', '160'));
-        myMap.set('Norawy' + LocationTypes.Capital, new Location('270', '187'));
+        myMap.set('Norway' + LocationTypes.Capital, new Location('270', '187'));
         myMap.set('Norwegian_Sea' + LocationTypes.Piece, new Location('220', '90'));
         myMap.set('Paris' + LocationTypes.Piece, new Location('162', '346'));
         myMap.set('Paris' + LocationTypes.Capital, new Location('173', '334'));
@@ -96,7 +96,7 @@ class LocationWarehouse {
         myMap.set('Rome' + LocationTypes.Capital, new Location('252', '443'));
         myMap.set('Ruhr' + LocationTypes.Piece, new Location('223', '320'));
         myMap.set('Rumania' + LocationTypes.Piece, new Location('415', '405'));
-        myMap.set('Rumania' + LocationTypes.Capital, new Location('402', '413'));
+        myMap.set('Rumania' + LocationTypes.Capital, new Location('422', '410'));
         myMap.set('Serbia' + LocationTypes.Piece, new Location('351', '438'));
         myMap.set('Serbia' + LocationTypes.Capital, new Location('343', '419'));
         myMap.set('Sevastopol' + LocationTypes.Piece, new Location('515', '330'));
