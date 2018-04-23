@@ -743,7 +743,7 @@ export class Map extends React.Component {
               330,64 332,74 324,71 311,101 308,104 309,115 300,126 301,132 292,133 290,164 
               285,170 287,177 279,204"
           />
-          <text x="290" y="160">Swe</text>
+          <text x="300" y="160">Swe</text>
         </g> 
         <g>
         <title>Syria</title>

@@ -36,7 +36,7 @@ class LocationWarehouse {
         myMap.set('Brest' + LocationTypes.Piece, new Location('125', '334'));
         myMap.set('Brest' + LocationTypes.Capital, new Location('106', '322'));
         myMap.set('Budapest' + LocationTypes.Piece, new Location('353', '370'));
-        myMap.set('Budapest' + LocationTypes.Capital, new Location('326', '376'));
+        myMap.set('Budapest' + LocationTypes.Capital, new Location('336', '386'));
         myMap.set('Bulgaria' + LocationTypes.Piece, new Location('395', '443'));
         myMap.set('Bulgaria' + LocationTypes.Capital, new Location('415', '437'));
         myMap.set('Bulgaria_East_Coast' + LocationTypes.Piece, new Location('410', '440'));
@@ -75,7 +75,7 @@ class LocationWarehouse {
         myMap.set('Mid_Atlantic_Ocean' + LocationTypes.Piece, new Location('23', '355'));
         myMap.set('Moscow' + LocationTypes.Piece, new Location('505', '226'));
         myMap.set('Moscow' + LocationTypes.Capital, new Location('481', '234'));
-        myMap.set('Munich' + LocationTypes.Piece, new Location('243', '347'));
+        myMap.set('Munich' + LocationTypes.Piece, new Location('250', '337'));
         myMap.set('Munich' + LocationTypes.Capital, new Location('258', '359'));
         myMap.set('Naples' + LocationTypes.Piece, new Location('299', '505'));
         myMap.set('Naples' + LocationTypes.Capital, new Location('278', '469'));
@@ -126,11 +126,11 @@ class LocationWarehouse {
         myMap.set('Ukraine' + LocationTypes.Piece, new Location('427', '327'));
         myMap.set('Venice' + LocationTypes.Piece, new Location('250', '408'));
         myMap.set('Venice' + LocationTypes.Capital, new Location('261', '397'));
-        myMap.set('Vienna' + LocationTypes.Piece, new Location('314', '360'));
-        myMap.set('Vienna' + LocationTypes.Capital, new Location('301', '363'));
+        myMap.set('Vienna' + LocationTypes.Piece, new Location('316', '357'));
+        myMap.set('Vienna' + LocationTypes.Capital, new Location('301', '360'));
         myMap.set('Wales' + LocationTypes.Piece, new Location('125', '285'));
         myMap.set('Warsaw' + LocationTypes.Piece, new Location('361', '315'));
-        myMap.set('Warsaw' + LocationTypes.Capital, new Location('346', '302'));
+        myMap.set('Warsaw' + LocationTypes.Capital, new Location('337', '307'));
         myMap.set('Western_Mediterranean' + LocationTypes.Piece, new Location('140', '492'));
         myMap.set('Yorkshire' + LocationTypes.Piece, new Location('161', '254'));
 

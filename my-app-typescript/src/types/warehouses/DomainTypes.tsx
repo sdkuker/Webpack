@@ -7,3 +7,8 @@ export enum LocationTypes {
     Capital = 'CAPITAL',
     Piece = 'PIECE'
 }
+
+export enum SeasonTypes {
+    Spring = 'SPRINT',
+    Fall = 'FALL'
+}
