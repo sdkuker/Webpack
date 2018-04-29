@@ -16,5 +16,6 @@ export enum SeasonTypes {
 export enum MoveAction {
     Holds = 'HOLDS',
     MovesTo = 'MOVESTO',
-    Convoys = 'CONVOYS'
+    Convoys = 'CONVOYS',
+    Supports = 'SUPPORTS'
 }

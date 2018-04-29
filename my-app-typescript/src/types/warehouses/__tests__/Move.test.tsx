@@ -78,6 +78,7 @@ it('Good hold', () => {
     expect(myMove.pieceType).toEqual(PieceTypes.Army);
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toEqual(MoveAction.Holds);
+    expect(myMove.isValidMove()).toBeTruthy();
 })
 
 it('Bad action', () => {
@@ -86,6 +87,7 @@ it('Bad action', () => {
     expect(myMove.pieceType).toEqual(PieceTypes.Army);
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toBeUndefined();
+    expect(myMove.isValidMove()).toBeFalsy();
 })
 
 it('Good army move', () => {
@@ -95,6 +97,7 @@ it('Good army move', () => {
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toEqual(MoveAction.MovesTo);
     expect(myMove.endingLocationName).toEqual('Edinburgh');
+    expect(myMove.isValidMove()).toBeTruthy();
 })
 
 it('Good fleet move', () => {
@@ -104,6 +107,7 @@ it('Good fleet move', () => {
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toEqual(MoveAction.MovesTo);
     expect(myMove.endingLocationName).toEqual('Edinburgh');
+    expect(myMove.isValidMove()).toBeTruthy();
 })
 
 it('Bad army move - ending location', () => {
@@ -113,8 +117,106 @@ it('Bad army move - ending location', () => {
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toEqual(MoveAction.MovesTo);
     expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.isValidMove()).toBeFalsy();
 })
 
+it('Good convoy', () => {
+    let myOrder = 'Fleet London Convoys Army Berlin MovesTo Edinburgh';
+    let myMove = new Move(myOrder);
+    expect(myMove.pieceType).toEqual(PieceTypes.Fleet);
+    expect(myMove.currentLocationName).toEqual('London');
+    expect(myMove.action).toEqual(MoveAction.Convoys);
+    expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.secondaryPieceType).toEqual(PieceTypes.Army);
+    expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
+    expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
+    expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
+    expect(myMove.isValidMove()).toBeTruthy();
+})
+
+it('Bad convoy - convoy verb', () => {
+    let myOrder = 'Fleet London ConvoysX Army Berlin MovesTo Edinburgh';
+    let myMove = new Move(myOrder);
+    expect(myMove.pieceType).toEqual(PieceTypes.Fleet);
+    expect(myMove.currentLocationName).toEqual('London');
+    expect(myMove.action).toBeUndefined();
+    expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.secondaryPieceType).toBeUndefined();
+    expect(myMove.secondaryCurrentLocationName).toBeUndefined();
+    expect(myMove.secondaryAction).toBeUndefined();
+    expect(myMove.secondaryEndingLocationName).toBeUndefined();
+    expect(myMove.isValidMove()).toBeFalsy();
+})
+
+it('Bad convoy - bad secondary piece', () => {
+    let myOrder = 'Fleet London Convoys badThang Berlin MovesTo Edinburgh';
+    let myMove = new Move(myOrder);
+    expect(myMove.pieceType).toEqual(PieceTypes.Fleet);
+    expect(myMove.currentLocationName).toEqual('London');
+    expect(myMove.action).toEqual(MoveAction.Convoys);
+    expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.secondaryPieceType).toBeUndefined();
+    expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
+    expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
+    expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
+    expect(myMove.isValidMove()).toBeFalsy();
+})
+
+it('Bad convoy - bad secondary current location', () => {
+    let myOrder = 'Fleet London Convoys Army badThing MovesTo Edinburgh';
+    let myMove = new Move(myOrder);
+    expect(myMove.pieceType).toEqual(PieceTypes.Fleet);
+    expect(myMove.currentLocationName).toEqual('London');
+    expect(myMove.action).toEqual(MoveAction.Convoys);
+    expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.secondaryPieceType).toEqual(PieceTypes.Army);
+    expect(myMove.secondaryCurrentLocationName).toBeUndefined();
+    expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
+    expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
+    expect(myMove.isValidMove()).toBeFalsy();
+})
+
+it('Bad convoy - bad secondary action', () => {
+    let myOrder = 'Fleet London Convoys Army Berlin badThing Edinburgh';
+    let myMove = new Move(myOrder);
+    expect(myMove.pieceType).toEqual(PieceTypes.Fleet);
+    expect(myMove.currentLocationName).toEqual('London');
+    expect(myMove.action).toEqual(MoveAction.Convoys);
+    expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.secondaryPieceType).toEqual(PieceTypes.Army);
+    expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
+    expect(myMove.secondaryAction).toBeUndefined();
+    expect(myMove.secondaryEndingLocationName).toBeUndefined();
+    expect(myMove.isValidMove()).toBeFalsy();
+})
+
+it('Bad convoy - bad secondary ending location', () => {
+    let myOrder = 'Fleet London Convoys Army Berlin MovesTo badThing';
+    let myMove = new Move(myOrder);
+    expect(myMove.pieceType).toEqual(PieceTypes.Fleet);
+    expect(myMove.currentLocationName).toEqual('London');
+    expect(myMove.action).toEqual(MoveAction.Convoys);
+    expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.secondaryPieceType).toEqual(PieceTypes.Army);
+    expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
+    expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
+    expect(myMove.secondaryEndingLocationName).toBeUndefined();
+    expect(myMove.isValidMove()).toBeFalsy();
+})
+
+it('Good support', () => {
+    let myOrder = 'Fleet London Supports Army Berlin MovesTo Edinburgh';
+    let myMove = new Move(myOrder);
+    expect(myMove.pieceType).toEqual(PieceTypes.Fleet);
+    expect(myMove.currentLocationName).toEqual('London');
+    expect(myMove.action).toEqual(MoveAction.Supports);
+    expect(myMove.endingLocationName).toBeUndefined();
+    expect(myMove.secondaryPieceType).toEqual(PieceTypes.Army);
+    expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
+    expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
+    expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
+    expect(myMove.isValidMove()).toBeTruthy();
+})
 
 
 
