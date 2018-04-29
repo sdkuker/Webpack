@@ -15,7 +15,7 @@ class CapitalWarehouse {
     initilizeCapitals = () => {
 
         const myMap = new Map<String, Capital>();
-        const myLocations = LocationWarehouse.getLocations();
+        const myLocations = LocationWarehouse.locations;
 
         this.insertCapital(myMap, myLocations, 'Vienna', 'Austria');
         this.insertCapital(myMap, myLocations, 'Budapest', 'Austria');

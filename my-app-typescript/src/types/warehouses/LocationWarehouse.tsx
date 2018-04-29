@@ -9,8 +9,10 @@ class LocationWarehouse {
         this.initilizeLocations();
     }
 
-    public getLocations = () => {
-        return this.locations;
+    public isValidLocationName = (potentialLocationName: string)  =>  {
+        return  this.locations.get(potentialLocationName + LocationTypes.Piece) ||
+                this.locations.get(potentialLocationName + LocationTypes.Capital);
+        
     }
    
     initilizeLocations = () => {

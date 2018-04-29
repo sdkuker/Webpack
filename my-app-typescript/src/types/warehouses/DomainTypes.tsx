@@ -9,6 +9,12 @@ export enum LocationTypes {
 }
 
 export enum SeasonTypes {
-    Spring = 'SPRINT',
+    Spring = 'SPRING',
     Fall = 'FALL'
+}
+
+export enum MoveAction {
+    Holds = 'HOLDS',
+    MovesTo = 'MOVESTO',
+    Convoys = 'CONVOYS'
 }
