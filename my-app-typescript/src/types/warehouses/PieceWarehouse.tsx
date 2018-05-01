@@ -15,7 +15,7 @@ class PieceWarehouse {
     initializePieces = () => {
 
         const myMap = new Map<String, Piece>();
-        const myLocations = LocationWarehouse.getLocations();
+        const myLocations = LocationWarehouse.locations;
 
         this.insertPiece(myMap, myLocations, 'Vienna', 'Austria', 'Army');
         this.insertPiece(myMap, myLocations, 'Budapest', 'Austria', 'Army');

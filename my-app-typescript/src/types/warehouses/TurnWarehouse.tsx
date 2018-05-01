@@ -1,5 +1,5 @@
 import { Turn } from './Turn';
-import { SeasonTypes } from './DomainTypes';
+import { SeasonTypes, TurnStatus } from './DomainTypes';
 import { observable } from 'mobx';
 
 
@@ -15,7 +15,8 @@ class TurnWarehouse {
 
         const myTurns = Array<Turn>();
 
-        myTurns.push(new Turn(1, SeasonTypes.Spring));
+        myTurns.push(new Turn(1, SeasonTypes.Spring, TurnStatus.Complete));
+        myTurns.push(new Turn(1, SeasonTypes.Fall, TurnStatus.Open));
 
         this.turns = myTurns;
     }

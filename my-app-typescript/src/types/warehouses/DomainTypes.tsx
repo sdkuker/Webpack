@@ -19,3 +19,8 @@ export enum MoveAction {
     Convoys = 'CONVOYS',
     Supports = 'SUPPORTS'
 }
+
+export enum TurnStatus {
+    Open = 'OPEN',
+    Complete = 'COMPLETE'
+}

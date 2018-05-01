@@ -1,11 +1,13 @@
 
-import { SeasonTypes } from './DomainTypes';
+import { SeasonTypes, TurnStatus } from './DomainTypes';
 
 export class Turn {
     season: SeasonTypes;
     year: number;
-    constructor(aYear: number, aSeason: SeasonTypes) {
+    status: TurnStatus;
+    constructor(aYear: number, aSeason: SeasonTypes, aStatus: TurnStatus) {
         this.year = aYear;
         this.season = aSeason;
+        this.status = aStatus;
     }
 }

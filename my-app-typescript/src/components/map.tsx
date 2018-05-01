@@ -8,7 +8,7 @@ export class Map extends React.Component {
     return ( // 610 560  915 840
       <svg viewBox="0 0 610 560">
         <g>
-          <title>North Atlantic Ocean</title>
+          <title>North_Atlantic_Ocean</title>
           <polygon
               className="w" 
               points="70,261 64,250 67,242 71,245 81,234 74,228 80,225 78,218 
@@ -19,7 +19,7 @@ export class Map extends React.Component {
           <text x="65" y="120">NAO</text>
         </g>
         <g>
-          <title>Irish Sea</title>
+          <title>Irish_Sea</title>
           <polygon
               className="w" 
               points="100,291 112,287 122,281 130,282 127,276 119,272 116,272 115,265 128,262 
@@ -29,7 +29,7 @@ export class Map extends React.Component {
           <text x="95" y="270">Irish</text>
         </g>
         <g>
-          <title>English Channel</title>
+          <title>English_Channel</title>
           <polygon
               className="w" 
               points="173,301 169,311 153,315 155,320 150,319 144,318 142,312 136,310 
@@ -39,7 +39,7 @@ export class Map extends React.Component {
           <text x="135" y="306">ENG</text>
         </g>
         <g>
-          <title>Norwegian Sea</title>
+          <title>Norwegian_Sea</title>
           <polygon
               className="w" 
               points="362,33 357,39 343,44 324,54 320,64 310,75 309,84 
@@ -49,7 +49,7 @@ export class Map extends React.Component {
           <text x="220" y="70">NWG</text>
         </g>
         <g>
-          <title>Barents Sea</title>
+          <title>Barents_Sea</title>
           <polygon
               className="w" 
               points="540 0 535,9 530,6 517,19 516,33 513,38 513,23 507,20 505,26 499,33 
@@ -62,7 +62,7 @@ export class Map extends React.Component {
           <text x="440" y="15">BAR</text>
         </g>
         <g>
-          <title>North Sea</title>
+          <title>North_Sea</title>
           <path
               className="w" 
               d="M171,197 L171,181 A27,27 0,0,1 198,154 L241,154 L241,224 L248,224 L245,237 
@@ -71,7 +71,7 @@ export class Map extends React.Component {
           <text x="190" y="230">NTH</text>
         </g>
         <g>
-          <title>Heloland Bight</title>
+          <title>Heloland_Bight</title>
           <polygon
               className="w" 
               points="245,237 243,247 244,254 243,257 245,263 244,270 244,273 235,277 
@@ -90,7 +90,7 @@ export class Map extends React.Component {
           <text x="255" y="220">Ska</text>
         </g>
         <g>
-          <title>Baltic Sea</title>
+          <title>Baltic_Sea</title>
           <polygon
               className="w" 
               points="266,255 271,260 278,254 277,250 280,248 279,243 282,253 289,254 
@@ -101,7 +101,7 @@ export class Map extends React.Component {
           <text x="308" y="260">BAL</text>
         </g>
         <g>
-          <title>Gulf of Bothnia</title>
+          <title>Gulf_of_Bothnia</title>
           <polygon
               className="w" 
               points="311,220 314,209 322,206 328,203 331,193 326,183 320,182 321,161 
@@ -114,7 +114,7 @@ export class Map extends React.Component {
           <text x="332" y="210">BOT</text>
         </g>
         <g>
-          <title>Mid Atlantic Ocean</title>
+          <title>Mid_Atlantic_Ocean</title>
           <polygon
               className="w" 
               points="102,317 100,322 103,328 109,329 123,344 122,350 123,357 128,363 
@@ -126,7 +126,7 @@ export class Map extends React.Component {
           <text x="50" y="355">MAO</text>
         </g>
         <g>
-          <title>Western Mediterranean</title>
+          <title>Western_Mediterranean</title>
           <polygon
               className="w" 
               points="37,490 47,488 52,489 60,486 78,491 83,494 86,485 90,483 98,484 
@@ -138,7 +138,7 @@ export class Map extends React.Component {
           <text x="160" y="491">WES</text>
         </g>
         <g>
-          <title>Gulf of Lyon</title>
+          <title>Gulf_of_Lyon</title>
           <polygon
               className="w" 
               points="115,469 110,461 124,444 131,439 146,438 157,432 158,425 158,418 
@@ -149,7 +149,7 @@ export class Map extends React.Component {
           <text x="170" y="457">LYO</text>
         </g>
         <g>
-          <title>Tyrrhenian Sea</title>
+          <title>Tyrrhenian_Sea</title>
           <polygon
               className="w" 
               points="238,431 247,442 248,447 256,458 271,464 276,474 290,487 294,502 
@@ -160,7 +160,7 @@ export class Map extends React.Component {
           <text x="245" y="495">TYS</text>
         </g>
         <g>
-          <title>Ionian Sea</title>
+          <title>Ionian_Sea</title>
           <polygon
               className="w" 
               points="289,511 290,514 295,515 308,500 311,491 304,484 310,480 318,485 
@@ -172,7 +172,7 @@ export class Map extends React.Component {
           <text x="315" y="520">ION</text>
         </g>
         <g>
-          <title>Adriatic Sea</title>
+          <title>Adriatic_Sea</title>
           <polygon
               className="w" 
               points="322,480 297,456 300,453 290,453 278,443 272,424 260,417 261,401 
@@ -182,7 +182,7 @@ export class Map extends React.Component {
           <text x="308" y="460">ADR</text>
         </g>
         <g>
-          <title>Aegean Sea</title>
+          <title>Aegean_Sea</title>
           <polygon
               className="w" 
               points="376,537 371,520 378,521 377,513 386,516 385,509 370,494 371,491 
@@ -194,7 +194,7 @@ export class Map extends React.Component {
           <text x="380" y="500">AEG</text>
         </g>
         <g>
-          <title>Eastern Mediterranean</title>
+          <title>Eastern_Mediterranean</title>
           <polygon
               className="w" 
               points="435,530 441,526 447,528 453,534 464,531 466,521 475,520 485,528 
@@ -204,7 +204,7 @@ export class Map extends React.Component {
           <text x="455" y="550">EAS</text>
         </g>
         <g>
-          <title>Black Sea</title>
+          <title>Black_Sea</title>
           <polygon
               className="w" 
               points="440,458 430,455 426,450 422,441 425,427 429,426 430,423 432,409 
@@ -369,7 +369,7 @@ export class Map extends React.Component {
           <text x="350" y="390">Bud</text>
         </g>
         <g>
-        <title>Bulgaria (ec)</title>
+        <title>Bulgaria_(ec)</title>
           <polygon
               className="l" 
               points="413,464 412,454 420,451 426,450 422,441 425,427 429,426 430,423 
@@ -379,7 +379,7 @@ export class Map extends React.Component {
           <text x="395" y="443">Bul</text>
         </g>
         <g>
-        <title>Bulgaria (sc)</title>
+        <title>Bulgaria_(sc)</title>
           <polygon
               className="l" 
               points="371,438 366,439 371,456 365,461 369,464 376,464 388,460 392,472 
@@ -545,7 +545,7 @@ export class Map extends React.Component {
           <text x="293" y="493">Nap</text>
         </g> 
         <g>
-        <title>North Africa</title>
+        <title>North_Africa</title>
           <polygon
               className="l" 
               points="203,520 179,515 169,518 150,511 117,509 106,511 99,515 89,512 
@@ -690,7 +690,7 @@ export class Map extends React.Component {
           <text x="460" y="510">Smy</text>
         </g> 
         <g>
-        <title>Spain (nc)</title>
+        <title>Spain_(nc)</title>
           <polyline
               className="l" 
               points="134,417 123,412 113,407 112,399 101,396 96,397 72,384 59,381 54,375 
@@ -699,7 +699,7 @@ export class Map extends React.Component {
           />
         </g> 
         <g>
-        <title>Spain (sc)</title>
+        <title>Spain_(sc)</title>
           <polyline
               className="l" 
               points="40,441 34,447 36,457 27,468 33,475 34,484 37,490 47,488 52,489 
@@ -710,7 +710,7 @@ export class Map extends React.Component {
           <text x="85" y="450">Spa</text>
         </g> 
         <g>
-        <title>St Petersburg (nc)</title>
+        <title>St_Petersburg_(nc)</title>
           <polyline
               className="l" 
               points="534,164 564,159 573,143 598,132 609,117 609,0 540 0 535,9 530,6 
@@ -724,7 +724,7 @@ export class Map extends React.Component {
           <text x="460" y="149">Stp</text>
         </g> 
         <g>
-        <title>St Petersburg (sc)</title>
+        <title>St_Petersburg_(sc)</title>
           <polyline
               className="l" 
               points="414,147 410,152 412,161 402,177 403,183 411,184 414,187 408,187 400,192 
@@ -837,8 +837,5 @@ export class Map extends React.Component {
   }
 
 }
-
-// <Circle x="162" y="290" className="Austria"/>
-// <Fleet x="162" y="281" className="Austria"/>
 
 export default Map;
