@@ -2,7 +2,7 @@ import * as React from 'react';
 import GameMap from './Map';
 import GameSelector from './GameSelector';
 import SeasonSelector from './SeasonSelector';
-import MoveSelector from './MoveSelector';
+import MovesComponent from './MovesComponent';
 
 class Main extends React.Component {
     render() {
@@ -15,7 +15,7 @@ class Main extends React.Component {
                         <GameMap />
                     </div>
                 </div>
-                <MoveSelector />
+                <MovesComponent />
             </div>
         );
     }

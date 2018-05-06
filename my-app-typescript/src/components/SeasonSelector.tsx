@@ -15,7 +15,7 @@ class SeasonSelector extends React.Component {
                         </select>
                     </div>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-4">
                     <div className="form-group">
                         <label htmlFor="seasonSelector"><b>Season:</b> </label>
                         <select className="form-control" id="seasonSelector">

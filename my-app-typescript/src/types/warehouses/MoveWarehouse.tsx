@@ -16,17 +16,17 @@ class MoveWarehouse {
 
         const myMoves = Array<Move>();
 
-        // myMoves.push(new Move('Fleet London movesTo North_Sea', 'England', 1, SeasonTypes.Spring));
-        // myMoves.push(new Move('Army Liverpool movesTo Yorkshire', 'England', 1, SeasonTypes.Spring));
+        myMoves.push(new Move('Fleet London movesTo North_Sea', 'England', 1, SeasonTypes.Spring));
+        myMoves.push(new Move('Army Liverpool movesTo Yorkshire', 'England', 1, SeasonTypes.Spring));
 
-        // myMoves.push(new Move('Army Paris movesTo Picardy', 'France', 1, SeasonTypes.Spring));
-        // myMoves.push(new Move('Army Marseilles movesTo Gascony', 'France', 1, SeasonTypes.Spring));
+        myMoves.push(new Move('Army Paris movesTo Picardy', 'France', 1, SeasonTypes.Spring));
+        myMoves.push(new Move('Army Marseilles movesTo Gascony', 'France', 1, SeasonTypes.Spring));
 
-        // myMoves.push(new Move('Fleet North_Sea movesTo Norway', 'England', 1, SeasonTypes.Fall));
-        // myMoves.push(new Move('Army Yorkshire movesTo Wales', 'England', 1, SeasonTypes.Fall));
+        myMoves.push(new Move('Fleet North_Sea movesTo Norway', 'England', 1, SeasonTypes.Fall));
+        myMoves.push(new Move('Army Yorkshire movesTo Wales', 'England', 1, SeasonTypes.Fall));
 
-        // myMoves.push(new Move('Army Picardy movesTo Belguim', 'France', 1, SeasonTypes.Fall));
-        // myMoves.push(new Move('Army Gascony movesTo Spain_(sc)', 'France', 1, SeasonTypes.Fall));
+        myMoves.push(new Move('Army Picardy movesTo Belguim', 'France', 1, SeasonTypes.Fall));
+        myMoves.push(new Move('Army Gascony movesTo Spain_(sc)', 'France', 1, SeasonTypes.Fall));
 
 
         this.moves = myMoves;

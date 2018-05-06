@@ -1,18 +1,15 @@
 import * as React from 'react';
+import MoveCountrySelector  from './MoveCountrySelector';
 
-class MoveSelector extends React.Component {
+class MovesComponent extends React.Component<{}, {}> {
+    constructor() {
+        super({});
+        this.countrySelected = this.countrySelected.bind(this);
+    }
     render() {
         return (
             <div className="container">
-                <h2>Moves</h2>
-                <div className="row">
-                    <div className="col-md-2">
-                        <p><b>Country:</b></p>
-                    </div>
-                    <div className="col-md-10">
-                        <p>Germany</p>
-                    </div>
-                </div>
+                <MoveCountrySelector onCountrySelected={this.countrySelected}/>
                 <div className="row">
                     <div className="col-md-2">
                         <p>Fleet</p>
@@ -30,6 +27,11 @@ class MoveSelector extends React.Component {
             </div>
         );
     }
+
+    countrySelected(countryName: string) {
+        this.setState({ countryToDisplay: countryName });
+    }
+
 }
 
-export default MoveSelector;
+export default MovesComponent;
