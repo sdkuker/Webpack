@@ -6,6 +6,7 @@ import { Warehouse as LocationWarehouse } from './LocationWarehouse';
 export class Move {
 
     @observable order: string;
+    id: number;
     pieceType: PieceTypes;
     currentLocationName: string;
     action: MoveAction;
@@ -18,7 +19,8 @@ export class Move {
     turnSeason: SeasonTypes;
     turnYear: number;
 
-    constructor(anOrder: string, anOwningCountrName: string, aTurnYear: number, aTurnSeason: SeasonTypes) {
+    constructor(anId: number, anOrder: string, anOwningCountrName: string, aTurnYear: number, aTurnSeason: SeasonTypes) {
+        this.id = anId;
         this.owningCountryName = anOwningCountrName;
         this.turnYear = aTurnYear;
         this.turnSeason = aTurnSeason;

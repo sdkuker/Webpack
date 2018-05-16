@@ -7,17 +7,17 @@ beforeAll(() => {
 
     const myMoves = Array<Move>();
 
-    myMoves.push(new Move('Fleet London movesTo North_Sea', 'England', 1, SeasonTypes.Spring));
+    myMoves.push(new Move(1, 'Fleet London movesTo North_Sea', 'England', 1, SeasonTypes.Spring));
 
-    myMoves.push(new Move('Army Paris movesTo Picardy', 'France', 1, SeasonTypes.Spring));
-    myMoves.push(new Move('Army Marseilles movesTo Gascony', 'France', 1, SeasonTypes.Spring));
-    myMoves.push(new Move('Fleet Brest movesTo North_Atlantic_Ocean', 'France', 1, SeasonTypes.Spring));
+    myMoves.push(new Move(2, 'Army Paris movesTo Picardy', 'France', 1, SeasonTypes.Spring));
+    myMoves.push(new Move(3, 'Army Marseilles movesTo Gascony', 'France', 1, SeasonTypes.Spring));
+    myMoves.push(new Move(4, 'Fleet Brest movesTo North_Atlantic_Ocean', 'France', 1, SeasonTypes.Spring));
 
-    myMoves.push(new Move('Fleet North_Sea movesTo Norway', 'England', 1, SeasonTypes.Fall));
-    myMoves.push(new Move('Army Yorkshire movesTo Wales', 'England', 1, SeasonTypes.Fall));
+    myMoves.push(new Move(5, 'Fleet North_Sea movesTo Norway', 'England', 1, SeasonTypes.Fall));
+    myMoves.push(new Move(6, 'Army Yorkshire movesTo Wales', 'England', 1, SeasonTypes.Fall));
 
-    myMoves.push(new Move('Army Picardy movesTo Belguim', 'France', 1, SeasonTypes.Fall));
-    myMoves.push(new Move('Army Gascony movesTo Spain_(sc)', 'France', 1, SeasonTypes.Fall));
+    myMoves.push(new Move(7, 'Army Picardy movesTo Belguim', 'France', 1, SeasonTypes.Fall));
+    myMoves.push(new Move(8, 'Army Gascony movesTo Spain_(sc)', 'France', 1, SeasonTypes.Fall));
 
 
     MoveWarehouse.setMoves(myMoves);
@@ -31,6 +31,7 @@ it('setting test moves in the beforeAll', () => {
 it('Successfully get England 1-spring moves', () => {
     const theReturn = MoveWarehouse.getMoves('England', new Turn(1, SeasonTypes.Spring, TurnStatus.Open));
     expect(theReturn.length).toEqual(1);
+    expect(theReturn[0].id).toEqual(1);
     expect(theReturn[0].order).toEqual('Fleet London movesTo North_Sea');
     expect(theReturn[0].owningCountryName).toEqual('England');
     expect(theReturn[0].turnYear).toEqual(1);
