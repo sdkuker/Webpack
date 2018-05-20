@@ -3,7 +3,6 @@ import { Turn } from './Turn';
 import { SeasonTypes, TurnStatus } from './DomainTypes';
 import { observable } from 'mobx';
 
-
 class MoveWarehouse {
    
     @observable moves: Array<Move>;
@@ -28,7 +27,6 @@ class MoveWarehouse {
         myMoves.push(new Move(7, 'Army Picardy movesTo Belguim', 'France', 1, SeasonTypes.Fall));
         myMoves.push(new Move(8, 'Army Gascony movesTo Spain_(sc)', 'France', 1, SeasonTypes.Fall));
 
-
         this.moves = myMoves;
     }
 
@@ -36,11 +34,11 @@ class MoveWarehouse {
 
         const theReturn = Array<Move>();
 
-        let index : number;
+        let index: number;
         for (index = 0; index < this.moves.length; index++) {
-            if (this.moves[index].owningCountryName == countryName && 
-                this.moves[index].turnYear == aTurn.year && 
-                this.moves[index].turnSeason == aTurn.season ) {
+            if (this.moves[index].owningCountryName === countryName && 
+                this.moves[index].turnYear === aTurn.year && 
+                this.moves[index].turnSeason === aTurn.season ) {
                     theReturn.push(this.moves[index]);
                 }
         }

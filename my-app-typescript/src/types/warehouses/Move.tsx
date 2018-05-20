@@ -15,11 +15,12 @@ export class Move {
     secondaryCurrentLocationName: string;
     secondaryAction: MoveAction;
     secondaryEndingLocationName: string;
-    owningCountryName : string;
+    owningCountryName: string;
     turnSeason: SeasonTypes;
     turnYear: number;
 
-    constructor(anId: number, anOrder: string, anOwningCountrName: string, aTurnYear: number, aTurnSeason: SeasonTypes) {
+    constructor(anId: number, anOrder: string, anOwningCountrName: string, aTurnYear: number, 
+                aTurnSeason: SeasonTypes) {
         this.id = anId;
         this.owningCountryName = anOwningCountrName;
         this.turnYear = aTurnYear;
@@ -37,17 +38,17 @@ export class Move {
                     this.currentLocationName = parsedOrder[1];
                 }
                 if (parsedOrder.length > 2) {
-                    if (parsedOrder[2].toUpperCase() == 'HOLDS') {
+                    if (parsedOrder[2].toUpperCase() === 'HOLDS') {
                         this.action = MoveAction.Holds;
                     } else {
-                        if (parsedOrder[2].toUpperCase() == 'MOVESTO') {
+                        if (parsedOrder[2].toUpperCase() === 'MOVESTO') {
                             const movesToArray = Array<string>();
                             movesToArray.push(parsedOrder[2]);
                             movesToArray.push(parsedOrder[3]);
                             this.parseMovesTo(movesToArray, 'primary');
                         } else {
-                            if (parsedOrder[2].toUpperCase() == 'CONVOYS' ||
-                                parsedOrder[2].toUpperCase() == 'SUPPORTS') {
+                            if (parsedOrder[2].toUpperCase() === 'CONVOYS' ||
+                                parsedOrder[2].toUpperCase() === 'SUPPORTS') {
                                 if (parsedOrder.length > 5) {
                                     const movesToArray = Array<string>();
                                     movesToArray.push(parsedOrder[2]);
@@ -67,15 +68,15 @@ export class Move {
 
     parcePieceType = (proposedPieceType: string, orderSegment: string) => {
         if (proposedPieceType) {
-            if (proposedPieceType.toUpperCase() == 'F' || proposedPieceType.toUpperCase() == 'FLEET') {
-                if (orderSegment == 'primary') {
+            if (proposedPieceType.toUpperCase() === 'F' || proposedPieceType.toUpperCase() === 'FLEET') {
+                if (orderSegment === 'primary') {
                     this.pieceType = PieceTypes.Fleet;
                 } else {
                     this.secondaryPieceType = PieceTypes.Fleet;
                 }
             } else {
-                if (proposedPieceType.toUpperCase() == 'A' || proposedPieceType.toUpperCase() == 'ARMY') {
-                    if (orderSegment == 'primary') {
+                if (proposedPieceType.toUpperCase() === 'A' || proposedPieceType.toUpperCase() === 'ARMY') {
+                    if (orderSegment === 'primary') {
                         this.pieceType = PieceTypes.Army;
                     } else {
                         this.secondaryPieceType = PieceTypes.Army;
@@ -86,15 +87,15 @@ export class Move {
     }
 
     parseMovesTo = (aParsedOrder: Array<string>, orderSegment: string) => {
-        if (aParsedOrder[0].toUpperCase() == 'MOVESTO') {
+        if (aParsedOrder[0].toUpperCase() === 'MOVESTO') {
             if (aParsedOrder.length > 0) {
-                if (orderSegment == 'primary') {
+                if (orderSegment === 'primary') {
                     this.action = MoveAction.MovesTo;
                 } else {
                     this.secondaryAction = MoveAction.MovesTo;
                 }
                 if (LocationWarehouse.locations.has(aParsedOrder[1] + LocationTypes.Piece)) {
-                    if (orderSegment == 'primary') {
+                    if (orderSegment === 'primary') {
                         this.endingLocationName = aParsedOrder[1];
                     } else {
                         this.secondaryEndingLocationName = aParsedOrder[1];
@@ -105,8 +106,8 @@ export class Move {
     }
 
     parseConvoysAndSupports = (aParsedOrder: Array<string>) => {
-        if (aParsedOrder[0].toUpperCase() == 'CONVOYS' || aParsedOrder[0].toUpperCase() == 'SUPPORTS') {
-            if (aParsedOrder[0].toUpperCase() == 'CONVOYS') {
+        if (aParsedOrder[0].toUpperCase() === 'CONVOYS' || aParsedOrder[0].toUpperCase() === 'SUPPORTS') {
+            if (aParsedOrder[0].toUpperCase() === 'CONVOYS') {
                 this.action = MoveAction.Convoys;
             } else {
                 this.action = MoveAction.Supports;
@@ -116,7 +117,7 @@ export class Move {
                 if (LocationWarehouse.locations.has(aParsedOrder[2] + LocationTypes.Piece)) {
                     this.secondaryCurrentLocationName = aParsedOrder[2];
                 }
-                if (aParsedOrder[3].toUpperCase() == 'MOVESTO') {
+                if (aParsedOrder[3].toUpperCase() === 'MOVESTO') {
                     const movesToArray = Array<string>();
                     movesToArray.push(aParsedOrder[3]);
                     movesToArray.push(aParsedOrder[4]);
@@ -130,16 +131,16 @@ export class Move {
         let theReturn: boolean = false;
 
         if (this.action) {
-            if (this.action == MoveAction.Holds) {
+            if (this.action === MoveAction.Holds) {
                 theReturn = this.validateHoldsAction();
             } else {
-                if (this.action == MoveAction.MovesTo) {
+                if (this.action === MoveAction.MovesTo) {
                     theReturn = this.validateMovesToAction();
                 } else {
-                    if (this.action == MoveAction.Convoys) {
+                    if (this.action === MoveAction.Convoys) {
                         theReturn = this.validateConvoyAction();
                     } else {
-                        if (this.action == MoveAction.Supports) {
+                        if (this.action === MoveAction.Supports) {
                             theReturn = this.validateSupportsAction();
                         }
                     }
@@ -152,7 +153,7 @@ export class Move {
 
     validateHoldsAction = () => {
         let theReturn: boolean = false;
-        if (this.action == MoveAction.Holds) {
+        if (this.action === MoveAction.Holds) {
             if (this.pieceType && this.currentLocationName && this.endingLocationName === undefined &&
                 this.secondaryPieceType === undefined && this.secondaryCurrentLocationName === undefined &&
                 this.secondaryAction === undefined &&
@@ -165,7 +166,7 @@ export class Move {
 
     validateMovesToAction = () => {
         let theReturn: boolean = false;
-        if (this.action == MoveAction.MovesTo) {
+        if (this.action === MoveAction.MovesTo) {
             if (this.pieceType && this.currentLocationName && this.endingLocationName &&
                 this.secondaryPieceType === undefined && this.secondaryCurrentLocationName === undefined &&
                 this.secondaryAction === undefined &&
@@ -179,10 +180,11 @@ export class Move {
 
     validateConvoyAction = () => {
         let theReturn: boolean = false;
-        if (this.action == MoveAction.Convoys) {
-            if (this.pieceType == PieceTypes.Fleet && this.currentLocationName && this.endingLocationName === undefined &&
-                this.secondaryPieceType == PieceTypes.Army && this.secondaryCurrentLocationName &&
-                this.secondaryAction == MoveAction.MovesTo &&
+        if (this.action === MoveAction.Convoys) {
+            if (this.pieceType === PieceTypes.Fleet && this.currentLocationName && 
+                this.endingLocationName === undefined &&
+                this.secondaryPieceType === PieceTypes.Army && this.secondaryCurrentLocationName &&
+                this.secondaryAction === MoveAction.MovesTo &&
                 this.secondaryEndingLocationName) {
                 theReturn = true;
             }
@@ -192,10 +194,11 @@ export class Move {
 
     validateSupportsAction = () => {
             let theReturn: boolean = false;
-            if (this.action == MoveAction.Supports) {
-                if (this.pieceType == PieceTypes.Fleet && this.currentLocationName && this.endingLocationName === undefined &&
-                    this.secondaryPieceType == PieceTypes.Army && this.secondaryCurrentLocationName &&
-                    this.secondaryAction == MoveAction.MovesTo &&
+            if (this.action === MoveAction.Supports) {
+                if (this.pieceType === PieceTypes.Fleet && this.currentLocationName && 
+                    this.endingLocationName === undefined &&
+                    this.secondaryPieceType === PieceTypes.Army && this.secondaryCurrentLocationName &&
+                    this.secondaryAction === MoveAction.MovesTo &&
                     this.secondaryEndingLocationName) {
                     theReturn = true;
                 }
