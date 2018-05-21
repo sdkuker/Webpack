@@ -3,12 +3,25 @@ import GameMap from './Map';
 import GameSelector from './GameSelector';
 import SeasonSelector from './SeasonSelector';
 import MovesForCountryComponent from './MovesForCountryComponent';
+import { Game } from '../types/warehouses/Game';
+import { warehouse as GameWarehouse } from '../types/warehouses/GameWarehouse'
 
-class Main extends React.Component {
+interface StateValues {
+    selectedGame: Game;
+}
+
+class Main extends React.Component<{}, StateValues> {
+
+    constructor() {
+        super({});
+        this.gameSelected = this.gameSelected.bind(this);
+        this.state = { selectedGame : GameWarehouse.games[0]};
+    }
+
     render() {
         return (
             <div className="container">
-                <GameSelector />
+                <GameSelector onGameSelected={this.gameSelected} initialGame={this.state.selectedGame} />
                 <SeasonSelector />
                 <div className="row">
                     <div className="col-md-12">
@@ -18,6 +31,10 @@ class Main extends React.Component {
                 <MovesForCountryComponent />
             </div>
         );
+    }
+
+    gameSelected(aGame: Game) {
+        this.setState({ selectedGame: aGame });
     }
 }
 
