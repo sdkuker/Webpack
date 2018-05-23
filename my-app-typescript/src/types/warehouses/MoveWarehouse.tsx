@@ -4,7 +4,7 @@ import { SeasonTypes, TurnStatus } from './DomainTypes';
 import { observable } from 'mobx';
 
 class MoveWarehouse {
-   
+
     @observable moves: Array<Move>;
 
     constructor() {
@@ -30,18 +30,21 @@ class MoveWarehouse {
         this.moves = myMoves;
     }
 
-    getMoves = (countryName: string, aTurn: Turn) => {
+    getMoves = (countryName: string, aTurn: Turn | null) => {
 
         const theReturn = Array<Move>();
 
-        let index: number;
-        for (index = 0; index < this.moves.length; index++) {
-            if (this.moves[index].owningCountryName === countryName && 
-                this.moves[index].turnYear === aTurn.year && 
-                this.moves[index].turnSeason === aTurn.season ) {
+        if (aTurn) {
+            let index: number;
+            for (index = 0; index < this.moves.length; index++) {
+                if (this.moves[index].owningCountryName === countryName &&
+                    this.moves[index].turnYear === aTurn.year &&
+                    this.moves[index].turnSeason === aTurn.season) {
                     theReturn.push(this.moves[index]);
                 }
+            }
         }
+
         return theReturn;
     }
 

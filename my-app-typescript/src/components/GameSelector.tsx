@@ -24,9 +24,10 @@ class GameSelector extends React.Component<PropValues, StateValues> {
         let options: any = [];
         GameWarehouse.games.forEach((aGame: Game) => {
             if (this.state.selectedGame === aGame) {
-                options.push(<option selected>{aGame.name}</option>)
+                // tslint:disable-next-line
+                options.push(<option selected>{aGame.name}</option>);
             } else {
-               options.push(<option>{aGame.name}</option>) 
+                options.push(<option>{aGame.name}</option>);
             }
         });
 
@@ -36,7 +37,7 @@ class GameSelector extends React.Component<PropValues, StateValues> {
                     <div className="form-group">
                         <label htmlFor="gameSelector"><b>Game:</b></label>
                         <select className="form-control" id="gameSelector">
-                           {options}
+                            {options}
                         </select>
                     </div>
                 </div>

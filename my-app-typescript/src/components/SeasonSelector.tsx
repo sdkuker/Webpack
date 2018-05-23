@@ -2,8 +2,27 @@ import * as React from 'react';
 import { warehouse as TurnWarehouse } from '../types/warehouses/TurnWarehouse';
 import { SeasonTypes } from '../types/warehouses/DomainTypes';
 import SeasonSelectorOptions from './SeasonSelectorOptions';
+import { Game } from '../types/warehouses/Game';
+import { Turn } from '../types/warehouses/Turn';
 
-class SeasonSelector extends React.Component {
+interface PropValues {
+    onTurnSelected: Function;
+    myGame: Game;
+    initialTurn: Turn | null;
+}
+
+interface StateValues {
+    selectedTurn: Turn;
+}
+class SeasonSelector extends React.Component<PropValues, StateValues> {
+
+    constructor(props: PropValues) {
+        super(props);
+        if (props.initialTurn) {
+            this.state = { selectedTurn: props.initialTurn};
+        }
+    }
+
     render() {
         return (
             <form className="form-inline row">

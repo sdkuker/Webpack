@@ -2,14 +2,41 @@ import * as React from 'react';
 
 interface PropValues {
         onCountrySelected: Function;
+        initialCountryName: String;
 }
-class MoveCountrySelector extends React.Component<PropValues, {}> {
+
+interface StateValues {
+    selectedCountryName: String;
+    countryNames: string[];
+}
+class MoveCountrySelector extends React.Component<PropValues, StateValues> {
 
     constructor(props: PropValues) {
         super(props);
-        this.state = { selectedValue: 'Austria' };
+
+        let nameArray: string[] = ['Austria'];
+        nameArray.push('England');
+        nameArray.push('France');
+        nameArray.push('Germany');
+        nameArray.push('Italy');
+        nameArray.push('Russia');
+        nameArray.push('Turkey');
+
+        this.state = { selectedCountryName: props.initialCountryName, countryNames: nameArray};
     }
+
     render() {
+        // tslint:disable-next-line
+        let options: any = [];
+
+        this.state.countryNames.forEach((aCountryName: string) => {
+            if (this.state.selectedCountryName === aCountryName) {
+                 // tslint:disable-next-line
+                options.push(<option selected>{aCountryName}</option>);
+            } else {
+                options.push(<option>{aCountryName}</option>);
+            }
+        });
         return (
             <form className="form-inline row">
                 <div className="col-md-4">
@@ -33,7 +60,7 @@ class MoveCountrySelector extends React.Component<PropValues, {}> {
 
     countrySelected(event: React.FormEvent<HTMLSelectElement>) {
         let myValue: string = event.currentTarget.value;
-        this.setState({ selectedValue: myValue });
+        this.setState({ selectedCountryName: myValue });
         this.props.onCountrySelected(myValue);
     }
 }
