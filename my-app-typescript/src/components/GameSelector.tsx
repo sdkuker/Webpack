@@ -36,13 +36,23 @@ class GameSelector extends React.Component<PropValues, StateValues> {
                 <div className="col-md-2">
                     <div className="form-group">
                         <label htmlFor="gameSelector"><b>Game:</b></label>
-                        <select className="form-control" id="gameSelector">
+                        <select className="form-control" id="gameSelector" onChange={e => this.gameSelected(e)}>
                             {options}
                         </select>
                     </div>
                 </div>
             </form>
         );
+    }
+
+    gameSelected(event: React.FormEvent<HTMLSelectElement>) {
+        let myValue: string = event.currentTarget.value;
+        let selectedGame = GameWarehouse.getGameByName(myValue);
+        if ( selectedGame ) {
+            this.setState({ selectedGame: selectedGame });
+            this.props.onGameSelected(selectedGame);
+        }
+
     }
 }
 
