@@ -43,13 +43,7 @@ class MoveCountrySelector extends React.Component<PropValues, StateValues> {
                     <div className="form-group">
                         <label htmlFor="countrySelector"><b>Country:</b></label>
                         <select className="form-control" id="countrySelector" onChange={e => this.countrySelected(e)} >
-                            <option>Austria</option>
-                            <option>England</option>
-                            <option>France</option>
-                            <option>Germany</option>
-                            <option>Italy</option>
-                            <option>Russia</option>
-                            <option>Turkey</option>
+                        {options}
                         </select>
                     </div>
                 </div>
