@@ -53,6 +53,18 @@ class TurnWarehouse {
         }
         return null;
     }
+
+    getTurn = (aGame: Game, aYear: number, aSeason: SeasonTypes) => {
+
+        let index: number;
+        const turnsForGame = this.getTurns(aGame);
+        for (index = 0; index < turnsForGame.length; index++) {
+            if (turnsForGame[index].year === aYear && turnsForGame[index].season === aSeason)  {
+                    return turnsForGame[index];
+                }
+        }
+        return null;
+    }
 }
 
 export const warehouse = new TurnWarehouse();

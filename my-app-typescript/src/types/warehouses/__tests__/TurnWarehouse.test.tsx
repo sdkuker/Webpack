@@ -55,3 +55,20 @@ it('getting no open turn for game 3', () => {
     const openTurn = TurnWarehouse.getOpenTurn(game3);
     expect(openTurn).toBeNull();
 })
+
+it('get turn for game1 year 1 spring', () => {
+    const myTurn = TurnWarehouse.getTurn(game1, 1, SeasonTypes.Spring)
+    expect(myTurn).not.toBeNull();
+    if (myTurn) {
+        expect(myTurn.year).toEqual(1);
+        expect(myTurn.season).toEqual(SeasonTypes.Spring);
+        expect(myTurn.status).toEqual(TurnStatus.Complete);
+        expect(myTurn.game).toEqual(game1);
+    }
+
+})
+
+it('get turn that does not exist', () => {
+    const myTurn = TurnWarehouse.getTurn(game1, 3, SeasonTypes.Spring)
+    expect(myTurn).toBeNull();
+})

@@ -20,7 +20,7 @@ class GameWarehouse {
     }
 
     getGameByName = (aGameName: string) => {
-        let theReturn : Game   | undefined;
+        let theReturn: Game   | undefined;
 
         this.games.forEach((aGame: Game) => {
             if (aGame.name === aGameName) {

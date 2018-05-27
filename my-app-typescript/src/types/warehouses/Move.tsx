@@ -1,7 +1,8 @@
 import { observable } from 'mobx';
 import { Location } from './Location';
-import { PieceTypes, LocationTypes, MoveAction, SeasonTypes } from './DomainTypes';
+import { PieceTypes, LocationTypes, MoveAction } from './DomainTypes';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
+import { Turn } from './Turn';
 
 export class Move {
 
@@ -16,15 +17,12 @@ export class Move {
     secondaryAction: MoveAction;
     secondaryEndingLocationName: string;
     owningCountryName: string;
-    turnSeason: SeasonTypes;
-    turnYear: number;
+    turn: Turn;
 
-    constructor(anId: number, anOrder: string, anOwningCountrName: string, aTurnYear: number, 
-                aTurnSeason: SeasonTypes) {
+    constructor(anId: number, anOrder: string, anOwningCountrName: string, aTurn: Turn) {
         this.id = anId;
         this.owningCountryName = anOwningCountrName;
-        this.turnYear = aTurnYear;
-        this.turnSeason = aTurnSeason;
+        this.turn = aTurn;
         this.order = anOrder;
         this.parseOrder();
     }

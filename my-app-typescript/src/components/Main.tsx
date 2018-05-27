@@ -21,6 +21,7 @@ class Main extends React.Component<{}, StateValues> {
         this.gameSelected = this.gameSelected.bind(this);
         const myGame = GameWarehouse.games[0];
         this.state = { selectedGame: myGame, selectedTurn: TurnWarehouse.getOpenTurn(myGame) };
+        this.turnSelected = this.turnSelected.bind(this);
     }
 
     render() {
@@ -43,7 +44,7 @@ class Main extends React.Component<{}, StateValues> {
     }
 
     gameSelected(aGame: Game) {
-        this.setState({ selectedGame: aGame });
+        this.setState({ selectedGame: aGame, selectedTurn: TurnWarehouse.getOpenTurn(aGame) });
     }
 
     turnSelected(aTurn: Turn) {
