@@ -4,9 +4,10 @@ import { Move } from '../types/warehouses/Move';
 interface PropValues {
     moves: Move[];
 }
-class MovesListComponent extends React.Component<PropValues, {}> {
+class MovesEntryComponent extends React.Component<PropValues, {}> {
     constructor(props: PropValues) {
         super(props);
+        this.moveSelected = this.moveSelected.bind(this);
     }
     render() {
         // tslint:disable-next-line
@@ -24,6 +25,11 @@ class MovesListComponent extends React.Component<PropValues, {}> {
             </ul>
         );
     }
+
+    moveSelected(countryName: string) {
+        this.setState({ countryToDisplay: countryName });
+    }
+
 }
 
-export default MovesListComponent;
+export default MovesEntryComponent;

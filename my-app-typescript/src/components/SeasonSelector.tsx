@@ -82,8 +82,6 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
     seasonSelected(event: React.FormEvent<HTMLSelectElement>) {
         const myValue: string = event.currentTarget.value;
         let mySeason: SeasonTypes;
-        console.log('my value: ' + myValue);
-        console.log('season type: ' + SeasonTypes['Fall']);
         if (myValue === 'Fall') {
             mySeason = SeasonTypes.Fall;
         } else {
