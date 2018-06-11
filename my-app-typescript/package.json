@@ -21,13 +21,17 @@
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.8",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^21.1.6",
     "@types/node": "^8.0.53",
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",
+    "@types/react-test-renderer": "^16.0.1",
     "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "mobx-react-devtools": "^4.2.15",
     "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^16.4.0",
     "typescript": "^2.7.1"
   }
 }

@@ -1,10 +1,11 @@
 import * as React from 'react';
+import MoveEntryComponent from './MoveEntryComponent';
 import { Move } from '../types/warehouses/Move';
 
 interface PropValues {
     moves: Move[];
 }
-class MovesEntryComponent extends React.Component<PropValues, {}> {
+class MovesEntryListComponent extends React.Component<PropValues, {}> {
     constructor(props: PropValues) {
         super(props);
         this.moveSelected = this.moveSelected.bind(this);
@@ -14,15 +15,13 @@ class MovesEntryComponent extends React.Component<PropValues, {}> {
         let theReturn: any = [];
 
         this.props.moves.forEach((value: Move) => {
-            theReturn.push((
-                        <li className="list-group-item">{value.order}
-                        </li>));
+            theReturn.push( <MoveEntryComponent key={value.id} move={value} />);
         });
 
         return (
-            <ul className="list-group-item">
+            <table className="table">
                 {theReturn}
-            </ul>
+            </table>
         );
     }
 
@@ -32,4 +31,4 @@ class MovesEntryComponent extends React.Component<PropValues, {}> {
 
 }
 
-export default MovesEntryComponent;
+export default MovesEntryListComponent;

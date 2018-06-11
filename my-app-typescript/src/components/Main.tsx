@@ -31,7 +31,8 @@ class Main extends React.Component<{}, StateValues> {
                 <SeasonSelector 
                     onTurnSelected={this.turnSelected} 
                     myGame={this.state.selectedGame}
-                    initialTurn={this.state.selectedTurn} 
+                    initialTurn={this.state.selectedTurn}
+                    myTurnWarehouse={TurnWarehouse} 
                 />
                 <div className="row">
                     <div className="col-md-12">

@@ -3,8 +3,9 @@ import { SeasonTypes, TurnStatus } from './DomainTypes';
 import { observable } from 'mobx';
 import { Game } from './Game';
 import { warehouse as GameWarehouse } from './GameWarehouse';
+import { TurnWarehouseI } from './TurnWarehouseI';
 
-class TurnWarehouse {
+class TurnWarehouse implements TurnWarehouseI {
    
     @observable turns: Array<Turn>;
 
