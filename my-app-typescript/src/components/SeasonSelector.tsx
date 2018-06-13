@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TurnWarehouseI } from '../types/warehouses/TurnWarehouseI';
+import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
 import { SeasonTypes } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/Game';
 import { Turn } from '../types/warehouses/Turn';
@@ -8,7 +8,7 @@ interface PropValues {
     onTurnSelected: Function;
     myGame: Game;
     initialTurn: Turn | null;
-    myTurnWarehouse: TurnWarehouseI;
+    myTurnWarehouse: ITurnWarehouse;
 }
 
 interface StateValues {
@@ -39,7 +39,8 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
         let seasonOptions: any = [];
         for (let aType in SeasonTypes) {
             if (SeasonTypes.hasOwnProperty(aType)) {
-                if (this.state.selectedTurn.season === aType) {
+                console.log(this.state.selectedTurn.season + " : " + SeasonTypes[aType]);
+                if (this.state.selectedTurn.season === SeasonTypes[aType]) {
                     // tslint:disable-next-line
                     seasonOptions.push(<option selected key={aType}>{aType}</option>);
                 } else {
