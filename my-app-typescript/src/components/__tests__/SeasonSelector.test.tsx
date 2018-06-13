@@ -56,7 +56,7 @@ it('Get Complete Season', () => {
                                         myTurnWarehouse={turnWarehouse}
                                          />);
     // year tests
-    console.log(wrapper1.debug());
+    //console.log(wrapper1.debug());
     expect(wrapper1.find('[id="yearSelector"]')).toHaveLength(1);
     expect(wrapper1.find('select [selected]').at(0).html().includes('1')).toBeTruthy();
 
