@@ -1,8 +1,11 @@
 import * as React from 'react';
 import MoveEntryComponent from './MoveEntryComponent';
 import { Move } from '../types/warehouses/Move';
+import { Turn } from '../types/warehouses/Turn';
 
 interface PropValues {
+    countryName: string;
+    turn: Turn;
     moves: Move[];
 }
 class MovesEntryListComponent extends React.Component<PropValues, {}> {
@@ -14,13 +17,20 @@ class MovesEntryListComponent extends React.Component<PropValues, {}> {
         // tslint:disable-next-line
         let theReturn: any = [];
 
-        this.props.moves.forEach((value: Move) => {
-            theReturn.push( <MoveEntryComponent key={value.id} move={value} />);
+        // add components for the existing moves
+        this.props.moves.forEach((aMove: Move) => {
+            theReturn.push( <MoveEntryComponent key={aMove.id} move={aMove} />);
         });
+
+        // add one more component for a new move to be entered
+        const newEntryMove = new Move(999999, 'New Order', this.props.countryName, this.props.turn);
+        theReturn.push(<MoveEntryComponent key={999999} move={newEntryMove} />);
 
         return (
             <table className="table">
-                {theReturn}
+                <tbody>
+                    {theReturn}
+                </tbody>
             </table>
         );
     }

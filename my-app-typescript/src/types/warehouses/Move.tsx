@@ -27,6 +27,11 @@ export class Move {
         this.parseOrder();
     }
 
+    updateOrder = (newOrder: string) => {
+        this.order = newOrder;
+        this.parseOrder();
+    }
+
     parseOrder = () => {
         const parsedOrder = this.order.split(' ');
         if (parsedOrder.length > 0) {

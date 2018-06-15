@@ -39,7 +39,7 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
         let seasonOptions: any = [];
         for (let aType in SeasonTypes) {
             if (SeasonTypes.hasOwnProperty(aType)) {
-                //console.log(this.state.selectedTurn.season + " : " + SeasonTypes[aType]);
+                // console.log(this.state.selectedTurn.season + " : " + SeasonTypes[aType]);
                 if (this.state.selectedTurn.season === SeasonTypes[aType]) {
                     // tslint:disable-next-line
                     seasonOptions.push(<option selected key={aType}>{aType}</option>);

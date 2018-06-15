@@ -14,25 +14,26 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
         return (
             <tr>
                 <td>
-                    <textarea 
-                            className="form-control" 
-                            rows={1} 
-                            id="usr" 
-                            onChange={this.moveChanged}
-                    >{this.props.move.order}
-                    </textarea></td>
-                <td> 
+                    <textarea
+                        className="form-control"
+                        rows={1}
+                        id="usr"
+                        onBlur={this.moveChanged}
+                        defaultValue={this.props.move.order}
+                    /></td>
+                <td>
                     <button onClick={this.verifyButtonClicked}>Verify</button> </td>
             </tr>
         );
     }
 
-    moveChanged() {
-        // this.setState({ countryToDisplay: countryName });
+    moveChanged(event: React.FormEvent<HTMLTextAreaElement>) {
+        this.props.move.updateOrder(event.currentTarget.value);
+        // console.log('move changed button clicked: ' + event.currentTarget.value);
     }
 
     verifyButtonClicked() {
-        console.log('here I am');
+        console.log('verify button clicked');
     }
 
 }
