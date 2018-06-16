@@ -5,6 +5,9 @@ import './map.css';
 import Main from './components/Main';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import  * as Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 ReactDOM.render(
   <Main/>,

@@ -1,8 +1,8 @@
 import { observable } from 'mobx';
-import { Location } from './Location';
 import { PieceTypes, LocationTypes, MoveAction } from './DomainTypes';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
 import { Turn } from './Turn';
+import { MoveValidationResults } from './MoveValidationResults';
 
 export class Move {
 
@@ -131,7 +131,9 @@ export class Move {
     }
 
     isValidMove = () => {
-        let theReturn: boolean = false;
+        const invalidActionDescription = 'Invalid Action.  The move order must contain one of the \
+        following valid actions (regardless of case): HOLDS, MOVESTO, CONVOYS, or SUPPORTS.';
+        let theReturn: MoveValidationResults = new MoveValidationResults(false, invalidActionDescription);
 
         if (this.action) {
             if (this.action === MoveAction.Holds) {
@@ -145,6 +147,8 @@ export class Move {
                     } else {
                         if (this.action === MoveAction.Supports) {
                             theReturn = this.validateSupportsAction();
+                        } else {
+                            theReturn.description = 'invalid move type';
                         }
                     }
                 }
@@ -155,26 +159,26 @@ export class Move {
     }
 
     validateHoldsAction = () => {
-        let theReturn: boolean = false;
+        let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
         if (this.action === MoveAction.Holds) {
             if (this.pieceType && this.currentLocationName && this.endingLocationName === undefined &&
                 this.secondaryPieceType === undefined && this.secondaryCurrentLocationName === undefined &&
                 this.secondaryAction === undefined &&
                 this.secondaryEndingLocationName === undefined) {
-                theReturn = true;
+                theReturn.isValid = true;
             }
         }
         return theReturn;
     }
 
     validateMovesToAction = () => {
-        let theReturn: boolean = false;
+        let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
         if (this.action === MoveAction.MovesTo) {
             if (this.pieceType && this.currentLocationName && this.endingLocationName &&
                 this.secondaryPieceType === undefined && this.secondaryCurrentLocationName === undefined &&
                 this.secondaryAction === undefined &&
                 this.secondaryEndingLocationName === undefined) {
-                theReturn = true;
+                theReturn.isValid = true;
             }
         }
 
@@ -182,31 +186,31 @@ export class Move {
     }
 
     validateConvoyAction = () => {
-        let theReturn: boolean = false;
+        let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
         if (this.action === MoveAction.Convoys) {
-            if (this.pieceType === PieceTypes.Fleet && this.currentLocationName && 
+            if (this.pieceType === PieceTypes.Fleet && this.currentLocationName &&
                 this.endingLocationName === undefined &&
                 this.secondaryPieceType === PieceTypes.Army && this.secondaryCurrentLocationName &&
                 this.secondaryAction === MoveAction.MovesTo &&
                 this.secondaryEndingLocationName) {
-                theReturn = true;
+                theReturn.isValid = true;
             }
         }
         return theReturn;
     }
 
     validateSupportsAction = () => {
-            let theReturn: boolean = false;
-            if (this.action === MoveAction.Supports) {
-                if (this.pieceType === PieceTypes.Fleet && this.currentLocationName && 
-                    this.endingLocationName === undefined &&
-                    this.secondaryPieceType === PieceTypes.Army && this.secondaryCurrentLocationName &&
-                    this.secondaryAction === MoveAction.MovesTo &&
-                    this.secondaryEndingLocationName) {
-                    theReturn = true;
-                }
+        let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
+        if (this.action === MoveAction.Supports) {
+            if (this.pieceType === PieceTypes.Fleet && this.currentLocationName &&
+                this.endingLocationName === undefined &&
+                this.secondaryPieceType === PieceTypes.Army && this.secondaryCurrentLocationName &&
+                this.secondaryAction === MoveAction.MovesTo &&
+                this.secondaryEndingLocationName) {
+                theReturn.isValid = true;
             }
-
-            return theReturn;
         }
+
+        return theReturn;
     }
+}

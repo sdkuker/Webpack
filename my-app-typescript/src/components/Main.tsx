@@ -6,7 +6,6 @@ import MovesForCountryComponent from './MovesForCountryComponent';
 import { Game } from '../types/warehouses/Game';
 import { Turn } from '../types/warehouses/Turn';
 import { warehouse as GameWarehouse } from '../types/warehouses/GameWarehouse';
-import { SeasonTypes } from '../types/warehouses/DomainTypes';
 import { warehouse as TurnWarehouse } from '../types/warehouses/TurnWarehouse';
 
 interface StateValues {

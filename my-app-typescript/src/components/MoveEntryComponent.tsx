@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Move } from '../types/warehouses/Move';
 
 interface PropValues {
+    onMoveEntryValidation: Function;
     move: Move;
 }
 class MoveEntryComponent extends React.Component<PropValues, {}> {
@@ -20,20 +21,23 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
                         id="usr"
                         onBlur={this.moveChanged}
                         defaultValue={this.props.move.order}
-                    /></td>
+                    />
+                </td>
                 <td>
-                    <button onClick={this.verifyButtonClicked}>Verify</button> </td>
+                    <button onClick={this.verifyButtonClicked}>Verify</button> 
+                </td>
             </tr>
         );
     }
 
     moveChanged(event: React.FormEvent<HTMLTextAreaElement>) {
         this.props.move.updateOrder(event.currentTarget.value);
-        // console.log('move changed button clicked: ' + event.currentTarget.value);
     }
 
     verifyButtonClicked() {
         console.log('verify button clicked');
+        const myResults = this.props.move.isValidMove();
+        this.props.onMoveEntryValidation(myResults);
     }
 
 }
