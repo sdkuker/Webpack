@@ -131,8 +131,8 @@ export class Move {
     }
 
     isValidMove = () => {
-        const invalidActionDescription = 'Invalid Action.  The move order must contain one of the \
-        following valid actions (regardless of case): HOLDS, MOVESTO, CONVOYS, or SUPPORTS.';
+        const invalidActionDescription = 'Invalid Action.  The move order must contain one of the following valid actions (regardless of case): HOLDS, MOVESTO, CONVOYS, or SUPPORTS.';
+
         let theReturn: MoveValidationResults = new MoveValidationResults(false, invalidActionDescription);
 
         if (this.action) {
@@ -161,11 +161,33 @@ export class Move {
     validateHoldsAction = () => {
         let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
         if (this.action === MoveAction.Holds) {
-            if (this.pieceType && this.currentLocationName && this.endingLocationName === undefined &&
-                this.secondaryPieceType === undefined && this.secondaryCurrentLocationName === undefined &&
-                this.secondaryAction === undefined &&
-                this.secondaryEndingLocationName === undefined) {
-                theReturn.isValid = true;
+            if (this.pieceType) {
+                if (this.currentLocationName) {
+                    if (this.endingLocationName === undefined) {
+                        if (this.secondaryPieceType === undefined) {
+                            if (this.secondaryCurrentLocationName === undefined) {
+                                if (this.secondaryAction === undefined) {
+                                    if (this.secondaryEndingLocationName === undefined) {
+                                        theReturn.isValid = true;
+                                        theReturn.description = "Valid hold";
+                                    } else {
+                                        theReturn.description = 'Holds can not include an ending location for a second piece';
+                                    } 
+                                } else {
+                                    theReturn.description = 'Holds can not include an action for a second piece';
+                                }
+                            } else {
+                                theReturn.description = 'Holds can not include an current location for a second piece';
+                            }
+                        } else {
+                            theReturn.description = 'Holds can not include asecond piece';
+                        }
+                    } else {
+                        theReturn.description = 'Holds can not include a second location';
+                    }
+                } else {
+                    theReturn.description = 'Holds must include the location of the piece';
+                }
             }
         }
         return theReturn;
@@ -173,12 +195,35 @@ export class Move {
 
     validateMovesToAction = () => {
         let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
+
         if (this.action === MoveAction.MovesTo) {
-            if (this.pieceType && this.currentLocationName && this.endingLocationName &&
-                this.secondaryPieceType === undefined && this.secondaryCurrentLocationName === undefined &&
-                this.secondaryAction === undefined &&
-                this.secondaryEndingLocationName === undefined) {
-                theReturn.isValid = true;
+            if (this.pieceType) {
+                if (this.currentLocationName) {
+                    if (this.endingLocationName) {
+                        if (this.secondaryPieceType === undefined) {
+                            if (this.secondaryCurrentLocationName === undefined) {
+                                if (this.secondaryAction === undefined) {
+                                    if (this.secondaryEndingLocationName === undefined) {
+                                        theReturn.isValid = true;
+                                        theReturn.description = "Valid move";
+                                    } else {
+                                        theReturn.description = 'Moves can not include an ending location for a second piece';
+                                    } 
+                                } else {
+                                    theReturn.description = 'Moves can not include an action for a second piece';
+                                }
+                            } else {
+                                theReturn.description = 'Moves can not include an current location for a second piece';
+                            }
+                        } else {
+                            theReturn.description = 'Moves can not include asecond piece';
+                        }
+                    } else {
+                        theReturn.description = 'Moves must include a valid second location';
+                    }
+                } else {
+                    theReturn.description = 'Moves must include the location of the piece';
+                }
             }
         }
 
@@ -187,27 +232,76 @@ export class Move {
 
     validateConvoyAction = () => {
         let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
+
         if (this.action === MoveAction.Convoys) {
-            if (this.pieceType === PieceTypes.Fleet && this.currentLocationName &&
-                this.endingLocationName === undefined &&
-                this.secondaryPieceType === PieceTypes.Army && this.secondaryCurrentLocationName &&
-                this.secondaryAction === MoveAction.MovesTo &&
-                this.secondaryEndingLocationName) {
-                theReturn.isValid = true;
+            if (this.pieceType === PieceTypes.Fleet) {
+                if (this.currentLocationName) {
+                    if (this.endingLocationName === undefined) {
+                        if (this.secondaryPieceType  === PieceTypes.Army) {
+                            if (this.secondaryCurrentLocationName) {
+                                if (this.secondaryAction === MoveAction.MovesTo) {
+                                    if (this.secondaryEndingLocationName) {
+                                        theReturn.isValid = true;
+                                        theReturn.description = "Valid convoy";
+                                    } else {
+                                        theReturn.description = 'Convoys must include an ending location for the convoyed army';
+                                    } 
+                                } else {
+                                    theReturn.description = 'Convoys must include a moveTo action for the convoyed army';
+                                }
+                            } else {
+                                theReturn.description = 'Convoys must include an current location for the convoyed army';
+                            }
+                        } else {
+                            theReturn.description = 'Convoys must specify an army to be convoyed';
+                        }
+                    } else {
+                        theReturn.description = 'Convoys must not include a valid second location';
+                    }
+                } else {
+                    theReturn.description = 'Convoys must include the location of the piece';
+                }
+            } else {
+                theReturn.description = 'A fleet must be specified for a convoy'
             }
         }
+
         return theReturn;
     }
 
     validateSupportsAction = () => {
         let theReturn: MoveValidationResults = new MoveValidationResults(false, 'initial description');
+
         if (this.action === MoveAction.Supports) {
-            if (this.pieceType === PieceTypes.Fleet && this.currentLocationName &&
-                this.endingLocationName === undefined &&
-                this.secondaryPieceType === PieceTypes.Army && this.secondaryCurrentLocationName &&
-                this.secondaryAction === MoveAction.MovesTo &&
-                this.secondaryEndingLocationName) {
-                theReturn.isValid = true;
+            if (this.pieceType) {
+                if (this.currentLocationName) {
+                    if (this.endingLocationName === undefined) {
+                        if (this.secondaryPieceType) {
+                            if (this.secondaryCurrentLocationName) {
+                                if (this.secondaryAction === MoveAction.MovesTo || this.secondaryAction === MoveAction.Holds) {
+                                    if (this.secondaryEndingLocationName) {
+                                        theReturn.isValid = true;
+                                        theReturn.description = "Valid support";
+                                    } else {
+                                        theReturn.description = 'Support must include an ending location for the supported piece';
+                                    } 
+                                } else {
+                                    theReturn.description = 'Support can only be done for movesTo or holds actions';
+                                }
+                            } else {
+                                theReturn.description = 'Support must include an current location for the supported piece';
+                            }
+                        } else {
+                            theReturn.description = 'Support must specify the type of piece being supported';
+                        }
+                    } else {
+                        theReturn.description = 'Support must not include a valid second location';
+                    }
+                } else {
+                    theReturn.description = 'Support must include the location of the piece thats doing the supporting';
+                }
+            } else {
+                theReturn.description = 'A piece type must be specified for the piece doing the supporting'
             }
         }
 

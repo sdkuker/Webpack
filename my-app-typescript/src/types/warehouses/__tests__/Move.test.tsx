@@ -94,7 +94,9 @@ it('Bad action', () => {
     expect(myMove.pieceType).toEqual(PieceTypes.Army);
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toBeUndefined();
-    expect(myMove.isValidMove()).toBeFalsy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeFalsy();
+    expect(results.description).toEqual('Invalid Action.  The move order must contain one of the following valid actions (regardless of case): HOLDS, MOVESTO, CONVOYS, or SUPPORTS.')
 })
 
 it('Good army move', () => {
@@ -104,7 +106,9 @@ it('Good army move', () => {
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toEqual(MoveAction.MovesTo);
     expect(myMove.endingLocationName).toEqual('Edinburgh');
-    expect(myMove.isValidMove()).toBeTruthy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeTruthy();
+    expect(results.description).toEqual('Valid move');
 })
 
 it('Good fleet move', () => {
@@ -114,7 +118,9 @@ it('Good fleet move', () => {
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toEqual(MoveAction.MovesTo);
     expect(myMove.endingLocationName).toEqual('Edinburgh');
-    expect(myMove.isValidMove()).toBeTruthy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeTruthy();
+    expect(results.description).toEqual('Valid move');
 })
 
 it('Bad army move - ending location', () => {
@@ -124,7 +130,9 @@ it('Bad army move - ending location', () => {
     expect(myMove.currentLocationName).toEqual('London');
     expect(myMove.action).toEqual(MoveAction.MovesTo);
     expect(myMove.endingLocationName).toBeUndefined();
-    expect(myMove.isValidMove()).toBeFalsy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeFalsy();
+    expect(results.description).toEqual('Moves must include a valid second location');
 })
 
 it('Good convoy', () => {
@@ -138,7 +146,9 @@ it('Good convoy', () => {
     expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
     expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
     expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
-    expect(myMove.isValidMove()).toBeTruthy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeTruthy();
+    expect(results.description).toEqual('Valid convoy');
 })
 
 it('Bad convoy - convoy verb', () => {
@@ -152,7 +162,9 @@ it('Bad convoy - convoy verb', () => {
     expect(myMove.secondaryCurrentLocationName).toBeUndefined();
     expect(myMove.secondaryAction).toBeUndefined();
     expect(myMove.secondaryEndingLocationName).toBeUndefined();
-    expect(myMove.isValidMove()).toBeFalsy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeFalsy();
+    expect(results.description).toEqual('Invalid Action.  The move order must contain one of the following valid actions (regardless of case): HOLDS, MOVESTO, CONVOYS, or SUPPORTS.');
 })
 
 it('Bad convoy - bad secondary piece', () => {
@@ -166,7 +178,9 @@ it('Bad convoy - bad secondary piece', () => {
     expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
     expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
     expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
-    expect(myMove.isValidMove()).toBeFalsy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeFalsy();
+    expect(results.description).toEqual('Convoys must specify an army to be convoyed')
 })
 
 it('Bad convoy - bad secondary current location', () => {
@@ -180,7 +194,10 @@ it('Bad convoy - bad secondary current location', () => {
     expect(myMove.secondaryCurrentLocationName).toBeUndefined();
     expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
     expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
-    expect(myMove.isValidMove()).toBeFalsy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeFalsy();
+    expect(results.description).toEqual('Convoys must include an current location for the convoyed army')
+
 })
 
 it('Bad convoy - bad secondary action', () => {
@@ -194,7 +211,10 @@ it('Bad convoy - bad secondary action', () => {
     expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
     expect(myMove.secondaryAction).toBeUndefined();
     expect(myMove.secondaryEndingLocationName).toBeUndefined();
-    expect(myMove.isValidMove()).toBeFalsy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeFalsy();
+    expect(results.description).toEqual('Convoys must include a moveTo action for the convoyed army')
+
 })
 
 it('Bad convoy - bad secondary ending location', () => {
@@ -208,7 +228,10 @@ it('Bad convoy - bad secondary ending location', () => {
     expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
     expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
     expect(myMove.secondaryEndingLocationName).toBeUndefined();
-    expect(myMove.isValidMove()).toBeFalsy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeFalsy();
+    expect(results.description).toEqual('Convoys must include an ending location for the convoyed army')
+
 })
 
 it('Good support', () => {
@@ -222,7 +245,9 @@ it('Good support', () => {
     expect(myMove.secondaryCurrentLocationName).toEqual('Berlin');
     expect(myMove.secondaryAction).toEqual(MoveAction.MovesTo);
     expect(myMove.secondaryEndingLocationName).toEqual('Edinburgh');
-    expect(myMove.isValidMove()).toBeTruthy();
+    const results = myMove.isValidMove();
+    expect(results.isValid).toBeTruthy();
+    expect(results.description).toEqual('Valid support')
 })
 
 
