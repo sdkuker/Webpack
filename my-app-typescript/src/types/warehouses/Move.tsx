@@ -131,6 +131,7 @@ export class Move {
     }
 
     isValidMove = () => {
+
         const invalidActionDescription = 'Invalid Action.  The move order must contain one of the following valid actions (regardless of case): HOLDS, MOVESTO, CONVOYS, or SUPPORTS.';
 
         let theReturn: MoveValidationResults = new MoveValidationResults(false, invalidActionDescription);
@@ -169,7 +170,7 @@ export class Move {
                                 if (this.secondaryAction === undefined) {
                                     if (this.secondaryEndingLocationName === undefined) {
                                         theReturn.isValid = true;
-                                        theReturn.description = "Valid hold";
+                                        theReturn.description = 'Valid hold';
                                     } else {
                                         theReturn.description = 'Holds can not include an ending location for a second piece';
                                     } 
@@ -205,7 +206,7 @@ export class Move {
                                 if (this.secondaryAction === undefined) {
                                     if (this.secondaryEndingLocationName === undefined) {
                                         theReturn.isValid = true;
-                                        theReturn.description = "Valid move";
+                                        theReturn.description = 'Valid move';
                                     } else {
                                         theReturn.description = 'Moves can not include an ending location for a second piece';
                                     } 
@@ -224,6 +225,8 @@ export class Move {
                 } else {
                     theReturn.description = 'Moves must include the location of the piece';
                 }
+            } else {
+                theReturn.description = 'A valid piece type must be specified to move';
             }
         }
 
@@ -242,7 +245,7 @@ export class Move {
                                 if (this.secondaryAction === MoveAction.MovesTo) {
                                     if (this.secondaryEndingLocationName) {
                                         theReturn.isValid = true;
-                                        theReturn.description = "Valid convoy";
+                                        theReturn.description = 'Valid convoy';
                                     } else {
                                         theReturn.description = 'Convoys must include an ending location for the convoyed army';
                                     } 
@@ -262,7 +265,7 @@ export class Move {
                     theReturn.description = 'Convoys must include the location of the piece';
                 }
             } else {
-                theReturn.description = 'A fleet must be specified for a convoy'
+                theReturn.description = 'A fleet must be specified for a convoy';
             }
         }
 
@@ -281,7 +284,7 @@ export class Move {
                                 if (this.secondaryAction === MoveAction.MovesTo || this.secondaryAction === MoveAction.Holds) {
                                     if (this.secondaryEndingLocationName) {
                                         theReturn.isValid = true;
-                                        theReturn.description = "Valid support";
+                                        theReturn.description = 'Valid support';
                                     } else {
                                         theReturn.description = 'Support must include an ending location for the supported piece';
                                     } 
@@ -301,7 +304,7 @@ export class Move {
                     theReturn.description = 'Support must include the location of the piece thats doing the supporting';
                 }
             } else {
-                theReturn.description = 'A piece type must be specified for the piece doing the supporting'
+                theReturn.description = 'A piece type must be specified for the piece doing the supporting';
             }
         }
 

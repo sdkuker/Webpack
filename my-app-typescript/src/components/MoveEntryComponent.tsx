@@ -35,7 +35,6 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
     }
 
     verifyButtonClicked() {
-        console.log('verify button clicked');
         const myResults = this.props.move.isValidMove();
         this.props.onMoveEntryValidation(myResults);
     }
