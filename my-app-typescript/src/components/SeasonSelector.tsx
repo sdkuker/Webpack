@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
 import { SeasonTypes } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/Game';
@@ -14,6 +15,8 @@ interface PropValues {
 interface StateValues {
     selectedTurn: Turn;
 }
+
+@observer
 class SeasonSelector extends React.Component<PropValues, StateValues> {
 
     constructor(props: PropValues) {

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Modal from 'react-modal';
+import { observer } from 'mobx-react';
 
 import MoveEntryComponent from './MoveEntryComponent';
 import { Move } from '../types/warehouses/Move';
@@ -16,6 +17,7 @@ interface StateValues {
     countryToDisplay: string;
     validationResults: MoveValidationResults;
 }
+@observer
 class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);

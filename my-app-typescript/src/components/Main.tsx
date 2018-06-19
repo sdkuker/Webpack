@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import GameMap from './Map';
 import GameSelector from './GameSelector';
 import SeasonSelector from './SeasonSelector';
@@ -13,6 +14,7 @@ interface StateValues {
     selectedTurn: Turn | null;
 }
 
+@observer
 class Main extends React.Component<{}, StateValues> {
 
     constructor() {

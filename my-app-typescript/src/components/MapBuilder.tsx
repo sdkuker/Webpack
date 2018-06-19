@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Map as GameMap } from './Map';
+import { observer } from 'mobx-react';
 import { warehouse as CapitalWarehouse } from '../types/warehouses/CapitalWarehouse';
 import { warehouse as PieceWarehouse } from '../types/warehouses/PieceWarehouse';
 import { Capital } from '../types/warehouses/Capital';
 import { Piece } from '../types/warehouses/Piece';
 
+@observer
 class MapBuilder extends React.Component {
 
     render() {

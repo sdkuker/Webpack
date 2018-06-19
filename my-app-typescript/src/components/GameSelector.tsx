@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import '../map.css';
 import { Game } from '../types/warehouses/Game';
 import { warehouse as GameWarehouse } from '../types/warehouses/GameWarehouse';
@@ -12,6 +13,7 @@ interface StateValues {
     selectedGame: Game;
 }
 
+@observer
 class GameSelector extends React.Component<PropValues, StateValues> {
 
     constructor(props: PropValues) {

@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import { Move } from '../types/warehouses/Move';
 
 interface PropValues {
     onMoveEntryValidation: Function;
     move: Move;
 }
+@observer
 class MoveEntryComponent extends React.Component<PropValues, {}> {
     constructor(props: PropValues) {
         super(props);

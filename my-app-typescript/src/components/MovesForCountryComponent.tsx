@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import MoveCountrySelector from './MoveCountrySelector';
 import MovesListComponent from './MovesListComponent';
 import MovesEntryListComponent from './MovesEntryListComponent';
 import { warehouse as MoveWarehouse } from '../types/warehouses/MoveWarehouse';
 import { Turn } from '../types/warehouses/Turn';
-import { SeasonTypes, TurnStatus } from '../types/warehouses/DomainTypes';
+import { TurnStatus } from '../types/warehouses/DomainTypes';
 
 interface PropValues {
     myTurn: Turn | null;
@@ -13,6 +14,7 @@ interface StateValues {
     countryToDisplay: string;
 }
 
+@observer
 class MovesForCountryComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
