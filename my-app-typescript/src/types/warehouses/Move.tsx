@@ -131,7 +131,7 @@ export class Move {
     }
 
     isValidMove = () => {
-
+        // tslint:disable-next-line
         const invalidActionDescription = 'Invalid Action.  The move order must contain one of the following valid actions (regardless of case): HOLDS, MOVESTO, CONVOYS, or SUPPORTS.';
 
         let theReturn: MoveValidationResults = new MoveValidationResults(false, invalidActionDescription);
@@ -172,6 +172,7 @@ export class Move {
                                         theReturn.isValid = true;
                                         theReturn.description = 'Valid hold';
                                     } else {
+                                        // tslint:disable-next-line
                                         theReturn.description = 'Holds can not include an ending location for a second piece';
                                     } 
                                 } else {
@@ -208,6 +209,7 @@ export class Move {
                                         theReturn.isValid = true;
                                         theReturn.description = 'Valid move';
                                     } else {
+                                        // tslint:disable-next-line
                                         theReturn.description = 'Moves can not include an ending location for a second piece';
                                     } 
                                 } else {
@@ -247,12 +249,15 @@ export class Move {
                                         theReturn.isValid = true;
                                         theReturn.description = 'Valid convoy';
                                     } else {
+                                        // tslint:disable-next-line
                                         theReturn.description = 'Convoys must include an ending location for the convoyed army';
                                     } 
                                 } else {
+                                    // tslint:disable-next-line
                                     theReturn.description = 'Convoys must include a moveTo action for the convoyed army';
                                 }
                             } else {
+                                // tslint:disable-next-line
                                 theReturn.description = 'Convoys must include an current location for the convoyed army';
                             }
                         } else {
@@ -281,17 +286,20 @@ export class Move {
                     if (this.endingLocationName === undefined) {
                         if (this.secondaryPieceType) {
                             if (this.secondaryCurrentLocationName) {
+                                // tslint:disable-next-line
                                 if (this.secondaryAction === MoveAction.MovesTo || this.secondaryAction === MoveAction.Holds) {
                                     if (this.secondaryEndingLocationName) {
                                         theReturn.isValid = true;
                                         theReturn.description = 'Valid support';
                                     } else {
+                                        // tslint:disable-next-line
                                         theReturn.description = 'Support must include an ending location for the supported piece';
                                     } 
                                 } else {
                                     theReturn.description = 'Support can only be done for movesTo or holds actions';
                                 }
                             } else {
+                                // tslint:disable-next-line
                                 theReturn.description = 'Support must include an current location for the supported piece';
                             }
                         } else {

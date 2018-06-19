@@ -1,6 +1,6 @@
-
+import { observable } from 'mobx';
 export class Game {
-    name: string;
+    @observable name: string;
     constructor(aName: string) {
         this.name = aName;
     }

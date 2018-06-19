@@ -1,8 +1,8 @@
 
-import { SeasonTypes, TurnStatus } from './DomainTypes';
+import { observable } from 'mobx';
 
 export class Country {
-    name: string
+    @observable name: string
     constructor(aName: string) {
         this.name = aName;
     }

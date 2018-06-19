@@ -1,6 +1,5 @@
 import { observable } from 'mobx';
 import { Location } from './Location';
-import { PieceTypes } from './DomainTypes';
 
 export class Piece {
 
