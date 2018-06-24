@@ -8,15 +8,15 @@ export class Move {
 
     @observable order: string;
     id: number;
-    pieceType: PieceTypes;
-    currentLocationName: string;
-    action: MoveAction;
-    endingLocationName: string;
-    secondaryPieceType: PieceTypes;
-    secondaryCurrentLocationName: string;
-    secondaryAction: MoveAction;
-    secondaryEndingLocationName: string;
-    owningCountryName: string;
+    pieceType?: PieceTypes;
+    currentLocationName?: string;
+    action?: MoveAction;
+    endingLocationName?: string;
+    secondaryPieceType?: PieceTypes;
+    secondaryCurrentLocationName?: string;
+    secondaryAction?: MoveAction;
+    secondaryEndingLocationName?: string;
+    owningCountryName?: string;
     turn: Turn;
 
     constructor(anId: number, anOrder: string, anOwningCountrName: string, aTurn: Turn) {
@@ -28,10 +28,21 @@ export class Move {
     }
 
     updateOrder = (newOrder: string) => {
+        this.resetOrderFields();
         this.order = newOrder;
         this.parseOrder();
     }
 
+    resetOrderFields = () =>  {
+        this.pieceType = undefined;
+        this.currentLocationName = undefined;
+        this.action = undefined;
+        this.endingLocationName = undefined;
+        this.secondaryPieceType = undefined;
+        this.secondaryCurrentLocationName = undefined;
+        this.secondaryAction = undefined;
+        this.secondaryEndingLocationName = undefined;
+    }
     parseOrder = () => {
         const parsedOrder = this.order.split(' ');
         if (parsedOrder.length > 0) {

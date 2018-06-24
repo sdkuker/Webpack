@@ -35,7 +35,7 @@ it('setting test moves in the beforeAll', () => {
 
 it('Successfully get England 1-spring moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('England', turn1Spring);
+    const theReturn = MoveWarehouse.getMoves('England', turn1Spring, false);
     expect(theReturn.length).toEqual(1);
     expect(theReturn[0].id).toEqual(1);
     expect(theReturn[0].order).toEqual('Fleet London movesTo North_Sea');
@@ -46,25 +46,25 @@ it('Successfully get England 1-spring moves', () => {
 
 it('Successfully get England 1-fall moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('England', turn1Fall);
+    const theReturn = MoveWarehouse.getMoves('England', turn1Fall, false);
     expect(theReturn.length).toEqual(2);
 })
 
 it('Successfully get France 1-spring moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('France', turn1Spring);
+    const theReturn = MoveWarehouse.getMoves('France', turn1Spring, false);
     expect(theReturn.length).toEqual(3);
 })
 
 it('Successfully get France 1-fall moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('France', turn1Fall);
+    const theReturn = MoveWarehouse.getMoves('France', turn1Fall, false);
     expect(theReturn.length).toEqual(2);
 })
 
 it('Return null if there is no turn', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('France', null);
+    const theReturn = MoveWarehouse.getMoves('France', null, false);
     expect(theReturn.length).toEqual(0);
 })
 

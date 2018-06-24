@@ -3,6 +3,7 @@ import * as Modal from 'react-modal';
 import { observer } from 'mobx-react';
 
 import MoveEntryComponent from './MoveEntryComponent';
+import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 import { Move } from '../types/warehouses/Move';
 import { Turn } from '../types/warehouses/Turn';
 import { MoveValidationResults } from '../types/warehouses/MoveValidationResults';
@@ -10,7 +11,7 @@ import { MoveValidationResults } from '../types/warehouses/MoveValidationResults
 interface PropValues {
     countryName: string;
     turn: Turn;
-    moves: Move[];
+    moveWarehouse: IMoveWarehouse;
 }
 interface StateValues {
     isModalOpen: boolean;
@@ -37,7 +38,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
         let theReturn: any = [];
 
         // add components for the existing moves
-        this.props.moves.forEach((aMove: Move) => {
+        this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true).forEach((aMove: Move) => {
             theReturn.push((
                 <MoveEntryComponent
                     key={aMove.id}
@@ -47,17 +48,6 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
             )
             );
         });
-
-        // add one more component for a new move to be entered
-        const newEntryMove = new Move(999999, 'New Order', this.props.countryName, this.props.turn);
-        theReturn.push((
-            <MoveEntryComponent
-                key={999999}
-                onMoveEntryValidation={this.moveValidated}
-                move={newEntryMove}
-            />
-        )
-        );
 
         const customStyles = {
             content: {

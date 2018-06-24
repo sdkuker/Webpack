@@ -1,17 +1,27 @@
 import { Move } from './Move';
 import { Turn } from './Turn';
 import { warehouse as TurnWarehouse } from './TurnWarehouse';
-import { Game } from './Game';
 import { warehouse as GameWarehouse } from './GameWarehouse';
 import { SeasonTypes, TurnStatus } from './DomainTypes';
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
+import { IMoveWarehouse } from './IMoveWarehouse';
 
-class MoveWarehouse {
+class MoveWarehouse implements IMoveWarehouse {
 
     @observable moves: Array<Move>;
+    nonPersistantMoveKey: number = 999999;
 
     constructor() {
         this.initializeMoves();
+    }
+
+    @action
+    persistMove = (aMove: Move) => {
+
+    }
+
+    createNonPersistentMove = (aCountryName: string, aTurn: Turn) => {
+        return new Move(this.nonPersistantMoveKey, 'New Move Order', aCountryName, aTurn);
     }
 
     initializeMoves = () => {
@@ -40,7 +50,7 @@ class MoveWarehouse {
         this.moves = myMoves;
     }
 
-    getMoves = (countryName: string, aTurn: Turn | null) => {
+    getMoves = (countryName: string, aTurn: Turn | null, includeNonPersistentMove: boolean | null) => {
 
         const theReturn = Array<Move>();
 
@@ -51,6 +61,9 @@ class MoveWarehouse {
                     this.moves[index].turn === aTurn) {
                     theReturn.push(this.moves[index]);
                 }
+            }
+            if (includeNonPersistentMove) {
+                theReturn.push(this.createNonPersistentMove(countryName, aTurn));
             }
         }
 

@@ -30,8 +30,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                     <MovesEntryListComponent
                         countryName={this.state.countryToDisplay}
                         turn={this.props.myTurn}
-                        moves={MoveWarehouse.getMoves(
-                            this.state.countryToDisplay, this.props.myTurn)}
+                        moveWarehouse={MoveWarehouse}
                     />
                 );
         } else {
@@ -39,7 +38,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                 (
                     <MovesListComponent
                         moves={MoveWarehouse.getMoves(
-                            this.state.countryToDisplay, this.props.myTurn)}
+                            this.state.countryToDisplay, this.props.myTurn, false)}
                     />
                 );
         }
