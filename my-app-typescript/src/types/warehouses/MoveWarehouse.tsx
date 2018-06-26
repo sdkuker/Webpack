@@ -9,7 +9,9 @@ import { IMoveWarehouse } from './IMoveWarehouse';
 class MoveWarehouse implements IMoveWarehouse {
 
     @observable moves: Array<Move>;
-    nonPersistantMoveKey: number = 999999;
+    // nonPersistantMoveKey: number = 999999;
+    nonPersistentMoveOrder: string = 'New Move Order';
+    nextAvailableMoveKey: number = 1;
 
     constructor() {
         this.initializeMoves();
@@ -18,10 +20,15 @@ class MoveWarehouse implements IMoveWarehouse {
     @action
     persistMove = (aMove: Move) => {
 
+        if (aMove.order !== this.nonPersistentMoveOrder) {
+            if (aMove.id === (this.nextAvailableMoveKey - 1) ) {
+                this.moves.push(aMove);
+            }
+        }
     }
 
     createNonPersistentMove = (aCountryName: string, aTurn: Turn) => {
-        return new Move(this.nonPersistantMoveKey, 'New Move Order', aCountryName, aTurn);
+        return new Move(this.nextAvailableMoveKey++, this.nonPersistentMoveOrder, aCountryName, aTurn);
     }
 
     initializeMoves = () => {
@@ -33,17 +40,17 @@ class MoveWarehouse implements IMoveWarehouse {
         const myMoves = Array<Move>();
 
         if (turn1Spring && turn1Fall) {
-            myMoves.push(new Move(1, 'Fleet London movesTo North_Sea', 'England', turn1Spring));
-            myMoves.push(new Move(2, 'Army Liverpool movesTo Yorkshire', 'England', turn1Spring));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Fleet London movesTo North_Sea', 'England', turn1Spring));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Liverpool movesTo Yorkshire', 'England', turn1Spring));
 
-            myMoves.push(new Move(3, 'Army Paris movesTo Picardy', 'France', turn1Spring));
-            myMoves.push(new Move(4, 'Army Marseilles movesTo Gascony', 'France', turn1Spring));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Paris movesTo Picardy', 'France', turn1Spring));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Marseilles movesTo Gascony', 'France', turn1Spring));
 
-            myMoves.push(new Move(5, 'Fleet North_Sea movesTo Norway', 'England', turn1Fall));
-            myMoves.push(new Move(6, 'Army Yorkshire movesTo Wales', 'England', turn1Fall));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Fleet North_Sea movesTo Norway', 'England', turn1Fall));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Yorkshire movesTo Wales', 'England', turn1Fall));
 
-            myMoves.push(new Move(7, 'Army Picardy movesTo Belguim', 'France', turn1Fall));
-            myMoves.push(new Move(8, 'Army Gascony movesTo Spain_(sc)', 'France', turn1Fall));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Picardy movesTo Belguim', 'France', turn1Fall));
+            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Gascony movesTo Spain_(sc)', 'France', turn1Fall));
 
         }
 

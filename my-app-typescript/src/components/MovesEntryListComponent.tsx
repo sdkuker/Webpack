@@ -17,6 +17,7 @@ interface StateValues {
     isModalOpen: boolean;
     countryToDisplay: string;
     validationResults: MoveValidationResults;
+    moves: Move[];
 }
 @observer
 class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
@@ -25,12 +26,14 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
         this.state = {
             isModalOpen: false,
             countryToDisplay: '',
-            validationResults: new MoveValidationResults(false, 'placeholder')
+            validationResults: new MoveValidationResults(false, 'placeholder'),
+            moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true)
         };
         this.moveSelected = this.moveSelected.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.moveValidated = this.moveValidated.bind(this);
+        this.movePersisted = this.movePersisted.bind(this);
     }
 
     render() {
@@ -38,12 +41,14 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
         let theReturn: any = [];
 
         // add components for the existing moves
-        this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true).forEach((aMove: Move) => {
+        this.state.moves.forEach((aMove: Move) => {
             theReturn.push((
                 <MoveEntryComponent
                     key={aMove.id}
                     onMoveEntryValidation={this.moveValidated}
                     move={aMove}
+                    moveWarehouse={this.props.moveWarehouse}
+                    onMovePersisted={this.movePersisted}
                 />
             )
             );
@@ -104,6 +109,9 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
 
     moveValidated(myValidationResults: MoveValidationResults) {
         this.setState({ validationResults: myValidationResults, isModalOpen: true });
+    }
+    movePersisted() {
+        this.setState({moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true)});
     }
 
 }

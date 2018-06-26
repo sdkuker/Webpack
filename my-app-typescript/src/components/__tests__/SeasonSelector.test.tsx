@@ -9,7 +9,6 @@ import SeasonSelector from '../SeasonSelector';
 
 enzyme.configure({adapter: new Adapter()});
 const myGame = new Game('test');
-//jest.mock('ITurnWarehouse');
 
 it('Get Open Season', () => {
     const completeTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);

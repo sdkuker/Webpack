@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { Move } from '../types/warehouses/Move';
+import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 
 interface PropValues {
     onMoveEntryValidation: Function;
     move: Move;
+    moveWarehouse: IMoveWarehouse;
+    onMovePersisted: Function;
 }
 @observer
 class MoveEntryComponent extends React.Component<PropValues, {}> {
@@ -20,10 +23,10 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
                     <textarea
                         className="form-control"
                         rows={1}
-                        id="usr"
-                        onBlur={this.moveChanged}
-                        defaultValue={this.props.move.order}
-                    />
+                        // id="usr"
+                        onBlur={this.moveChanged}>
+                        {this.props.move.order}
+                    </textarea>
                 </td>
                 <td>
                     <button onClick={this.verifyButtonClicked}>Verify</button> 
@@ -34,6 +37,8 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
 
     moveChanged(event: React.FormEvent<HTMLTextAreaElement>) {
         this.props.move.updateOrder(event.currentTarget.value);
+        this.props.moveWarehouse.persistMove(this.props.move);
+        this.props.onMovePersisted();
     }
 
     verifyButtonClicked() {
