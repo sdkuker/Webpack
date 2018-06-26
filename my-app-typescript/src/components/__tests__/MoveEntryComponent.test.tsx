@@ -15,8 +15,9 @@ const myTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
 const myMove = new Move(1, "my order", "England", myTurn);
 const onMoveEntryValidationdMock = jest.fn(); 
 const persistMoveMock = jest.fn(); 
+const deleteMoveMock = jest.fn();
 const getMovesMock = jest.fn();
-const moveWarehouseMock: IMoveWarehouse = {persistMove : persistMoveMock, getMoves : getMovesMock};
+const moveWarehouseMock: IMoveWarehouse = {persistMove : persistMoveMock, deleteMove : deleteMoveMock, getMoves : getMovesMock};
 const onMovePersistedMock = jest.fn();
 
 it('not sure what Im testing yet', () => {

@@ -18,8 +18,16 @@ class MoveWarehouse implements IMoveWarehouse {
     }
 
     @action
+    deleteMove = (aMove: Move) => {
+        let i: number;
+        for (i = 0; i < this.moves.length; i++) {
+            if (this.moves[i].id === aMove.id) {
+                this.moves.splice(i, 1);
+            }
+        }
+    }
+    @action
     persistMove = (aMove: Move) => {
-
         if (aMove.order !== this.nonPersistentMoveOrder) {
             if (aMove.id === (this.nextAvailableMoveKey - 1) ) {
                 this.moves.push(aMove);

@@ -15,11 +15,12 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
         super(props);
         this.moveChanged = this.moveChanged.bind(this);
         this.verifyButtonClicked = this.verifyButtonClicked.bind(this);
+        this.deleteButtonClicked = this.deleteButtonClicked.bind(this);
     }
     render() {
         return (
-            <tr>
-                <td>
+            <tr className="d-flex">
+                <td className="col-sm-10">
                     <textarea
                         className="form-control"
                         rows={1}
@@ -28,9 +29,13 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
                         {this.props.move.order}
                     </textarea>
                 </td>
-                <td>
+                <td className="col-sm-1">
                     <button onClick={this.verifyButtonClicked}>Verify</button> 
                 </td>
+                <td className="col-sm-1">
+                    <button onClick={this.deleteButtonClicked}>Delete</button> 
+                </td>
+
             </tr>
         );
     }
@@ -46,6 +51,10 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
         this.props.onMoveEntryValidation(myResults);
     }
 
+    deleteButtonClicked() {
+        this.props.moveWarehouse.deleteMove(this.props.move);
+        this.props.onMovePersisted();
+    }
 }
 
 export default MoveEntryComponent;
