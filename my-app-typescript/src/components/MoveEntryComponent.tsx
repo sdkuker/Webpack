@@ -25,7 +25,8 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
                         className="form-control"
                         rows={1}
                         // id="usr"
-                        onBlur={this.moveChanged}>
+                        onBlur={this.moveChanged}
+                    >
                         {this.props.move.order}
                     </textarea>
                 </td>

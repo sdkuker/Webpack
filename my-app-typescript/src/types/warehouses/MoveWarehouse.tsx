@@ -9,7 +9,6 @@ import { IMoveWarehouse } from './IMoveWarehouse';
 class MoveWarehouse implements IMoveWarehouse {
 
     @observable moves: Array<Move>;
-    // nonPersistantMoveKey: number = 999999;
     nonPersistentMoveOrder: string = 'New Move Order';
     nextAvailableMoveKey: number = 1;
 
