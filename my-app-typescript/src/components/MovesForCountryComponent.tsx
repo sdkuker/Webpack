@@ -28,6 +28,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
             theMovesComponent =
                 (
                     <MovesEntryListComponent
+                        key={this.state.countryToDisplay}
                         countryName={this.state.countryToDisplay}
                         turn={this.props.myTurn}
                         moveWarehouse={MoveWarehouse}
@@ -37,6 +38,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
             theMovesComponent =
                 (
                     <MovesListComponent
+                        key={this.state.countryToDisplay}
                         moves={MoveWarehouse.getMoves(
                             this.state.countryToDisplay, this.props.myTurn, false)}
                     />
