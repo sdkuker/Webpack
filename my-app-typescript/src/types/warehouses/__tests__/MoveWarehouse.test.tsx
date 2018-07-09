@@ -2,11 +2,13 @@ import { Move } from '.././Move';
 import { Turn } from '.././Turn';
 import { Game } from '.././Game';
 import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
-import { warehouse as MoveWarehouse } from '.././MoveWarehouse';
+import { MoveWarehouse } from '.././MoveWarehouse';
+import { StaticMoveDataProvider } from '.././StaticMoveDataProvider';
 
 let myGame = new Game('test');
 let turn1Spring = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
 let turn1Fall = new Turn(myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+let myMoveWarehouse : MoveWarehouse;
 
 beforeAll(() => {
 
@@ -24,18 +26,18 @@ beforeAll(() => {
     myMoves.push(new Move(7, 'Army Picardy movesTo Belguim', 'France', turn1Fall));
     myMoves.push(new Move(8, 'Army Gascony movesTo Spain_(sc)', 'France', turn1Fall));
 
-
-    MoveWarehouse.setMoves(myMoves);
+    const myDataProvider = new StaticMoveDataProvider(myMoves, null, null);
+    myMoveWarehouse = new MoveWarehouse(myDataProvider);
 
 });
 
 it('setting test moves in the beforeAll', () => {
-    expect(MoveWarehouse.getAllMoves().length).toEqual(8);
+    expect(myMoveWarehouse.getAllMoves().length).toEqual(8);
 })
 
 it('Successfully get England 1-spring moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('England', turn1Spring, false);
+    const theReturn = myMoveWarehouse.getMoves('England', turn1Spring, false);
     expect(theReturn.length).toEqual(1);
     expect(theReturn[0].id).toEqual(1);
     expect(theReturn[0].order).toEqual('Fleet London movesTo North_Sea');
@@ -46,25 +48,25 @@ it('Successfully get England 1-spring moves', () => {
 
 it('Successfully get England 1-fall moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('England', turn1Fall, false);
+    const theReturn = myMoveWarehouse.getMoves('England', turn1Fall, false);
     expect(theReturn.length).toEqual(2);
 })
 
 it('Successfully get France 1-spring moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('France', turn1Spring, false);
+    const theReturn = myMoveWarehouse.getMoves('France', turn1Spring, false);
     expect(theReturn.length).toEqual(3);
 })
 
 it('Successfully get France 1-fall moves', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('France', turn1Fall, false);
+    const theReturn = myMoveWarehouse.getMoves('France', turn1Fall, false);
     expect(theReturn.length).toEqual(2);
 })
 
 it('Return null if there is no turn', () => {
     const aGame = new Game('test');
-    const theReturn = MoveWarehouse.getMoves('France', null, false);
+    const theReturn = myMoveWarehouse.getMoves('France', null, false);
     expect(theReturn.length).toEqual(0);
 })
 

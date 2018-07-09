@@ -1,8 +1,17 @@
 import * as React from 'react';
 import '../map.css';
 import MapBuilder from './MapBuilder';
+import { IPieceWarehouse } from '.././types/warehouses/IPieceWarehouse'
 
-export class Map extends React.Component {
+interface PropValues {
+  pieceWarehouse: IPieceWarehouse;
+}
+
+export class Map extends React.Component<PropValues, {}> {
+
+  constructor(props: PropValues) {
+    super(props);
+}
 
   render() {
     return ( // 610 560  915 840
@@ -831,7 +840,7 @@ export class Map extends React.Component {
           />
           <text x="350" y="304">War</text>
         </g> 
-        <MapBuilder/>
+        <MapBuilder pieceWarehouse={this.props.pieceWarehouse}/>
       </svg>
     );
   }

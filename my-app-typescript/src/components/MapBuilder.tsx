@@ -1,12 +1,19 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { warehouse as CapitalWarehouse } from '../types/warehouses/CapitalWarehouse';
-import { warehouse as PieceWarehouse } from '../types/warehouses/PieceWarehouse';
+import { IPieceWarehouse } from '../types/warehouses/IPieceWarehouse';
 import { Capital } from '../types/warehouses/Capital';
 import { Piece } from '../types/warehouses/Piece';
 
+interface PropValues {
+    pieceWarehouse: IPieceWarehouse;
+}
 @observer
-class MapBuilder extends React.Component {
+class MapBuilder extends React.Component<PropValues, {}> {
+
+    constructor(props: PropValues) {
+        super(props);
+    }
 
     render() {
         // tslint:disable-next-line
@@ -22,7 +29,7 @@ class MapBuilder extends React.Component {
                     className={value.owningCountry}
                 />);
         });
-        let pieces: Map<String, Piece> = PieceWarehouse.pieces;
+        let pieces: Map<String, Piece> = this.props.pieceWarehouse.getPieces();
         pieces.forEach((value: Piece, myKey: string) => {
             if (value.type === 'Fleet') {
                 theReturn.push(

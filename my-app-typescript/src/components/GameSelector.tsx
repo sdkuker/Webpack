@@ -2,11 +2,12 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import '../map.css';
 import { Game } from '../types/warehouses/Game';
-import { warehouse as GameWarehouse } from '../types/warehouses/GameWarehouse';
+import { GameWarehouse } from '../types/warehouses/GameWarehouse';
 
 interface PropValues {
     onGameSelected: Function;
     initialGame: Game;
+    gameWarehouse: GameWarehouse;
 }
 
 interface StateValues {
@@ -24,7 +25,7 @@ class GameSelector extends React.Component<PropValues, StateValues> {
     render() {
         // tslint:disable-next-line
         let options: any = [];
-        GameWarehouse.games.forEach((aGame: Game) => {
+        this.props.gameWarehouse.games.forEach((aGame: Game) => {
             if (this.state.selectedGame === aGame) {
                 // tslint:disable-next-line
                 options.push(<option selected>{aGame.name}</option>);
@@ -49,7 +50,7 @@ class GameSelector extends React.Component<PropValues, StateValues> {
 
     gameSelected(event: React.FormEvent<HTMLSelectElement>) {
         let myValue: string = event.currentTarget.value;
-        let selectedGame = GameWarehouse.getGameByName(myValue);
+        let selectedGame = this.props.gameWarehouse.getGameByName(myValue);
         if ( selectedGame ) {
             this.setState({ selectedGame: selectedGame });
             this.props.onGameSelected(selectedGame);

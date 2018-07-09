@@ -1,11 +1,13 @@
 import { Turn } from '.././Turn';
 import { Game } from '.././Game';
 import { SeasonTypes, TurnStatus } from '.././DomainTypes';
-import { warehouse as TurnWarehouse } from '.././TurnWarehouse';
+import { TurnWarehouse } from '.././TurnWarehouse';
+import { StaticTurnDataProvider } from '.././StaticTurnDataProvider';
 
 let game1 = new Game('test');
 let game2 = new Game('test2');
 let game3 = new Game('test3');
+let myTurnWarehouse : TurnWarehouse;
 
 beforeAll(() => {
     const myTurns = Array<Turn>();
@@ -20,28 +22,25 @@ beforeAll(() => {
 
     myTurns.push(new Turn(game3, 1, SeasonTypes.Spring, TurnStatus.Complete));
 
-    TurnWarehouse.setTurns(myTurns);
+    const myDataProvider = new StaticTurnDataProvider(myTurns, null);
+    myTurnWarehouse = new TurnWarehouse(myDataProvider);
 
 });
 
-it('setting test turns in the beforeAll', () => {
-    expect(TurnWarehouse.getAllTurns().length).toEqual(7);
-})
-
 it('getting turns for game1', () => {
-    expect(TurnWarehouse.getTurns(game1).length).toEqual(4);
+    expect(myTurnWarehouse.getTurns(game1).length).toEqual(4);
 })
 
 it('getting turns for game2', () => {
-    expect(TurnWarehouse.getTurns(game2).length).toEqual(2);
+    expect(myTurnWarehouse.getTurns(game2).length).toEqual(2);
 })
 
 it('getting turns for game3', () => {
-    expect(TurnWarehouse.getTurns(game3).length).toEqual(1);
+    expect(myTurnWarehouse.getTurns(game3).length).toEqual(1);
 })
 
 it('getting open turn for game 1', () => {
-    const openTurn = TurnWarehouse.getOpenTurn(game1);
+    const openTurn = myTurnWarehouse.getOpenTurn(game1);
     expect(openTurn).not.toBeNull();
     if (openTurn) {
         expect(openTurn.game).toEqual(game1);
@@ -52,12 +51,12 @@ it('getting open turn for game 1', () => {
 })
 
 it('getting no open turn for game 3', () => {
-    const openTurn = TurnWarehouse.getOpenTurn(game3);
+    const openTurn = myTurnWarehouse.getOpenTurn(game3);
     expect(openTurn).toBeNull();
 })
 
 it('get turn for game1 year 1 spring', () => {
-    const myTurn = TurnWarehouse.getTurn(game1, 1, SeasonTypes.Spring)
+    const myTurn = myTurnWarehouse.getTurn(game1, 1, SeasonTypes.Spring)
     expect(myTurn).not.toBeNull();
     if (myTurn) {
         expect(myTurn.year).toEqual(1);
@@ -69,6 +68,6 @@ it('get turn for game1 year 1 spring', () => {
 })
 
 it('get turn that does not exist', () => {
-    const myTurn = TurnWarehouse.getTurn(game1, 3, SeasonTypes.Spring)
+    const myTurn = myTurnWarehouse.getTurn(game1, 3, SeasonTypes.Spring)
     expect(myTurn).toBeNull();
 })

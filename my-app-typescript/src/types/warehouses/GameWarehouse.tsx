@@ -1,22 +1,13 @@
 import { Game } from './Game';
+import {IGameDataProvider } from './IGameDataProvider';
 import { observable } from 'mobx';
 
-class GameWarehouse {
+export class GameWarehouse {
    
     @observable games: Array<Game>;
 
-    constructor() {
-        this.initializeGames();
-    }
-
-    initializeGames = () => {
-
-        const myTurns = Array<Game>();
-
-        myTurns.push(new Game('Diplomacy - Greatest Ever'));
-        myTurns.push(new Game('Diplomacy - Almost the Greatest Ever'));
-
-        this.games = myTurns;
+    constructor(dataProvider: IGameDataProvider) {
+        this.games = dataProvider.getGames();
     }
 
     getGameByName = (aGameName: string) => {
@@ -27,10 +18,7 @@ class GameWarehouse {
                 theReturn = aGame;
             }
         });
-
         return theReturn;
-
     }
+    
 }
-
-export const warehouse = new GameWarehouse();

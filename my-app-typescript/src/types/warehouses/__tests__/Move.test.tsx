@@ -2,7 +2,6 @@ import { Move } from '.././Move';
 import { Turn } from '.././Turn';
 import { Game } from '.././Game';
 import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
-import { Warehouse as LocationWarehouse } from '.././LocationWarehouse';
 
 let myGame = new Game('test');
 let myTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Open);

@@ -2,45 +2,21 @@ import { Turn } from './Turn';
 import { SeasonTypes, TurnStatus } from './DomainTypes';
 import { observable } from 'mobx';
 import { Game } from './Game';
-import { warehouse as GameWarehouse } from './GameWarehouse';
 import { ITurnWarehouse } from './ITurnWarehouse';
+import { ITurnDataProvider } from './ITurnDataProvider';
 
-class TurnWarehouse implements ITurnWarehouse {
+export class TurnWarehouse implements ITurnWarehouse {
    
     @observable turns: Array<Turn>;
+    dataProvider: ITurnDataProvider;
 
-    constructor() {
-        this.initializeTurns();
-    }
-
-    initializeTurns = () => {
-
-        const myTurns = Array<Turn>();
-
-        myTurns.push(new Turn(GameWarehouse.games[0], 1, SeasonTypes.Spring, TurnStatus.Complete));
-        myTurns.push(new Turn(GameWarehouse.games[0], 1, SeasonTypes.Fall, TurnStatus.Open));
-
-        this.turns = myTurns;
-    }
-
-    setTurns = (someTurns: Turn[]) => {
-        this.turns = someTurns;
-    }
-
-    getAllTurns = () => {
-        return this.turns;
+    constructor(aDataProvider: ITurnDataProvider) {
+        this.dataProvider = aDataProvider;
     }
 
     getTurns = (aGame: Game) => {
-        const theReturn = Array<Turn>();
 
-        let index: number;
-        for (index = 0; index < this.turns.length; index++) {
-            if (this.turns[index].game === aGame)  {
-                    theReturn.push(this.turns[index]);
-                }
-        }
-        return theReturn;
+        return this.dataProvider.getTurns(aGame);
     }
 
     getOpenTurn = (aGame: Game) => {
@@ -67,5 +43,3 @@ class TurnWarehouse implements ITurnWarehouse {
         return null;
     }
 }
-
-export const warehouse = new TurnWarehouse();

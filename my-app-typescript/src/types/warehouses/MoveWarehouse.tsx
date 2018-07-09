@@ -1,67 +1,29 @@
 import { Move } from './Move';
 import { Turn } from './Turn';
-import { warehouse as TurnWarehouse } from './TurnWarehouse';
-import { warehouse as GameWarehouse } from './GameWarehouse';
-import { SeasonTypes, TurnStatus } from './DomainTypes';
-import { observable, action } from 'mobx';
+import { IMoveDataProvider } from './IMoveDataProvider';
 import { IMoveWarehouse } from './IMoveWarehouse';
+import { action } from 'mobx';
 
-class MoveWarehouse implements IMoveWarehouse {
+export class MoveWarehouse implements IMoveWarehouse {
 
-    @observable moves: Array<Move>;
     nonPersistentMoveOrder: string = 'New Move Order';
-    nextAvailableMoveKey: number = 1;
+    dataProvider: IMoveDataProvider;
 
-    constructor() {
-        this.initializeMoves();
+    constructor(myDataProvider: IMoveDataProvider) {
+        this.dataProvider = myDataProvider;
     }
 
     @action
     deleteMove = (aMove: Move) => {
-        let i: number;
-        for (i = 0; i < this.moves.length; i++) {
-            if (this.moves[i].id === aMove.id) {
-                this.moves.splice(i, 1);
-            }
-        }
+        this.dataProvider.deleteMove(aMove);
     }
     @action
     persistMove = (aMove: Move) => {
-        if (aMove.order !== this.nonPersistentMoveOrder) {
-            if (aMove.id === (this.nextAvailableMoveKey - 1) ) {
-                this.moves.push(aMove);
-            }
-        }
+        this.dataProvider.persistMove(aMove, this.nonPersistentMoveOrder);
     }
 
     createNonPersistentMove = (aCountryName: string, aTurn: Turn) => {
-        return new Move(this.nextAvailableMoveKey++, this.nonPersistentMoveOrder, aCountryName, aTurn);
-    }
-
-    initializeMoves = () => {
-
-        let myGame = GameWarehouse.games[0];
-        let turn1Spring = TurnWarehouse.getTurn(myGame, 1, SeasonTypes.Spring);
-        let turn1Fall = TurnWarehouse.getTurn(myGame, 1, SeasonTypes.Fall);
-
-        const myMoves = Array<Move>();
-
-        if (turn1Spring && turn1Fall) {
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Fleet London movesTo North_Sea', 'England', turn1Spring));
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Liverpool movesTo Yorkshire', 'England', turn1Spring));
-
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Paris movesTo Picardy', 'France', turn1Spring));
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Marseilles movesTo Gascony', 'France', turn1Spring));
-
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Fleet North_Sea movesTo Norway', 'England', turn1Fall));
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Yorkshire movesTo Wales', 'England', turn1Fall));
-
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Picardy movesTo Belguim', 'France', turn1Fall));
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Gascony movesTo Spain_(sc)', 'France', turn1Fall));
-
-        }
-
-        this.moves = myMoves;
+        return this.dataProvider.createNonPersistentMove(aCountryName, aTurn, this.nonPersistentMoveOrder);
     }
 
     getMoves = (countryName: string, aTurn: Turn | null, includeNonPersistentMove: boolean | null) => {
@@ -70,10 +32,10 @@ class MoveWarehouse implements IMoveWarehouse {
 
         if (aTurn) {
             let index: number;
-            for (index = 0; index < this.moves.length; index++) {
-                if (this.moves[index].owningCountryName === countryName &&
-                    this.moves[index].turn === aTurn) {
-                    theReturn.push(this.moves[index]);
+            for (index = 0; index < this.dataProvider.getMoves().length; index++) {
+                if (this.dataProvider.getMoves()[index].owningCountryName === countryName &&
+                    this.dataProvider.getMoves()[index].turn === aTurn) {
+                    theReturn.push(this.dataProvider.getMoves()[index]);
                 }
             }
             if (includeNonPersistentMove) {
@@ -85,13 +47,6 @@ class MoveWarehouse implements IMoveWarehouse {
     }
 
     getAllMoves = () => {
-        return this.moves;
-    }
-
-    // this should only be used for testing
-    setMoves = (bunchOfMoves: Array<Move>) => {
-        this.moves = bunchOfMoves;
+        return this.dataProvider.getMoves();
     }
 }
-
-export const warehouse = new MoveWarehouse();
