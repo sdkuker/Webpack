@@ -1,5 +1,5 @@
 import { Game } from './Game';
-import {IGameDataProvider } from './IGameDataProvider';
+import { IGameDataProvider } from './IGameDataProvider';
 import { observable } from 'mobx';
 
 export class GameWarehouse {

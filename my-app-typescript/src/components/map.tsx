@@ -1,7 +1,7 @@
 import * as React from 'react';
 import '../map.css';
 import MapBuilder from './MapBuilder';
-import { IPieceWarehouse } from '.././types/warehouses/IPieceWarehouse'
+import { IPieceWarehouse } from '.././types/warehouses/IPieceWarehouse';
 
 interface PropValues {
   pieceWarehouse: IPieceWarehouse;

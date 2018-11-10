@@ -47,7 +47,11 @@ class Main extends React.Component<{}, StateValues> {
     render() {
         return (
             <div className="container">
-                <GameSelector onGameSelected={this.gameSelected} initialGame={this.state.selectedGame} gameWarehouse={this.gameWarehouse} />
+                <GameSelector 
+                    onGameSelected={this.gameSelected} 
+                    initialGame={this.state.selectedGame} 
+                    gameWarehouse={this.gameWarehouse} 
+                />
                 <SeasonSelector
                     onTurnSelected={this.turnSelected}
                     myGame={this.state.selectedGame}
