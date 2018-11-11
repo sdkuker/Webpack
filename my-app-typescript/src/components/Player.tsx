@@ -22,7 +22,7 @@ interface StateValues {
 }
 
 @observer
-class Main extends React.Component<{}, StateValues> {
+class Player extends React.Component<{}, StateValues> {
 
     gameWarehouse: GameWarehouse;
     turnWarehouse: TurnWarehouse;
@@ -77,4 +77,4 @@ class Main extends React.Component<{}, StateValues> {
     }
 }
 
-export default Main;
+export default Player;
