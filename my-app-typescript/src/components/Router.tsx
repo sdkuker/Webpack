@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Player from './Player';
+import GameComponent from './GameComponent';
 import AdminComponent from './AdminComponent';
 
 class Router extends React.Component {
@@ -9,8 +9,8 @@ class Router extends React.Component {
         return (
             <div>
                 <Switch>
-                    <Route exact path="/" component={Player} />
-                    <Route path="/player" component={Player} />
+                    <Route exact path="/" component={GameComponent} />
+                    <Route path="/game" component={GameComponent} />
                     <Route path="/admin" component={AdminComponent} />
                 </Switch>
             </div>

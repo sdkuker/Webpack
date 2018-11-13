@@ -3,30 +3,21 @@ import { Link } from 'react-router-dom';
 
 class Header extends React.Component {
 
-    render() {
-        return (
-            <div className="row col-12">
-
-            <nav className="navbar navbar-expand-lg navbar-light bg-white" id="navbar">
-      
-              <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-              </button>
-      
-              <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/player"> Player</Link>
-                  </li>
-                  <li className="nav-item ">
-                    <Link className="nav-link" to="/admin"> Admin </Link>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-          </div>
-        );
-    }
+  render() {
+    return (
+      <nav style={{display: 'flex', flexDirection: 'row'}} >
+        <Link className="navbar-brand" to="/">Stevieware</Link>
+          <ul className="list-inline">
+            <li className="list-inline-item">
+              <Link className="nav-link" to="/game">Game</Link>
+            </li>
+            <li className="list-inline-item">
+              <Link className="nav-link" to="/admin">Admin</Link>
+            </li>
+          </ul>
+      </nav>
+    );
+  }
 }
 
 export default Header;

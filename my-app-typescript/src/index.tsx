@@ -10,10 +10,12 @@ import * as Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
-ReactDOM.render((
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-), document.getElementById('root') as HTMLElement
+ReactDOM.render(
+  (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  ), 
+  document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
