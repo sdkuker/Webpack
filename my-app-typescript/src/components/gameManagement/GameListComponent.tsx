@@ -10,7 +10,7 @@ interface PropValues {
 }
 interface StateValues {
     games: Game[];
-    selectedGame: Game | null;
+    selectedGameName: String | null;
 }
 @observer
 class GameListComponent extends React.Component<PropValues, StateValues> {
@@ -18,9 +18,9 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
         super(props);
         this.state = {
             games: this.props.gameWarehouse.getAllGames(),
-            selectedGame: null
+            selectedGameName: null
         };
-        this.gameSelected = this.gameSelected.bind(this);
+        this.selectedGameChanged = this.selectedGameChanged.bind(this);
     }
 
     render() {
@@ -32,6 +32,8 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
             theReturn.push((
                 <GameListGameComponent
                     game={aGame}
+                    whenGameSelected={this.selectedGameChanged}
+                    isGameSelected={aGame.name === this.state.selectedGameName}
                 />
             )
             );
@@ -39,7 +41,12 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
 
         return (
             <div id="gamesEntryListComponent">
-                <table className="table">
+                <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Game Name</th>
+                    </tr>
+                </thead>
                     <tbody>
                         {theReturn}
                     </tbody>
@@ -48,10 +55,13 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
         );
     }
 
-    gameSelected(aGame: Game) {
-        this.setState({ selectedGame: aGame });
+    selectedGameChanged(aGameName: String, selected: boolean) {
+        if (selected) {
+            this.setState({ selectedGameName: aGameName });
+        } else {
+            this.setState({ selectedGameName: null });
+        }
     }
-
 }
 
 export default GameListComponent;

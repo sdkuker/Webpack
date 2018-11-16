@@ -3,19 +3,26 @@ import { Game } from '../../types/warehouses/Game';
 
 interface PropValues {
     game: Game;
+    whenGameSelected: Function;
+    isGameSelected: boolean;
 }
 class GameListGameComponent extends React.Component<PropValues, {}> {
     constructor(props: PropValues) {
         super(props);
+        this.checkboxChanged = this.checkboxChanged.bind(this);
     }
     render() {
         return (
-            <tr className="d-flex">
-                <td className="col-sm-10">
+            <tr>
+                <td><input type="checkbox" id={this.props.game.name} onChange={this.checkboxChanged} checked={this.props.isGameSelected}/></td>
+                <td>
                     {this.props.game.name}
                 </td>
             </tr>
         );
+    }
+    checkboxChanged(event: React.ChangeEvent<HTMLInputElement>) {
+        this.props.whenGameSelected(event.target.id, event.target.checked);
     }
 }
 

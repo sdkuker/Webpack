@@ -1,8 +1,9 @@
 import { Game } from './Game';
 import { IGameDataProvider } from './IGameDataProvider';
 import { observable } from 'mobx';
+import { IGameWarehouse } from './IGameWarehouse';
 
-export class GameWarehouse {
+export class GameWarehouse implements IGameWarehouse {
    
     @observable games: Array<Game>;
 
@@ -19,6 +20,10 @@ export class GameWarehouse {
             }
         });
         return theReturn;
+    }
+
+    getAllGames = () => {
+        return this.games;
     }
     
 }
