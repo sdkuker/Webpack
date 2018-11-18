@@ -16,7 +16,6 @@ class GameManagementButtonComponent extends React.Component<PropValues, {}> {
     render() {
         return (
             <div className="btn-toolbar" role="toolbar">
-                <a href="/admin">Open</a>
                 <div className="brn-group mr-2" role="group">
                     <button className="btn btn-primary" type="button" onClick={this.openGameClicked}>Open</button>
                 </div>

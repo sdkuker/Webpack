@@ -40,11 +40,6 @@ class Router extends React.Component<{}, StateValues> {
                         render={(routeProps) =>
                             (<AdminComponent {...routeProps} />)}
                     />
-                    {/* <Route
-                        path="/game/:gameId"
-                        render={(routeProps) =>
-                            (<GameComponent {...routeProps} selectedGame={this.state.gameWarehouse.getGameById(gameId)} />)}
-                    /> */}
                     <Route
                         path="/game/:gameId"
                         render={(routeProps) =>
