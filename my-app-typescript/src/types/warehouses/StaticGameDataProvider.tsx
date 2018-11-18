@@ -10,8 +10,8 @@ export class StaticGameDataProvider implements IGameDataProvider {
             this.games = myGames;
         } else {
             const staticGames = Array<Game>();
-            staticGames.push(new Game('Diplomacy - Greatest Ever'));
-            staticGames.push(new Game('Diplomacy - Almost the Greatest Ever'));
+            staticGames.push(new Game('1', 'Diplomacy - Greatest Ever'));
+            staticGames.push(new Game('2', 'Diplomacy - Almost the Greatest Ever'));
             this.games = staticGames;
         }
     }

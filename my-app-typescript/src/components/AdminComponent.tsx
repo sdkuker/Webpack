@@ -2,6 +2,9 @@ import * as React from 'react';
 
 class AdminComponent extends React.Component {
 
+    constructor() {
+        super({});
+    }
     render() {
         return (
             <div className="row">

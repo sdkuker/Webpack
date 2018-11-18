@@ -8,7 +8,7 @@ import * as enzyme from 'enzyme';
 import SeasonSelector from '../SeasonSelector';
 
 enzyme.configure({adapter: new Adapter()});
-const myGame = new Game('test');
+const myGame = new Game('1', 'test');
 
 it('Get Open Season', () => {
     const completeTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);

@@ -14,7 +14,14 @@ class GameListGameComponent extends React.Component<PropValues, {}> {
     render() {
         return (
             <tr>
-                <td><input type="checkbox" id={this.props.game.name} onChange={this.checkboxChanged} checked={this.props.isGameSelected}/></td>
+                <td>
+                    <input 
+                        type="checkbox" 
+                        id={this.props.game.id} 
+                        onChange={this.checkboxChanged} 
+                        checked={this.props.isGameSelected}
+                    />
+                </td>
                 <td>
                     {this.props.game.name}
                 </td>

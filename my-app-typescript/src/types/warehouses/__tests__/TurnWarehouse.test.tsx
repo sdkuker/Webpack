@@ -4,9 +4,9 @@ import { SeasonTypes, TurnStatus } from '.././DomainTypes';
 import { TurnWarehouse } from '.././TurnWarehouse';
 import { StaticTurnDataProvider } from '.././StaticTurnDataProvider';
 
-let game1 = new Game('test');
-let game2 = new Game('test2');
-let game3 = new Game('test3');
+let game1 = new Game('1', 'test');
+let game2 = new Game('2', 'test2');
+let game3 = new Game('3', 'test3');
 let myTurnWarehouse : TurnWarehouse;
 
 beforeAll(() => {

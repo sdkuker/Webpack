@@ -1,5 +1,5 @@
 import { IMoveDataProvider } from './IMoveDataProvider';
-import { GameWarehouse } from './GameWarehouse';
+import { Game } from './Game';
 import { TurnWarehouse } from './TurnWarehouse';
 import { SeasonTypes } from './DomainTypes';
 import { Move } from './Move';
@@ -11,13 +11,13 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     @observable moves: Array<Move>;
     nextAvailableMoveKey: number = 1;
 
-    constructor(myMoves: Array<Move> | null, myGameWarehouse: GameWarehouse | null, 
+    constructor(myMoves: Array<Move> | null, myGame: Game | null, 
                 myTurnWarehouse: TurnWarehouse | null) {
         if (myMoves) {
             this.moves = myMoves;
         } else {
-            if (myGameWarehouse && myTurnWarehouse) {
-                this.initializeMoves(myGameWarehouse, myTurnWarehouse);
+            if (myGame && myTurnWarehouse) {
+                this.initializeMoves(myGame, myTurnWarehouse);
             }
         }
     }
@@ -26,9 +26,8 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
         return this.moves;
     }
 
-    initializeMoves = (myGameWarehouse: GameWarehouse, myTurnWarehouse: TurnWarehouse) => {
+    initializeMoves = (myGame: Game, myTurnWarehouse: TurnWarehouse) => {
 
-        let myGame = myGameWarehouse.games[0];
         let turn1Spring = myTurnWarehouse.getTurn(myGame, 1, SeasonTypes.Spring);
         let turn1Fall = myTurnWarehouse.getTurn(myGame, 1, SeasonTypes.Fall);
 

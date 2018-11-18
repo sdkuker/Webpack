@@ -11,12 +11,12 @@ import { myConfig } from './Config';
 interface StateValues {
     gameWarehouse: IGameWarehouse;
 }
-class Router extends React.Component < { }, StateValues> {
+class Router extends React.Component<{}, StateValues> {
 
     constructor() {
         super({});
         if (myConfig.dataProviders === 'static') {
-            const mine =  new GameWarehouse(new StaticGameDataProvider(null));
+            const mine = new GameWarehouse(new StaticGameDataProvider(null));
             this.state = { gameWarehouse: mine };
         }
     }
@@ -24,18 +24,36 @@ class Router extends React.Component < { }, StateValues> {
         return (
             <div>
                 <Switch>
-                    <Route 
-                           exact 
-                           path="/" 
-                           render={(routeProps) => 
-                           (<GameManagementComponent {...routeProps} gameWarehouse={this.state.gameWarehouse}/>)} 
+                    <Route
+                        exact
+                        path="/"
+                        render={(routeProps) =>
+                            (<GameManagementComponent {...routeProps} gameWarehouse={this.state.gameWarehouse} />)}
                     />
-                    <Route 
-                        path="/game" 
-                        render={(routeProps) => 
-                            (<GameManagementComponent {...routeProps} gameWarehouse={this.state.gameWarehouse}/>)} 
+                    <Route
+                        path="/gameManagement"
+                        render={(routeProps) =>
+                            (<GameManagementComponent {...routeProps} gameWarehouse={this.state.gameWarehouse} />)}
                     />
-                    <Route path="/admin" component={AdminComponent} />
+                    <Route
+                        path="/admin/:someId"
+                        render={(routeProps) =>
+                            (<AdminComponent {...routeProps} />)}
+                    />
+                    {/* <Route
+                        path="/game/:gameId"
+                        render={(routeProps) =>
+                            (<GameComponent {...routeProps} selectedGame={this.state.gameWarehouse.getGameById(gameId)} />)}
+                    /> */}
+                    <Route
+                        path="/game/:gameId"
+                        render={(routeProps) =>
+                            (this.state.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
+                                // @ts-ignore
+                                <GameComponent {...routeProps} selectedGame={this.state.gameWarehouse.getGameById(routeProps.match.params.gameId)} /> :
+                                <AdminComponent />
+                            )}
+                    />
                 </Switch>
             </div>
         );

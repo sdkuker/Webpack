@@ -25,5 +25,18 @@ export class GameWarehouse implements IGameWarehouse {
     getAllGames = () => {
         return this.games;
     }
+
+    getGameById = (aGameId: string) => {
+        let theReturn: Game | undefined;
+
+        this.games.forEach((aGame: Game) => {
+            if (aGame.id === aGameId) {
+                theReturn = aGame;
+            }
+        });
+
+        return theReturn;
+
+    }
     
 }

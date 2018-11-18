@@ -3,7 +3,7 @@ import { Turn } from '.././Turn';
 import { Game } from '.././Game';
 import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
 
-let myGame = new Game('test');
+let myGame = new Game('1', 'test');
 let myTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
 
 it('constructor', () => {

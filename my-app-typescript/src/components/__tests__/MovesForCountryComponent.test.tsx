@@ -21,11 +21,11 @@ let myGame: Game;
 if (gameWarehouseGame) {
     myGame = gameWarehouseGame;
 } else {
-    myGame = new Game('Steve');
+    myGame = new Game('1', 'Steve');
 }
 const myTurnDataProvider = new StaticTurnDataProvider(null, myGame);
 const myTurnWarehouse = new TurnWarehouse(myTurnDataProvider);
-const myMoveDataProvider = new StaticMoveDataProvider(null, myGameWarehouse, myTurnWarehouse);
+const myMoveDataProvider = new StaticMoveDataProvider(null, myGame, myTurnWarehouse);
 const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);
 
 it('open turn has MovesEntryListComponent', () => {

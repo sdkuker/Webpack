@@ -7,10 +7,11 @@ import { Game } from '../../types/warehouses/Game';
 
 interface PropValues {
     gameWarehouse: IGameWarehouse;
+    whenGameSelected: Function;
 }
 interface StateValues {
     games: Game[];
-    selectedGameName: String | null;
+    selectedGameId: String | null;
 }
 @observer
 class GameListComponent extends React.Component<PropValues, StateValues> {
@@ -18,7 +19,7 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
         super(props);
         this.state = {
             games: this.props.gameWarehouse.getAllGames(),
-            selectedGameName: null
+            selectedGameId: null
         };
         this.selectedGameChanged = this.selectedGameChanged.bind(this);
     }
@@ -33,7 +34,7 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
                 <GameListGameComponent
                     game={aGame}
                     whenGameSelected={this.selectedGameChanged}
-                    isGameSelected={aGame.name === this.state.selectedGameName}
+                    isGameSelected={aGame.id === this.state.selectedGameId}
                 />
             )
             );
@@ -44,6 +45,7 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
                 <table className="table table-striped">
                 <thead>
                     <tr>
+                        <th>Select</th>
                         <th>Game Name</th>
                     </tr>
                 </thead>
@@ -55,11 +57,13 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
         );
     }
 
-    selectedGameChanged(aGameName: String, selected: boolean) {
+    selectedGameChanged(aGameId: String, selected: boolean) {
         if (selected) {
-            this.setState({ selectedGameName: aGameName });
+            this.setState({ selectedGameId: aGameId });
+            this.props.whenGameSelected(aGameId);
         } else {
-            this.setState({ selectedGameName: null });
+            this.setState({ selectedGameId: null });
+            this.props.whenGameSelected(null);
         }
     }
 }

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import GameListComponent from './GameListComponent';
+import GameManagementButtonComponent from './GameManagementButtonComponent';
 import { Game } from '../../types/warehouses/Game';
 import { IGameWarehouse } from '../../types/warehouses/IGameWarehouse';
 
 interface StateValues {
-    selectedGame: Game | null;
+    selectedGameId: String | null;
 }
 
 interface PropValues {
@@ -17,6 +18,10 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
 
     constructor(props: PropValues) {
         super(props);
+        this.gameSelected = this.gameSelected.bind(this);
+        this.openSelectedGame = this.openSelectedGame.bind(this);
+        this.addGame = this.addGame.bind(this);
+        this.deleteGame = this.deleteGame.bind(this);
     }
 
     render() {
@@ -28,13 +33,32 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                 </div>
                 <GameListComponent
                     gameWarehouse={this.props.gameWarehouse}
+                    whenGameSelected={this.gameSelected}
+                />
+                <GameManagementButtonComponent
+                    whenOpenGameClicked={this.openSelectedGame}
+                    whenAddGameClicked={this.addGame}
+                    whenDeleteGameClicked={this.deleteGame}
                 />
             </div>
         );
     }
 
-    gameSelected(aGame: Game) {
-        this.setState({ selectedGame: aGame });
+    gameSelected(aGameId: String) {
+        this.setState({ selectedGameId: aGameId });
+        console.log('gave saved: ' + aGameId);
+    }
+
+    openSelectedGame() {
+        console.log('open the game');
+    }
+
+    addGame() {
+        console.log('add game');
+    }
+
+    deleteGame() {
+        console.log('delete the game');
     }
 }
 

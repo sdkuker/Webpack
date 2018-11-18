@@ -29,14 +29,17 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
     render() {
         // tslint:disable-next-line
         let yearOptions: any = [];
-        this.props.myTurnWarehouse.getTurns(this.props.myGame).forEach((aTurn: Turn) => {
-            if (this.state.selectedTurn === aTurn) {
-                // tslint:disable-next-line
-                yearOptions.push(<option selected>{aTurn.year}</option>);
-            } else {
-                yearOptions.push(<option>{aTurn.year}</option>);
-            }
-        });
+        if (this.props.myGame) {
+            this.props.myTurnWarehouse.getTurns(this.props.myGame).forEach((aTurn: Turn) => {
+                if (this.state.selectedTurn === aTurn) {
+                    // tslint:disable-next-line
+                    yearOptions.push(<option selected>{aTurn.year}</option>);
+                } else {
+                    yearOptions.push(<option>{aTurn.year}</option>);
+                }
+            });
+        }
+
 
         // tslint:disable-next-line
         let seasonOptions: any = [];
@@ -76,9 +79,9 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
 
     yearSelected(event: React.FormEvent<HTMLSelectElement>) {
         let myValue: string = event.currentTarget.value;
-        let mySelectedTurn = this.props.myTurnWarehouse.getTurn(this.props.myGame, 
-                                                                parseInt(myValue, 10),
-                                                                this.state.selectedTurn.season);
+        let mySelectedTurn = this.props.myTurnWarehouse.getTurn(this.props.myGame,
+            parseInt(myValue, 10),
+            this.state.selectedTurn.season);
         if (mySelectedTurn) {
             this.setState({ selectedTurn: mySelectedTurn });
             this.props.onTurnSelected(mySelectedTurn);
@@ -93,9 +96,9 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
         } else {
             mySeason = SeasonTypes.Spring;
         }
-        const mySelectedTurn = this.props.myTurnWarehouse.getTurn(this.props.myGame, 
-                                                                  this.state.selectedTurn.year,
-                                                                  mySeason);
+        const mySelectedTurn = this.props.myTurnWarehouse.getTurn(this.props.myGame,
+            this.state.selectedTurn.year,
+            mySeason);
         if (mySelectedTurn) {
             this.setState({ selectedTurn: mySelectedTurn });
             this.props.onTurnSelected(mySelectedTurn);
