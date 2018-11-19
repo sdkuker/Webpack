@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { IGameWarehouse } from '../types/warehouses/IGameWarehouse';
 import GameComponent from './GameComponent';
-import AdminComponent from './AdminComponent';
+import GameAdminComponent from './gameAdmin/GameAdminComponent';
+import ErrorComponent from './ErrorComponent';
 import GameManagementComponent from './gameManagement/GameManagementComponent';
 import { GameWarehouse } from '../types/warehouses/GameWarehouse';
 import { StaticGameDataProvider } from '../types/warehouses/StaticGameDataProvider';
@@ -36,9 +37,13 @@ class Router extends React.Component<{}, StateValues> {
                             (<GameManagementComponent {...routeProps} gameWarehouse={this.state.gameWarehouse} />)}
                     />
                     <Route
-                        path="/admin/:someId"
+                        path="/administerGame/:gameId"
                         render={(routeProps) =>
-                            (<AdminComponent {...routeProps} />)}
+                            (this.state.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
+                                // @ts-ignore
+                                <GameAdminComponent {...routeProps} gameWarehouse={this.state.gameWarehouse} game={this.state.gameWarehouse.getGameById(routeProps.match.params.gameId)} /> :
+                                <ErrorComponent />
+                            )}
                     />
                     <Route
                         path="/game/:gameId"
@@ -46,8 +51,13 @@ class Router extends React.Component<{}, StateValues> {
                             (this.state.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
                                 // @ts-ignore
                                 <GameComponent {...routeProps} selectedGame={this.state.gameWarehouse.getGameById(routeProps.match.params.gameId)} /> :
-                                <AdminComponent />
+                                <ErrorComponent />
                             )}
+                    />
+                    <Route
+                        path="/error/"
+                        render={(routeProps) =>
+                            (<ErrorComponent {...routeProps} />)}
                     />
                 </Switch>
             </div>

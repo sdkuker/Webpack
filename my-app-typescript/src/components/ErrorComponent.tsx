@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-class AdminComponent extends React.Component {
+class ErrorComponent extends React.Component {
 
     constructor() {
         super({});
@@ -8,10 +8,10 @@ class AdminComponent extends React.Component {
     render() {
         return (
             <div className="row">
-                <h2>Admin View</h2>
+                <h2>An Error Has Happened.  Darn.  Call Steve...</h2>
             </div>
         );
     }
 }
 
-export default AdminComponent;
+export default ErrorComponent;

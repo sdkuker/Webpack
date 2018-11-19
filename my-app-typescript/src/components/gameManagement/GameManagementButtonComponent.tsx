@@ -5,6 +5,7 @@ interface PropValues {
     whenOpenGameClicked: Function;
     whenAddGameClicked: Function;
     whenDeleteGameClicked: Function;
+    whenAdministerGameClicked: Function;
 }
 class GameManagementButtonComponent extends React.Component<PropValues, {}> {
     constructor(props: PropValues) {
@@ -12,12 +13,16 @@ class GameManagementButtonComponent extends React.Component<PropValues, {}> {
         this.openGameClicked = this.openGameClicked.bind(this);
         this.addGameClicked = this.addGameClicked.bind(this);
         this.deleteGameClicked = this.deleteGameClicked.bind(this);
+        this.administerGameClicked = this.administerGameClicked.bind(this);
     }
     render() {
         return (
             <div className="btn-toolbar" role="toolbar">
                 <div className="brn-group mr-2" role="group">
                     <button className="btn btn-primary" type="button" onClick={this.openGameClicked}>Open</button>
+                </div>
+                <div className="brn-group mr-2" role="group">
+                    <button className="btn btn-primary" type="button" onClick={this.administerGameClicked}>Administer</button>
                 </div>
                 <div className="brn-group mr-2" role="group">
                     <button className="btn btn-primary" type="button" onClick={this.addGameClicked}>New</button>
@@ -37,6 +42,9 @@ class GameManagementButtonComponent extends React.Component<PropValues, {}> {
     }
     deleteGameClicked(event: React.MouseEvent<HTMLButtonElement>) {
         this.props.whenDeleteGameClicked();
+    }
+    administerGameClicked(event: React.MouseEvent<HTMLButtonElement>) {
+        this.props.whenAdministerGameClicked();
     }
 }
 

@@ -25,6 +25,7 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
         this.gameSelected = this.gameSelected.bind(this);
         this.openSelectedGame = this.openSelectedGame.bind(this);
         this.addGame = this.addGame.bind(this);
+        this.administerGame = this.administerGame.bind(this);
         this.deleteGame = this.deleteGame.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -48,17 +49,20 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                     if (this.state.redirectPath === 'deleteGame') {
                         const myPath = '/deleteGame/' + this.state.selectedGameId;
                         theReturn.push(<Redirect to={myPath} />);
-                    } else {
-                        theReturn.push(<Redirect to="/admin" />);
-                    }
+                    } else
+                        if (this.state.redirectPath === 'administerGame') {
+                            const myPath = '/administerGame/' + this.state.selectedGameId;
+                            theReturn.push(<Redirect to={myPath} />);
+                        } else {
+                            theReturn.push(<Redirect to="/error" />);
+                        }
                 }
             }
         } else {
             theReturn.push(
                 (
-                    <div className="jumbotron text-center">
-                        <h1>Stevieware Diplomacy</h1>
-                        <h2>Games</h2>
+                    <div className="text-center">
+                        <h1>Game List</h1>
                     </div>));
 
             theReturn.push(
@@ -72,6 +76,7 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                     whenOpenGameClicked={this.openSelectedGame}
                     whenAddGameClicked={this.addGame}
                     whenDeleteGameClicked={this.deleteGame}
+                    whenAdministerGameClicked={this.administerGame}
                 />);
         }
         const customStyles = {
@@ -132,6 +137,14 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
             this.setState({ redirectPath: 'deleteGame' });
         } else {
             this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
+        }
+    }
+
+    administerGame() {
+        if (this.state.selectedGameId) {
+            this.setState({ redirectPath: 'administerGame' });
+        } else {
+            this.setState({ isModalOpen: true, errorDescription: 'Must select a game to administer' });
         }
     }
 
