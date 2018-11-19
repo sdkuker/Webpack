@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Modal from 'react-modal';
 import { observer } from 'mobx-react';
 import GameListComponent from './GameListComponent';
 import GameManagementButtonComponent from './GameManagementButtonComponent';
@@ -8,6 +9,8 @@ import { IGameWarehouse } from '../../types/warehouses/IGameWarehouse';
 interface StateValues {
     selectedGameId: String | null;
     redirectPath: String | null;
+    isModalOpen: boolean;
+    errorDescription: string | null;
 }
 
 interface PropValues {
@@ -23,8 +26,10 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
         this.openSelectedGame = this.openSelectedGame.bind(this);
         this.addGame = this.addGame.bind(this);
         this.deleteGame = this.deleteGame.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
 
-        this.state = { selectedGameId: null, redirectPath: null };
+        this.state = { selectedGameId: null, redirectPath: null, isModalOpen: false, errorDescription: null };
     }
 
     render() {
@@ -36,12 +41,12 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                 const myPath = '/game/' + this.state.selectedGameId;
                 theReturn.push(<Redirect to={myPath} />);
             } else {
-                if (this.state.redirectPath === 'newGame') {
-                    const myPath = '/newGame/';
+                if (this.state.redirectPath === 'addGame') {
+                    const myPath = '/addGame/';
                     theReturn.push(<Redirect to={myPath} />);
                 } else {
                     if (this.state.redirectPath === 'deleteGame') {
-                        const myPath = '/delete/' + this.state.selectedGameId;
+                        const myPath = '/deleteGame/' + this.state.selectedGameId;
                         theReturn.push(<Redirect to={myPath} />);
                     } else {
                         theReturn.push(<Redirect to="/admin" />);
@@ -69,9 +74,39 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                     whenDeleteGameClicked={this.deleteGame}
                 />);
         }
+        const customStyles = {
+            content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)'
+            }
+        };
+
+        let modalTitle: string = 'Error';
+        let modalDescription: string = '';
+        if (this.state.errorDescription) {
+            modalTitle = 'Error';
+            modalDescription = this.state.errorDescription;
+        }
         return (
             <div>
                 {theReturn}
+                <div>
+                    <Modal
+                        isOpen={this.state.isModalOpen}
+                        onRequestClose={this.closeModal}
+                        style={customStyles}
+                        contentLabel="Example Modal"
+                        parentSelector={() => document.body}
+                    >
+                        <h2>{modalTitle}</h2>
+                        <div>{modalDescription}</div>
+                        <button onClick={this.closeModal}>close</button>
+                    </Modal>
+                </div>
             </div>
         );
     }
@@ -81,15 +116,31 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
     }
 
     openSelectedGame() {
-        this.setState({ redirectPath: 'openGame' });
+        if (this.state.selectedGameId) {
+            this.setState({ redirectPath: 'openGame' });
+        } else {
+            this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
+        }
     }
 
     addGame() {
-        console.log('add game');
+        this.setState({ redirectPath: 'addGame' });
     }
 
     deleteGame() {
-        console.log('delete the game');
+        if (this.state.selectedGameId) {
+            this.setState({ redirectPath: 'deleteGame' });
+        } else {
+            this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
+        }
+    }
+
+    openModal() {
+        this.setState({ isModalOpen: true });
+    }
+
+    closeModal() {
+        this.setState({ isModalOpen: false });
     }
 }
 

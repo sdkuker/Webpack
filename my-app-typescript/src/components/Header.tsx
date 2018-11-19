@@ -7,14 +7,14 @@ class Header extends React.Component {
     return (
       <nav style={{display: 'flex', flexDirection: 'row'}} >
         <Link className="navbar-brand" to="/">Stevieware</Link>
-          <ul className="list-inline">
+          {/* <ul className="list-inline">
             <li className="list-inline-item">
               <Link className="nav-link" to="/game">Game</Link>
             </li>
             <li className="list-inline-item">
               <Link className="nav-link" to="/admin">Admin</Link>
             </li>
-          </ul>
+          </ul> */}
       </nav>
     );
   }
