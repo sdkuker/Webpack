@@ -22,7 +22,12 @@ class GameManagementButtonComponent extends React.Component<PropValues, {}> {
                     <button className="btn btn-primary" type="button" onClick={this.openGameClicked}>Open</button>
                 </div>
                 <div className="brn-group mr-2" role="group">
-                    <button className="btn btn-primary" type="button" onClick={this.administerGameClicked}>Administer</button>
+                    <button 
+                        className="btn btn-primary" 
+                        type="button" 
+                        onClick={this.administerGameClicked}
+                    >Administer
+                    </button>
                 </div>
                 <div className="brn-group mr-2" role="group">
                     <button className="btn btn-primary" type="button" onClick={this.addGameClicked}>New</button>

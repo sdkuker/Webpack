@@ -8,15 +8,18 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
 
     @observable turns: Array<Turn>;
 
-    constructor(myTurns: Array<Turn> | null, myGame: Game | null) {
+    constructor(myTurns: Array<Turn> | null) {
         if (myTurns) {
             this.turns = myTurns;
-        } else {
-            this.initializeTurns(myGame);
         }
     }
 
     getTurns = (aGame: Game) => {
+
+        if (! this.turns) {
+            this.initializeTurns(aGame);
+        }
+        
         const theReturn = Array<Turn>();
 
         let index: number;

@@ -22,7 +22,7 @@ beforeAll(() => {
 
     myTurns.push(new Turn(game3, 1, SeasonTypes.Spring, TurnStatus.Complete));
 
-    const myDataProvider = new StaticTurnDataProvider(myTurns, null);
+    const myDataProvider = new StaticTurnDataProvider(myTurns);
     myTurnWarehouse = new TurnWarehouse(myDataProvider);
 
 });

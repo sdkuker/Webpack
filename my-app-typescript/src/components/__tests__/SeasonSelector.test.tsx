@@ -17,9 +17,10 @@ it('Get Open Season', () => {
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
     const getTurnsMock = jest.fn();
+    const getOpenTurnMock = jest.fn();
     getTurnsMock.mockReturnValueOnce([completeTurn,openTurn]);
 
-    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock};
+    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock, getOpenTurn: getOpenTurnMock};
 
     const wrapper1 = enzyme.shallow(<SeasonSelector 
                                         onTurnSelected={onTurnsSelectedMock} 
@@ -44,9 +45,10 @@ it('Get Complete Season', () => {
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
     const getTurnsMock = jest.fn();
+    const getOpenTurnMock = jest.fn();
     getTurnsMock.mockReturnValueOnce([completeTurn,openTurn]);
 
-    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock};
+    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock, getOpenTurn: getOpenTurnMock};
 
     const wrapper1 = enzyme.shallow(<SeasonSelector 
                                         onTurnSelected={onTurnsSelectedMock} 

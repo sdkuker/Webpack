@@ -23,7 +23,7 @@ if (gameWarehouseGame) {
 } else {
     myGame = new Game('1', 'Steve');
 }
-const myTurnDataProvider = new StaticTurnDataProvider(null, myGame);
+const myTurnDataProvider = new StaticTurnDataProvider(null);
 const myTurnWarehouse = new TurnWarehouse(myTurnDataProvider);
 const myMoveDataProvider = new StaticMoveDataProvider(null, myGame, myTurnWarehouse);
 const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);

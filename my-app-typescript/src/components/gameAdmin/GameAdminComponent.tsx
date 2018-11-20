@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 import { Game } from '../../types/warehouses/Game';
 import { IGameWarehouse } from '../../types/warehouses/IGameWarehouse';
+import { ITurnWarehouse } from '../../types/warehouses/ITurnWarehouse';
 import GameAdminGameDetailsComponent from './GameAdminGameDetailsComponent';
 
 interface StateValues {
@@ -15,6 +16,7 @@ interface StateValues {
 interface PropValues {
     gameWarehouse: IGameWarehouse;
     game: Game;
+    turnWarehouse: ITurnWarehouse;
 }
 
 @observer
@@ -50,7 +52,11 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
                     </div>
             );
             theReturn.push(
-                <GameAdminGameDetailsComponent onGameNameChange={this.nameChanged} game={this.props.game} />
+                <GameAdminGameDetailsComponent 
+                    onGameNameChange={this.nameChanged} 
+                    game={this.props.game} 
+                    turnWarehouse={this.props.turnWarehouse} 
+                />
             );
         }
         const customStyles = {

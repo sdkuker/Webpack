@@ -34,7 +34,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
         this.turnSelected = this.turnSelected.bind(this);
         if (myConfig.dataProviders === 'static') {
             const myGame = this.props.selectedGame;
-            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, myGame));
+            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null));
             this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider(null));
             const myMoveDataProvider = new StaticMoveDataProvider(null, myGame, this.turnWarehouse);
             this.moveWarehouse = new MoveWarehouse(myMoveDataProvider);
