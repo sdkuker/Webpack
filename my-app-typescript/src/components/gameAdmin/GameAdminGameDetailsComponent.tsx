@@ -38,7 +38,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                         onChange={this.gameNameOnChangeHandler}
                     />
                 </div>
-                <p><b>Current Turn</b></p>
+                <h2>Current Turn</h2>
                 <p><b>Year: </b>{openTurn ? openTurn.year : 'no open turn'} <b>Season: </b>{openTurn ? openTurn.season : 'no open turn'}</p>
             </div>
         );

@@ -5,7 +5,9 @@ import { Redirect } from 'react-router-dom';
 import { Game } from '../../types/warehouses/Game';
 import { IGameWarehouse } from '../../types/warehouses/IGameWarehouse';
 import { ITurnWarehouse } from '../../types/warehouses/ITurnWarehouse';
+import { ICountryWarehouse } from '../../types/warehouses/ICountryWarehouse';
 import GameAdminGameDetailsComponent from './GameAdminGameDetailsComponent';
+import CountryListComponent from './CountryListComponent';
 
 interface StateValues {
     redirectPath: String | null;
@@ -17,6 +19,7 @@ interface PropValues {
     gameWarehouse: IGameWarehouse;
     game: Game;
     turnWarehouse: ITurnWarehouse;
+    countryWarehouse: ICountryWarehouse;
 }
 
 @observer
@@ -56,6 +59,12 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
                     onGameNameChange={this.nameChanged} 
                     game={this.props.game} 
                     turnWarehouse={this.props.turnWarehouse} 
+                />
+            );
+            theReturn.push(
+                <CountryListComponent 
+                    game={this.props.game} 
+                    countryWarehouse={this.props.countryWarehouse} 
                 />
             );
         }

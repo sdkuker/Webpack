@@ -10,12 +10,15 @@ import { StaticGameDataProvider } from '../types/warehouses/StaticGameDataProvid
 import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
 import { TurnWarehouse } from '../types/warehouses/TurnWarehouse';
 import { StaticTurnDataProvider } from '../types/warehouses/StaticTurnDataProvider';
-
+import { ICountryWarehouse } from '../types/warehouses/ICountryWarehouse';
+import { CountryWarehouse } from '../types/warehouses/CountryWarehouse';
+import { StaticCountryDataProvider } from '../types/warehouses/StaticCountryDataProvider';
 import { myConfig } from './Config';
 
 interface StateValues {
     gameWarehouse: IGameWarehouse;
     turnWarehouse: ITurnWarehouse;
+    countryWarehouse: ICountryWarehouse;
 }
 class Router extends React.Component<{}, StateValues> {
 
@@ -24,7 +27,10 @@ class Router extends React.Component<{}, StateValues> {
         if (myConfig.dataProviders === 'static') {
             const myGameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
             const myTurnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null));
-            this.state = { gameWarehouse: myGameWarehouse, turnWarehouse:  myTurnWarehouse };
+            const myCountryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null), null);
+            this.state = {  gameWarehouse: myGameWarehouse, 
+                            turnWarehouse:  myTurnWarehouse, 
+                            countryWarehouse: myCountryWarehouse};
         }
     }
     render() {
@@ -52,6 +58,7 @@ class Router extends React.Component<{}, StateValues> {
                                      // @ts-ignore
                                     game={this.state.gameWarehouse.getGameById(routeProps.match.params.gameId)} 
                                     turnWarehouse={this.state.turnWarehouse}
+                                    countryWarehouse={this.state.countryWarehouse}
                                 /> :
                                 <ErrorComponent />
                             )}
