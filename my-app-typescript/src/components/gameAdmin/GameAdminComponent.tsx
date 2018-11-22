@@ -28,7 +28,6 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
         this.nameChanged = this.nameChanged.bind(this);
-        this.playerChanged = this.playerChanged.bind(this);
         this.generateNextTurn = this.generateNextTurn.bind(this);
         this.openGame = this.openGame.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -111,10 +110,6 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
 
     openGame() {
         this.setState({ redirectPath: 'openGame' });
-    }
-
-    playerChanged(countryName: string, playerName: string) {
-        console.log('payer was changed to: ' + playerName + ' for country: ' + countryName);
     }
 
     generateNextTurn() {

@@ -19,7 +19,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         super(props);
         this.gameNameOnBlurHandler = this.gameNameOnBlurHandler.bind(this);
         this.gameNameOnChangeHandler = this.gameNameOnChangeHandler.bind(this);
-        this.state = { gameName: this.props.game.name};
+        this.state = { gameName: this.props.game.name };
     }
 
     render() {
@@ -29,17 +29,31 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
             <div>
                 <div className="form-group">
                     <label htmlFor="gameName"><b>Name:</b></label>
-                    <input 
-                        id="gameName" 
-                        className="col-md-9" 
-                        type="text" 
-                        onBlur={this.gameNameOnBlurHandler} 
-                        value={this.state.gameName} 
+                    <input
+                        id="gameName"
+                        className="col-md-9"
+                        type="text"
+                        onBlur={this.gameNameOnBlurHandler}
+                        value={this.state.gameName}
                         onChange={this.gameNameOnChangeHandler}
                     />
                 </div>
                 <h2>Current Turn</h2>
-                <p><b>Year: </b>{openTurn ? openTurn.year : 'no open turn'} <b>Season: </b>{openTurn ? openTurn.season : 'no open turn'}</p>
+                <p>
+                    <b>Year: </b>
+                    {openTurn ? openTurn.year : 'no open turn'} 
+                    <b>Season: </b>
+                    {openTurn ? openTurn.season : 'no open turn'}
+                </p>
+                <div className="btn-toolbar" role="toolbar">
+                    <div className="brn-group mr-2" role="group">
+                        <button className="btn btn-outline-primary">Open</button>
+                    </div>
+                    <div className="brn-group mr-2" role="group">
+                        <button className="btn btn-outline-primary">Generate Next Turn</button>
+                    </div>
+                </div>
+
             </div>
         );
     }
@@ -51,7 +65,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
     gameNameOnChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
         let newName = event.target.value;
         // @ts-ignore
-        this.setState({ gameName: newName});
+        this.setState({ gameName: newName });
     }
 }
 

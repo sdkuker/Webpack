@@ -17,6 +17,7 @@ interface StateValues {
 class CountryListComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
+        this.playerChanged = this.playerChanged.bind(this);
         this.state = {
             countries: this.props.countryWarehouse.getAllCountries(this.props.game),
         };
@@ -31,7 +32,7 @@ class CountryListComponent extends React.Component<PropValues, StateValues> {
             theReturn.push((
                 <CountryListCountryComponent
                     country={aCountry}
-                    whenPlayerChanged={this.playerChanged}
+                    onPlayerNameChange={this.playerChanged}
                 />
             )
             );
@@ -39,8 +40,8 @@ class CountryListComponent extends React.Component<PropValues, StateValues> {
 
         return (
             <div id="countryListComponent">
-            <p> </p>
-            <p> </p>
+            <p/> 
+            <p/>
                 <h2>Country List</h2>
                 <table className="table table-striped">
                     <thead>

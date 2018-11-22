@@ -3,11 +3,17 @@ import { Country } from '../../types/warehouses/Country';
 
 interface PropValues {
     country: Country;
-    whenPlayerChanged: Function;
+    onPlayerNameChange: Function;
 }
-class CountryListCountryComponent extends React.Component<PropValues, {}> {
+interface StateValues {
+    playerName: string;
+}
+class CountryListCountryComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
+        this.playerNameOnBlurHandler = this.playerNameOnBlurHandler.bind(this);
+        this.playerNameOnChangeHandler = this.playerNameOnChangeHandler.bind(this);
+        this.state = {playerName: this.props.country.playerName};
     }
     render() {
         return (
@@ -16,10 +22,26 @@ class CountryListCountryComponent extends React.Component<PropValues, {}> {
                     {this.props.country.name}
                 </td>
                 <td>
-                    {this.props.country.playerName}
+                    <input
+                        id="playerName"
+                        className="col-md-9"
+                        type="text"
+                        onBlur={this.playerNameOnBlurHandler}
+                        value={this.state.playerName}
+                        onChange={this.playerNameOnChangeHandler}
+                    />
                 </td>
             </tr>
         );
+    }
+    playerNameOnBlurHandler(event: React.FocusEvent<HTMLInputElement>) {
+        this.props.onPlayerNameChange(this.props.country.name, this.state.playerName);
+    }
+
+    playerNameOnChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+        let newName = event.target.value;
+        // @ts-ignore
+        this.setState({ playerName: newName });
     }
 }
 

@@ -19,21 +19,31 @@ class GameManagementButtonComponent extends React.Component<PropValues, {}> {
         return (
             <div className="btn-toolbar" role="toolbar">
                 <div className="brn-group mr-2" role="group">
-                    <button className="btn btn-primary" type="button" onClick={this.openGameClicked}>Open</button>
+                    <button 
+                        className="btn btn-outline-primary" 
+                        type="button" 
+                        onClick={this.openGameClicked}
+                    >Open
+                    </button>
                 </div>
                 <div className="brn-group mr-2" role="group">
                     <button 
-                        className="btn btn-primary" 
+                        className="btn btn-outline-primary" 
                         type="button" 
                         onClick={this.administerGameClicked}
                     >Administer
                     </button>
                 </div>
                 <div className="brn-group mr-2" role="group">
-                    <button className="btn btn-primary" type="button" onClick={this.addGameClicked}>New</button>
+                    <button className="btn btn-outline-primary" type="button" onClick={this.addGameClicked}>New</button>
                 </div>
                 <div className="brn-group mr-2" role="group">
-                    <button className="btn btn-primary" type="button" onClick={this.deleteGameClicked}>Delete</button>
+                    <button 
+                        className="btn btn-outline-primary" 
+                        type="button" 
+                        onClick={this.deleteGameClicked}
+                    >Delete
+                    </button>
                 </div>
             </div>
 
