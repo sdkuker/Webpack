@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Country } from '../../types/warehouses/Country';
+import { observer } from 'mobx-react';
 
 interface PropValues {
     country: Country;
@@ -8,6 +9,7 @@ interface PropValues {
 interface StateValues {
     playerName: string;
 }
+@observer
 class CountryListCountryComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
@@ -35,7 +37,7 @@ class CountryListCountryComponent extends React.Component<PropValues, StateValue
         );
     }
     playerNameOnBlurHandler(event: React.FocusEvent<HTMLInputElement>) {
-        this.props.onPlayerNameChange(this.props.country.name, this.state.playerName);
+        this.props.onPlayerNameChange(this.props.country, this.state.playerName);
     }
 
     playerNameOnChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {

@@ -58,9 +58,9 @@ class CountryListComponent extends React.Component<PropValues, StateValues> {
         );
     }
 
-    playerChanged(aCountryName: string, aPlayerName: string) {
+    playerChanged(forCountry: Country, aPlayerName: string) {
 
-        console.log('player: ' + aPlayerName + ' for country: ' + aCountryName);
+        this.props.countryWarehouse.updatePlayerNameForCountry(this.props.game, forCountry, aPlayerName);
     }
 }
 

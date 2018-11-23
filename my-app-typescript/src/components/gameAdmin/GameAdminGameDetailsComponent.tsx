@@ -42,15 +42,15 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                 <p>
                     <b>Year: </b>
                     {openTurn ? openTurn.year : 'no open turn'} 
-                    <b>Season: </b>
+                    <b> Season: </b>
                     {openTurn ? openTurn.season : 'no open turn'}
                 </p>
                 <div className="btn-toolbar" role="toolbar">
                     <div className="brn-group mr-2" role="group">
-                        <button className="btn btn-outline-primary">Open</button>
+                        <button className="btn btn-outline-dark">Open</button>
                     </div>
                     <div className="brn-group mr-2" role="group">
-                        <button className="btn btn-outline-primary">Generate Next Turn</button>
+                        <button className="btn btn-outline-dark">Generate Next Turn</button>
                     </div>
                 </div>
 

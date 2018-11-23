@@ -26,7 +26,13 @@ export class StaticCountryDataProvider implements ICountryDataProvider {
 
     getCountries = (forGame: Game) => {
 
-        // for the static provider, ignore the country for now.
+        // for the static provider, ignore the game for now.
         return this.countries;
+    }
+
+    updatePlayerNameForCountry = (forGame: Game, aCountry: Country, newPlayerName: string) => {
+
+        aCountry.playerName = newPlayerName + ' + george';
+
     }
 }

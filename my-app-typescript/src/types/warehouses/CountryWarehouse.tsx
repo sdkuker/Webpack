@@ -5,7 +5,7 @@ import { observable } from 'mobx';
 import { ICountryWarehouse } from './ICountryWarehouse';
 
 export class CountryWarehouse implements ICountryWarehouse {
-   
+
     @observable countries: Array<Country>;
     myGame: Game;
     myDataProvider: ICountryDataProvider;
@@ -28,7 +28,7 @@ export class CountryWarehouse implements ICountryWarehouse {
             this.initializeCache(forGame);
         }
 
-        let theReturn: Country   | undefined;
+        let theReturn: Country | undefined;
 
         this.countries.forEach((aCountry: Country) => {
             if (aCountry.name === aCountryName) {
@@ -64,5 +64,9 @@ export class CountryWarehouse implements ICountryWarehouse {
         return theReturn;
 
     }
-    
+
+    updatePlayerNameForCountry = (aGame: Game, aCountry: Country, newPlayerName: string) => {
+        this.myDataProvider.updatePlayerNameForCountry(aGame, aCountry, newPlayerName);
+    }
+
 }

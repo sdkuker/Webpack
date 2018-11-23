@@ -5,7 +5,7 @@ class Header extends React.Component {
 
   render() {
     return (
-      <nav style={{display: 'flex', flexDirection: 'row'}} >
+      <nav className="navbar navbar-light" >
         <Link className="navbar-brand" to="/">Stevieware Diplomacy</Link>
           {/* <ul className="list-inline">
             <li className="list-inline-item">
