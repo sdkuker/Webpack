@@ -55,6 +55,7 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
             );
             theReturn.push(
                 <GameAdminGameDetailsComponent 
+                    whenOpenGameClicked={this.openGame}
                     onGameNameChange={this.nameChanged} 
                     game={this.props.game} 
                     turnWarehouse={this.props.turnWarehouse} 

@@ -6,6 +6,7 @@ import { ITurnWarehouse } from '../../types/warehouses/ITurnWarehouse';
 
 interface PropValues {
     onGameNameChange: Function;
+    whenOpenGameClicked: Function;
     game: Game;
     turnWarehouse: ITurnWarehouse;
 }
@@ -19,6 +20,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         super(props);
         this.gameNameOnBlurHandler = this.gameNameOnBlurHandler.bind(this);
         this.gameNameOnChangeHandler = this.gameNameOnChangeHandler.bind(this);
+        this.openGameClicked = this.openGameClicked.bind(this);
         this.state = { gameName: this.props.game.name };
     }
 
@@ -47,7 +49,10 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                 </p>
                 <div className="btn-toolbar" role="toolbar">
                     <div className="brn-group mr-2" role="group">
-                        <button className="btn btn-outline-dark">Open</button>
+                        <button className="btn btn-outline-dark" 
+                                onClick={this.openGameClicked}
+                                >Open
+                        </button>
                     </div>
                     <div className="brn-group mr-2" role="group">
                         <button className="btn btn-outline-dark">Generate Next Turn</button>
@@ -66,6 +71,10 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         let newName = event.target.value;
         // @ts-ignore
         this.setState({ gameName: newName });
+    }
+
+    openGameClicked(event: React.MouseEvent<HTMLButtonElement>) {
+        this.props.whenOpenGameClicked();
     }
 }
 
