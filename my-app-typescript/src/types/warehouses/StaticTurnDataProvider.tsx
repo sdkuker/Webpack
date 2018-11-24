@@ -7,6 +7,7 @@ import { SeasonTypes, TurnStatus } from './DomainTypes';
 export class StaticTurnDataProvider implements ITurnDataProvider {
 
     @observable turns: Array<Turn>;
+    game: Game;
 
     constructor(myTurns: Array<Turn> | null) {
         if (myTurns) {
@@ -16,7 +17,7 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
 
     getTurns = (aGame: Game) => {
 
-        if (! this.turns) {
+        if (aGame !== this.game || ! this.turns) {
             this.initializeTurns(aGame);
         }
         

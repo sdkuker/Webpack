@@ -1,37 +1,20 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { IGameWarehouse } from '../types/warehouses/IGameWarehouse';
 import GameComponent from './GameComponent';
 import GameAdminComponent from './gameAdmin/GameAdminComponent';
 import ErrorComponent from './ErrorComponent';
 import GameManagementComponent from './gameManagement/GameManagementComponent';
-import { GameWarehouse } from '../types/warehouses/GameWarehouse';
-import { StaticGameDataProvider } from '../types/warehouses/StaticGameDataProvider';
-import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
-import { TurnWarehouse } from '../types/warehouses/TurnWarehouse';
-import { StaticTurnDataProvider } from '../types/warehouses/StaticTurnDataProvider';
-import { ICountryWarehouse } from '../types/warehouses/ICountryWarehouse';
-import { CountryWarehouse } from '../types/warehouses/CountryWarehouse';
-import { StaticCountryDataProvider } from '../types/warehouses/StaticCountryDataProvider';
-import { myConfig } from './Config';
+import { WarehouseManager } from '../types/warehouses/WarehouseManager';
 
 interface StateValues {
-    gameWarehouse: IGameWarehouse;
-    turnWarehouse: ITurnWarehouse;
-    countryWarehouse: ICountryWarehouse;
+    warehouseManager: WarehouseManager;
 }
+
 class Router extends React.Component<{}, StateValues> {
 
     constructor() {
         super({});
-        if (myConfig.dataProviders === 'static') {
-            const myGameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
-            const myTurnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null));
-            const myCountryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null), null);
-            this.state = {  gameWarehouse: myGameWarehouse, 
-                            turnWarehouse:  myTurnWarehouse, 
-                            countryWarehouse: myCountryWarehouse};
-        }
+        this.state = {warehouseManager: new WarehouseManager()};
     }
     render() {
         return (
@@ -41,24 +24,30 @@ class Router extends React.Component<{}, StateValues> {
                         exact
                         path="/"
                         render={(routeProps) =>
-                            (<GameManagementComponent {...routeProps} gameWarehouse={this.state.gameWarehouse} />)}
+                            (<GameManagementComponent 
+                                {...routeProps} 
+                                gameWarehouse={this.state.warehouseManager.gameWarehouse} 
+                            />)}
                     />
                     <Route
                         path="/gameManagement"
                         render={(routeProps) =>
-                            (<GameManagementComponent {...routeProps} gameWarehouse={this.state.gameWarehouse} />)}
+                            (<GameManagementComponent 
+                                {...routeProps} 
+                                gameWarehouse={this.state.warehouseManager.gameWarehouse} 
+                            />)}
                     />
                     <Route
                         path="/administerGame/:gameId"
                         render={(routeProps) =>
-                            (this.state.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
+                            (this.state.warehouseManager.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
                                 <GameAdminComponent 
                                     {...routeProps} 
-                                    gameWarehouse={this.state.gameWarehouse} 
+                                    gameWarehouse={this.state.warehouseManager.gameWarehouse} 
                                      // @ts-ignore
-                                    game={this.state.gameWarehouse.getGameById(routeProps.match.params.gameId)} 
-                                    turnWarehouse={this.state.turnWarehouse}
-                                    countryWarehouse={this.state.countryWarehouse}
+                                    game={this.state.warehouseManager.gameWarehouse.getGameById(routeProps.match.params.gameId)} 
+                                    turnWarehouse={this.state.warehouseManager.turnWarehouse}
+                                    countryWarehouse={this.state.warehouseManager.countryWarehouse}
                                 /> :
                                 <ErrorComponent />
                             )}
@@ -66,11 +55,12 @@ class Router extends React.Component<{}, StateValues> {
                     <Route
                         path="/game/:gameId"
                         render={(routeProps) =>
-                            (this.state.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
+                            (this.state.warehouseManager.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
                                 <GameComponent 
                                     {...routeProps} 
                                     // @ts-ignore
-                                    selectedGame={this.state.gameWarehouse.getGameById(routeProps.match.params.gameId)} 
+                                    selectedGame={this.state.warehouseManager.gameWarehouse.
+                                                getGameById(routeProps.match.params.gameId)} 
                                 /> :
                                 <ErrorComponent />
                             )}

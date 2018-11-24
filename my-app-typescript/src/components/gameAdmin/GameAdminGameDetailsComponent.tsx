@@ -49,9 +49,10 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                 </p>
                 <div className="btn-toolbar" role="toolbar">
                     <div className="brn-group mr-2" role="group">
-                        <button className="btn btn-outline-dark" 
-                                onClick={this.openGameClicked}
-                                >Open
+                        <button 
+                            className="btn btn-outline-dark" 
+                            onClick={this.openGameClicked}
+                        >Open
                         </button>
                     </div>
                     <div className="brn-group mr-2" role="group">

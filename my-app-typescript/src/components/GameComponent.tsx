@@ -8,7 +8,7 @@ import { Turn } from '../types/warehouses/Turn';
 import { TurnWarehouse } from '../types/warehouses/TurnWarehouse';
 import { PieceWarehouse } from '../types/warehouses/PieceWarehouse';
 import { MoveWarehouse } from '../types/warehouses/MoveWarehouse';
-import { myConfig } from './Config';
+import { myConfig } from '../types/warehouses/Config';
 import { StaticTurnDataProvider } from '../types/warehouses/StaticTurnDataProvider';
 import { StaticPieceDataProvider } from '../types/warehouses/StaticPieceDataProvider';
 import { StaticMoveDataProvider } from '../types/warehouses/StaticMoveDataProvider';
