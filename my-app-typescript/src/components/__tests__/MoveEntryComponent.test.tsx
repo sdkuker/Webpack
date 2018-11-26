@@ -22,6 +22,7 @@ const onMovePersistedMock = jest.fn();
 
 it('not sure what Im testing yet', () => {
     const wrapper1 = enzyme.shallow(<MoveEntryComponent onMoveEntryValidation={onMoveEntryValidationdMock} 
+                                                        game={myGame}
                                                         move={myMove} 
                                                         moveWarehouse={moveWarehouseMock} 
                                                         onMovePersisted={onMovePersistedMock}/>);

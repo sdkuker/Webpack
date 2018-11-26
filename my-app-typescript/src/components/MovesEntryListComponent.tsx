@@ -6,10 +6,12 @@ import MoveEntryComponent from './MoveEntryComponent';
 import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 import { Move } from '../types/warehouses/Move';
 import { Turn } from '../types/warehouses/Turn';
+import { Game } from '../types/warehouses/Game';
 import { MoveValidationResults } from '../types/warehouses/MoveValidationResults';
 
 interface PropValues {
     countryName: string;
+    game: Game;
     turn: Turn;
     moveWarehouse: IMoveWarehouse;
 }
@@ -27,7 +29,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
             isModalOpen: false,
             countryToDisplay: '',
             validationResults: new MoveValidationResults(false, 'placeholder'),
-            moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true)
+            moves: this.props.moveWarehouse.getMoves(this.props.game, this.props.countryName, this.props.turn, true)
         };
         this.moveSelected = this.moveSelected.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -46,6 +48,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
                 <MoveEntryComponent
                     key={aMove.id}
                     onMoveEntryValidation={this.moveValidated}
+                    game={this.props.game}
                     move={aMove}
                     moveWarehouse={this.props.moveWarehouse}
                     onMovePersisted={this.movePersisted}
@@ -111,7 +114,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
         this.setState({ validationResults: myValidationResults, isModalOpen: true });
     }
     movePersisted() {
-        this.setState({moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true)});
+        this.setState({moves: this.props.moveWarehouse.getMoves(this.props.game, this.props.countryName, this.props.turn, true)});
     }
 
 }

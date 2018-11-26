@@ -30,7 +30,7 @@ const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);
 
 it('open turn has MovesEntryListComponent', () => {
     const openTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
-    const wrapper1 = enzyme.shallow(<MovesForCountryComponent moveWarehouse={myMoveWarehouse} myTurn={openTurn} />);
+    const wrapper1 = enzyme.shallow(<MovesForCountryComponent moveWarehouse={myMoveWarehouse} myGame={myGame} myTurn={openTurn} />);
     expect(wrapper1.find('table'))
 })
 

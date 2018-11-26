@@ -2,6 +2,7 @@ import { Move } from './Move';
 import { Turn } from './Turn';
 import { IMoveDataProvider } from './IMoveDataProvider';
 import { IMoveWarehouse } from './IMoveWarehouse';
+import { Game } from './Game';
 import { action } from 'mobx';
 
 export class MoveWarehouse implements IMoveWarehouse {
@@ -14,39 +15,39 @@ export class MoveWarehouse implements IMoveWarehouse {
     }
 
     @action
-    deleteMove = (aMove: Move) => {
-        this.dataProvider.deleteMove(aMove);
+    deleteMove = (forGame: Game, aMove: Move) => {
+        this.dataProvider.deleteMove(forGame, aMove);
     }
     @action
-    persistMove = (aMove: Move) => {
-        this.dataProvider.persistMove(aMove, this.nonPersistentMoveOrder);
+    persistMove = (forGame: Game, aMove: Move) => {
+        this.dataProvider.persistMove(forGame, aMove, this.nonPersistentMoveOrder);
     }
 
-    createNonPersistentMove = (aCountryName: string, aTurn: Turn) => {
-        return this.dataProvider.createNonPersistentMove(aCountryName, aTurn, this.nonPersistentMoveOrder);
+    createNonPersistentMove = (forGame: Game, aCountryName: string, aTurn: Turn) => {
+        return this.dataProvider.createNonPersistentMove(forGame, aCountryName, aTurn, this.nonPersistentMoveOrder);
     }
 
-    getMoves = (countryName: string, aTurn: Turn | null, includeNonPersistentMove: boolean | null) => {
+    getMoves = (forGame: Game, countryName: string, aTurn: Turn | null, includeNonPersistentMove: boolean | null) => {
 
         const theReturn = Array<Move>();
 
         if (aTurn) {
             let index: number;
-            for (index = 0; index < this.dataProvider.getMoves().length; index++) {
-                if (this.dataProvider.getMoves()[index].owningCountryName === countryName &&
-                    this.dataProvider.getMoves()[index].turn === aTurn) {
-                    theReturn.push(this.dataProvider.getMoves()[index]);
+            for (index = 0; index < this.dataProvider.getMoves(forGame).length; index++) {
+                if (this.dataProvider.getMoves(forGame)[index].owningCountryName === countryName &&
+                    this.dataProvider.getMoves(forGame)[index].turn === aTurn) {
+                    theReturn.push(this.dataProvider.getMoves(forGame)[index]);
                 }
             }
             if (includeNonPersistentMove) {
-                theReturn.push(this.createNonPersistentMove(countryName, aTurn));
+                theReturn.push(this.createNonPersistentMove(forGame, countryName, aTurn));
             }
         }
 
         return theReturn;
     }
 
-    getAllMoves = () => {
-        return this.dataProvider.getMoves();
+    getAllMoves = (forGame: Game) => {
+        return this.dataProvider.getMoves(forGame);
     }
 }

@@ -58,6 +58,9 @@ class Router extends React.Component<{}, StateValues> {
                             (this.state.warehouseManager.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
                                 <GameComponent 
                                     {...routeProps} 
+                                    turnWarehouse={this.state.warehouseManager.turnWarehouse}
+                                    pieceWarehouse={this.state.warehouseManager.pieceWarehouse}
+                                    moveWarehouse={this.state.warehouseManager.moveWarehouse}
                                     // @ts-ignore
                                     selectedGame={this.state.warehouseManager.gameWarehouse.
                                                 getGameById(routeProps.match.params.gameId)} 

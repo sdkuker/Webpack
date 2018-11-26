@@ -3,12 +3,14 @@ import { observer } from 'mobx-react';
 import MoveCountrySelector from './MoveCountrySelector';
 import MovesListComponent from './MovesListComponent';
 import MovesEntryListComponent from './MovesEntryListComponent';
-import { MoveWarehouse } from '../types/warehouses/MoveWarehouse';
+import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 import { Turn } from '../types/warehouses/Turn';
 import { TurnStatus } from '../types/warehouses/DomainTypes';
+import { Game} from '../types/warehouses/Game';
 
 interface PropValues {
-    moveWarehouse: MoveWarehouse;
+    moveWarehouse: IMoveWarehouse;
+    myGame: Game;
     myTurn: Turn | null;
 }
 interface StateValues {
@@ -31,6 +33,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                     <MovesEntryListComponent
                         key={this.state.countryToDisplay}
                         countryName={this.state.countryToDisplay}
+                        game={this.props.myGame}
                         turn={this.props.myTurn}
                         moveWarehouse={this.props.moveWarehouse}
                     />
@@ -41,7 +44,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                     <MovesListComponent
                         key={this.state.countryToDisplay}
                         moves={this.props.moveWarehouse.getMoves(
-                            this.state.countryToDisplay, this.props.myTurn, false)}
+                            this.props.myGame, this.state.countryToDisplay, this.props.myTurn, false)}
                     />
                 );
         }

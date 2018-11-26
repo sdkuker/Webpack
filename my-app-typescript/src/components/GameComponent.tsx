@@ -5,15 +5,14 @@ import SeasonSelector from './SeasonSelector';
 import MovesForCountryComponent from './MovesForCountryComponent';
 import { Game } from '../types/warehouses/Game';
 import { Turn } from '../types/warehouses/Turn';
-import { TurnWarehouse } from '../types/warehouses/TurnWarehouse';
-import { PieceWarehouse } from '../types/warehouses/PieceWarehouse';
-import { MoveWarehouse } from '../types/warehouses/MoveWarehouse';
-import { myConfig } from '../types/warehouses/Config';
-import { StaticTurnDataProvider } from '../types/warehouses/StaticTurnDataProvider';
-import { StaticPieceDataProvider } from '../types/warehouses/StaticPieceDataProvider';
-import { StaticMoveDataProvider } from '../types/warehouses/StaticMoveDataProvider';
+import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
+import { IPieceWarehouse } from '../types/warehouses/IPieceWarehouse';
+import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 
 interface PropertyValues {
+    turnWarehouse: ITurnWarehouse;
+    pieceWarehouse: IPieceWarehouse;
+    moveWarehouse: IMoveWarehouse;
     selectedGame: Game;
 }
 
@@ -24,22 +23,10 @@ interface StateValues {
 @observer
 class GameComponent extends React.Component<PropertyValues, StateValues> {
 
-    turnWarehouse: TurnWarehouse;
-    pieceWarehouse: PieceWarehouse;
-    moveWarehouse: MoveWarehouse;
-
     constructor(props: PropertyValues) {
         super(props);
-       // this.gameSelected = this.gameSelected.bind(this);
         this.turnSelected = this.turnSelected.bind(this);
-        if (myConfig.dataProviders === 'static') {
-            const myGame = this.props.selectedGame;
-            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null));
-            this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider(null));
-            const myMoveDataProvider = new StaticMoveDataProvider(null, myGame, this.turnWarehouse);
-            this.moveWarehouse = new MoveWarehouse(myMoveDataProvider);
-            this.state = { selectedTurn: this.turnWarehouse.getOpenTurn(myGame) };
-        }
+        this.state = { selectedTurn: this.props.turnWarehouse.getOpenTurn(props.selectedGame) };
     }
 
     render() {
@@ -50,14 +37,14 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                     onTurnSelected={this.turnSelected}
                     myGame={this.props.selectedGame}
                     initialTurn={this.state.selectedTurn}
-                    myTurnWarehouse={this.turnWarehouse}
+                    myTurnWarehouse={this.props.turnWarehouse}
                 />
                 <div className="row">
                     <div className="col-md-12">
-                        <GameMap pieceWarehouse={this.pieceWarehouse} />
+                        <GameMap pieceWarehouse={this.props.pieceWarehouse} />
                     </div>
                 </div>
-                <MovesForCountryComponent moveWarehouse={this.moveWarehouse} myTurn={this.state.selectedTurn} />
+                <MovesForCountryComponent myGame={this.props.selectedGame} moveWarehouse={this.props.moveWarehouse} myTurn={this.state.selectedTurn} />
             </div>
         );
     }

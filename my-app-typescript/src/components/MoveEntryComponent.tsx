@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { Move } from '../types/warehouses/Move';
+import { Game } from '../types/warehouses/Game';
 import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 
 interface PropValues {
     onMoveEntryValidation: Function;
+    game: Game
     move: Move;
     moveWarehouse: IMoveWarehouse;
     onMovePersisted: Function;
@@ -43,7 +45,7 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
 
     moveChanged(event: React.FormEvent<HTMLTextAreaElement>) {
         this.props.move.updateOrder(event.currentTarget.value);
-        this.props.moveWarehouse.persistMove(this.props.move);
+        this.props.moveWarehouse.persistMove(this.props.game, this.props.move);
         this.props.onMovePersisted();
     }
 
@@ -53,7 +55,7 @@ class MoveEntryComponent extends React.Component<PropValues, {}> {
     }
 
     deleteButtonClicked() {
-        this.props.moveWarehouse.deleteMove(this.props.move);
+        this.props.moveWarehouse.deleteMove(this.props.game, this.props.move);
         this.props.onMovePersisted();
     }
 }
