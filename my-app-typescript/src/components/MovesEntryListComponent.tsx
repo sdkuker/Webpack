@@ -114,6 +114,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
         this.setState({ validationResults: myValidationResults, isModalOpen: true });
     }
     movePersisted() {
+        // tslint:disable-next-line
         this.setState({moves: this.props.moveWarehouse.getMoves(this.props.game, this.props.countryName, this.props.turn, true)});
     }
 

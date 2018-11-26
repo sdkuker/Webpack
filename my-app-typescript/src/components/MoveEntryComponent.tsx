@@ -6,7 +6,7 @@ import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 
 interface PropValues {
     onMoveEntryValidation: Function;
-    game: Game
+    game: Game;
     move: Move;
     moveWarehouse: IMoveWarehouse;
     onMovePersisted: Function;

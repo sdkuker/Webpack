@@ -44,7 +44,11 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                         <GameMap pieceWarehouse={this.props.pieceWarehouse} />
                     </div>
                 </div>
-                <MovesForCountryComponent myGame={this.props.selectedGame} moveWarehouse={this.props.moveWarehouse} myTurn={this.state.selectedTurn} />
+                <MovesForCountryComponent 
+                    myGame={this.props.selectedGame} 
+                    moveWarehouse={this.props.moveWarehouse} 
+                    myTurn={this.state.selectedTurn} 
+                />
             </div>
         );
     }

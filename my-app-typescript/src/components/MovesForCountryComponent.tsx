@@ -6,7 +6,7 @@ import MovesEntryListComponent from './MovesEntryListComponent';
 import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
 import { Turn } from '../types/warehouses/Turn';
 import { TurnStatus } from '../types/warehouses/DomainTypes';
-import { Game} from '../types/warehouses/Game';
+import { Game } from '../types/warehouses/Game';
 
 interface PropValues {
     moveWarehouse: IMoveWarehouse;

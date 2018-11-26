@@ -14,7 +14,7 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     myTurnWarehouse: ITurnWarehouse;
 
     constructor(myMoves: Array<Move> | null, aGame: Game | null,
-        aTurnWarehouse: ITurnWarehouse | null) {
+                aTurnWarehouse: ITurnWarehouse | null) {
         if (myMoves) {
             this.moves = myMoves;
         } else {
@@ -47,12 +47,12 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
 
         if (turn1Spring && turn1Fall) {
             myMoves.push(new Move(this.nextAvailableMoveKey++,
-                'Fleet London movesTo North_Sea', 'England', turn1Spring));
+                                  'Fleet London movesTo North_Sea', 'England', turn1Spring));
             myMoves.push(new Move(this.nextAvailableMoveKey++,
-                'Army Liverpool movesTo Yorkshire', 'England', turn1Spring));
+                                  'Army Liverpool movesTo Yorkshire', 'England', turn1Spring));
             myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Paris movesTo Picardy', 'France', turn1Spring));
             myMoves.push(new Move(this.nextAvailableMoveKey++,
-                'Army Marseilles movesTo Gascony', 'France', turn1Spring));
+                                  'Army Marseilles movesTo Gascony', 'France', turn1Spring));
 
             myMoves.push(new Move(this.nextAvailableMoveKey++, 'Fleet North_Sea movesTo Norway', 'England', turn1Fall));
             myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Yorkshire movesTo Wales', 'England', turn1Fall));

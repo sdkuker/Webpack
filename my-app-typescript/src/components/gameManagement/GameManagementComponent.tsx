@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import GameListComponent from './GameListComponent';
 import GameManagementButtonComponent from './GameManagementButtonComponent';
 import { Redirect } from 'react-router-dom';
-import { IGameWarehouse } from '../../types/warehouses/IGameWarehouse';
+import { WarehouseManager } from '../../types/warehouses/WarehouseManager';
 
 interface StateValues {
     selectedGameId: String | null;
@@ -14,7 +14,7 @@ interface StateValues {
 }
 
 interface PropValues {
-    gameWarehouse: IGameWarehouse;
+    warehouseManager: WarehouseManager;
 }
 
 @observer
@@ -67,7 +67,7 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
 
             theReturn.push(
                 <GameListComponent
-                    gameWarehouse={this.props.gameWarehouse}
+                    gameWarehouse={this.props.warehouseManager.gameWarehouse}
                     whenGameSelected={this.gameSelected}
                 />);
 
@@ -122,7 +122,14 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
 
     openSelectedGame() {
         if (this.state.selectedGameId) {
-            this.setState({ redirectPath: 'openGame' });
+            const myGame = this.props.warehouseManager.gameWarehouse.getGameById(this.state.selectedGameId);
+            if (myGame) {
+                this.props.warehouseManager.turnWarehouse.getTurns(myGame);
+                this.setState({ redirectPath: 'openGame' });
+            } else {
+                this.setState({ isModalOpen: true, 
+                                errorDescription: 'Not able to find game with ID:' + this.state.selectedGameId });
+            }
         } else {
             this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
         }

@@ -41,6 +41,7 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
             myTurns.push(new Turn(aGame, 1, SeasonTypes.Fall, TurnStatus.Open));
 
             this.turns = myTurns;
+            this.game = aGame;
         }
     }
 }

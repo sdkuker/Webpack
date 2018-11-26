@@ -7,7 +7,6 @@ import { ITurnDataProvider } from './ITurnDataProvider';
 
 export class TurnWarehouse implements ITurnWarehouse {
    
-    @observable turns: Array<Turn>;
     dataProvider: ITurnDataProvider;
 
     constructor(aDataProvider: ITurnDataProvider) {

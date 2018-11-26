@@ -26,7 +26,7 @@ class Router extends React.Component<{}, StateValues> {
                         render={(routeProps) =>
                             (<GameManagementComponent 
                                 {...routeProps} 
-                                gameWarehouse={this.state.warehouseManager.gameWarehouse} 
+                                warehouseManager={this.state.warehouseManager} 
                             />)}
                     />
                     <Route
@@ -34,7 +34,7 @@ class Router extends React.Component<{}, StateValues> {
                         render={(routeProps) =>
                             (<GameManagementComponent 
                                 {...routeProps} 
-                                gameWarehouse={this.state.warehouseManager.gameWarehouse} 
+                                warehouseManager={this.state.warehouseManager} 
                             />)}
                     />
                     <Route
