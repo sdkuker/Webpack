@@ -32,7 +32,7 @@ export class StaticCountryDataProvider implements ICountryDataProvider {
 
     updatePlayerNameForCountry = (forGame: Game, aCountry: Country, newPlayerName: string) => {
 
-        aCountry.playerName = newPlayerName + ' + george';
+        aCountry.playerName = newPlayerName;
 
     }
 }
