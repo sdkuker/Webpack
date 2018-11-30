@@ -7,29 +7,26 @@ import { SeasonTypes, TurnStatus } from './DomainTypes';
 export class StaticTurnDataProvider implements ITurnDataProvider {
 
     @observable turns: Array<Turn>;
-    game: Game;
+    gameId: string;
+    allTurns: { [gameId: string]: Array<Turn> } = {};
 
-    constructor(myTurns: Array<Turn> | null) {
-        if (myTurns) {
-            this.turns = myTurns;
+    constructor(aGame: Game | null, myTurns: Array<Turn> | null) {
+        if (aGame && myTurns) {
+            this.allTurns[aGame.id] = myTurns;
         }
     }
 
     getTurns = (aGame: Game) => {
 
-        if (aGame !== this.game || ! this.turns) {
+        if ((aGame.id ==='1' || aGame.id ==='2') && ! this.allTurns[aGame.id]) {
             this.initializeTurns(aGame);
         }
         
-        const theReturn = Array<Turn>();
-
-        let index: number;
-        for (index = 0; index < this.turns.length; index++) {
-            if (this.turns[index].game === aGame)  {
-                    theReturn.push(this.turns[index]);
-                }
+        if (! this.allTurns[aGame.id]) {
+            this.allTurns[aGame.id] = Array<Turn>();
         }
-        return theReturn;
+
+        return this.allTurns[aGame.id];
     }
 
     initializeTurns = (aGame: Game | null) => {
@@ -37,11 +34,21 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
         if (aGame) {
             const myTurns = Array<Turn>();
 
-            myTurns.push(new Turn(aGame, 1, SeasonTypes.Spring, TurnStatus.Complete));
-            myTurns.push(new Turn(aGame, 1, SeasonTypes.Fall, TurnStatus.Open));
+            myTurns.push(new Turn('1', aGame, 1, SeasonTypes.Spring, TurnStatus.Complete));
+            myTurns.push(new Turn('2', aGame, 1, SeasonTypes.Fall, TurnStatus.Open));
 
-            this.turns = myTurns;
-            this.game = aGame;
+            this.allTurns[aGame.id] = myTurns;
         }
     }
+
+    persistTurn = (aTurn: Turn) => {
+        var currentTurnNumber = 0;
+        if (this.allTurns[aTurn.game.id]) {
+            currentTurnNumber = this.allTurns[aTurn.game.id].length;
+        }
+        aTurn.id = (currentTurnNumber + 1).toString();
+
+        this.allTurns[aTurn.game.id][currentTurnNumber - 1] = aTurn;
+    }
+
 }

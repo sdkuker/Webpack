@@ -23,13 +23,13 @@ if (gameWarehouseGame) {
 } else {
     myGame = new Game('1', 'Steve');
 }
-const myTurnDataProvider = new StaticTurnDataProvider(null);
+const myTurnDataProvider = new StaticTurnDataProvider(null, null);
 const myTurnWarehouse = new TurnWarehouse(myTurnDataProvider);
 const myMoveDataProvider = new StaticMoveDataProvider(null, myGame, myTurnWarehouse);
 const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);
 
 it('open turn has MovesEntryListComponent', () => {
-    const openTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
+    const openTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
     const wrapper1 = enzyme.shallow(<MovesForCountryComponent moveWarehouse={myMoveWarehouse} myGame={myGame} myTurn={openTurn} />);
     expect(wrapper1.find('table'))
 })

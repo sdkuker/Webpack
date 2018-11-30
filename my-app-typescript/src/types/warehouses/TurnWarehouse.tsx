@@ -1,6 +1,5 @@
 import { Turn } from './Turn';
 import { SeasonTypes, TurnStatus } from './DomainTypes';
-import { observable } from 'mobx';
 import { Game } from './Game';
 import { ITurnWarehouse } from './ITurnWarehouse';
 import { ITurnDataProvider } from './ITurnDataProvider';
@@ -40,5 +39,35 @@ export class TurnWarehouse implements ITurnWarehouse {
                 }
         }
         return null;
+    }
+
+    generateNextTurn = (aGame: Game) => {
+
+        //TODO write some nice unit test for this...
+
+        let currentlyOpenTurn = this.getOpenTurn(aGame);
+        if (currentlyOpenTurn) {
+            var newSeason: SeasonTypes;
+            var newYear: number;
+            if (currentlyOpenTurn.season === SeasonTypes.Fall) {
+                newSeason = SeasonTypes.Spring;
+                newYear = currentlyOpenTurn.year + 1;
+            } else {
+                newSeason = SeasonTypes.Fall;
+                newYear = currentlyOpenTurn.year;
+            }
+            currentlyOpenTurn.status = TurnStatus.Complete;
+            this.dataProvider.persistTurn(currentlyOpenTurn);
+
+            const nextTurn = new Turn(null, aGame, newYear, newSeason, TurnStatus.Open);
+            this.dataProvider.persistTurn(nextTurn);
+            return nextTurn;
+
+        } else {
+            // assume there are no turns at all - make the first one
+            const nextTurn = new Turn(null, aGame, 1, SeasonTypes.Spring, TurnStatus.Open);
+            this.dataProvider.persistTurn(nextTurn);
+            return nextTurn;
+        }
     }
 }

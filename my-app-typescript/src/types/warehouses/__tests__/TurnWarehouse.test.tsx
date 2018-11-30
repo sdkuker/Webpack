@@ -10,19 +10,18 @@ let game3 = new Game('3', 'test3');
 let myTurnWarehouse : TurnWarehouse;
 
 beforeAll(() => {
-    const myTurns = Array<Turn>();
+    const myDataProvider = new StaticTurnDataProvider(null, null);
 
-    myTurns.push(new Turn(game1, 1, SeasonTypes.Spring, TurnStatus.Complete));
-    myTurns.push(new Turn(game1, 1, SeasonTypes.Fall, TurnStatus.Complete));
-    myTurns.push(new Turn(game1, 2, SeasonTypes.Spring, TurnStatus.Complete));
-    myTurns.push(new Turn(game1, 2, SeasonTypes.Fall, TurnStatus.Open));
+    myDataProvider.persistTurn(new Turn(null, game1, 1, SeasonTypes.Spring, TurnStatus.Complete));
+    myDataProvider.persistTurn(new Turn(null, game1, 1, SeasonTypes.Fall, TurnStatus.Complete));
+    myDataProvider.persistTurn(new Turn(null, game1, 2, SeasonTypes.Spring, TurnStatus.Complete));
+    myDataProvider.persistTurn(new Turn(null, game1, 2, SeasonTypes.Fall, TurnStatus.Open));
 
-    myTurns.push(new Turn(game2, 1, SeasonTypes.Spring, TurnStatus.Complete));
-    myTurns.push(new Turn(game2, 1, SeasonTypes.Fall, TurnStatus.Open));
+    myDataProvider.persistTurn(new Turn(null, game2, 1, SeasonTypes.Spring, TurnStatus.Complete));
+    myDataProvider.persistTurn(new Turn(null, game2, 1, SeasonTypes.Fall, TurnStatus.Open));
 
-    myTurns.push(new Turn(game3, 1, SeasonTypes.Spring, TurnStatus.Complete));
+    myDataProvider.persistTurn(new Turn(null, game3, 1, SeasonTypes.Spring, TurnStatus.Complete));
 
-    const myDataProvider = new StaticTurnDataProvider(myTurns);
     myTurnWarehouse = new TurnWarehouse(myDataProvider);
 
 });

@@ -11,16 +11,17 @@ enzyme.configure({adapter: new Adapter()});
 const myGame = new Game('1', 'test');
 
 it('Get Open Season', () => {
-    const completeTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-    const openTurn = new Turn(myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    const completeTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
+    const openTurn = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
 
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
     const getTurnsMock = jest.fn();
     const getOpenTurnMock = jest.fn();
+    const generateNextTurnMock = jest.fn();
     getTurnsMock.mockReturnValueOnce([completeTurn,openTurn]);
 
-    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock, getOpenTurn: getOpenTurnMock};
+    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock, getOpenTurn: getOpenTurnMock, generateNextTurn: generateNextTurnMock};
 
     const wrapper1 = enzyme.shallow(<SeasonSelector 
                                         onTurnSelected={onTurnsSelectedMock} 
@@ -39,16 +40,17 @@ it('Get Open Season', () => {
 })
 
 it('Get Complete Season', () => {
-    const completeTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-    const openTurn = new Turn(myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    const completeTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
+    const openTurn = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
 
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
     const getTurnsMock = jest.fn();
     const getOpenTurnMock = jest.fn();
+    const generateNextTurnMock = jest.fn();
     getTurnsMock.mockReturnValueOnce([completeTurn,openTurn]);
 
-    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock, getOpenTurn: getOpenTurnMock};
+    const turnWarehouse: ITurnWarehouse = {getTurns: getTurnsMock, getTurn: getTurnMock, getOpenTurn: getOpenTurnMock, generateNextTurn: generateNextTurnMock};
 
     const wrapper1 = enzyme.shallow(<SeasonSelector 
                                         onTurnSelected={onTurnsSelectedMock} 

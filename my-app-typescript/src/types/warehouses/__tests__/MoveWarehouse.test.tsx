@@ -6,8 +6,8 @@ import { MoveWarehouse } from '.././MoveWarehouse';
 import { StaticMoveDataProvider } from '.././StaticMoveDataProvider';
 
 let myGame = new Game('1', 'test');
-let turn1Spring = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-let turn1Fall = new Turn(myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+let turn1Spring = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
+let turn1Fall = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
 let myMoveWarehouse : MoveWarehouse;
 
 beforeAll(() => {

@@ -4,7 +4,7 @@ import { Game } from '.././Game';
 import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
 
 let myGame = new Game('1', 'test');
-let myTurn = new Turn(myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
+let myTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
 
 it('constructor', () => {
     let myOrder = 'this is my order';

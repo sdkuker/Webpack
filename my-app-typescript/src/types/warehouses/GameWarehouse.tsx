@@ -6,9 +6,11 @@ import { IGameWarehouse } from './IGameWarehouse';
 export class GameWarehouse implements IGameWarehouse {
    
     @observable games: Array<Game>;
+    dataProvider: IGameDataProvider;
 
-    constructor(dataProvider: IGameDataProvider) {
-        this.games = dataProvider.getGames();
+    constructor(myDataProvider: IGameDataProvider) {
+        this.dataProvider = myDataProvider;
+        this.games = this.dataProvider.getGames();
     }
 
     getGameByName = (aGameName: string) => {
@@ -39,4 +41,9 @@ export class GameWarehouse implements IGameWarehouse {
 
     }
     
+    createGame = () => {
+        let theNewGame = this.dataProvider.createGame();
+
+        return theNewGame;
+    }
 }

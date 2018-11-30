@@ -6,4 +6,5 @@ export interface ITurnWarehouse {
     getTurns (aGame : Game): Array<Turn>;
     getTurn (aGame : Game, aYear : number, aSeason : SeasonTypes) : Turn | null;
     getOpenTurn (aGame : Game) : Turn | null;
+    generateNextTurn (aGame: Game) : Turn;
 } 
