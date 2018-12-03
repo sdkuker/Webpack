@@ -67,8 +67,6 @@ export class TurnWarehouse implements ITurnWarehouse {
 
     generateNextTurn = (aGame: Game) => {
 
-        // TODO write some nice unit test for this...
-
         let currentlyOpenTurn = this.getOpenTurn(aGame);
         if (currentlyOpenTurn) {
             var newSeason: SeasonTypes;

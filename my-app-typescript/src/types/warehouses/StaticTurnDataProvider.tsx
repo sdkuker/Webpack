@@ -16,13 +16,13 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
         }
     }
 
-    getTurns = ( aGame: Game ) => {
+    getTurns = (aGame: Game) => {
 
-        if ((aGame.id === '1' || aGame.id === '2') && ! this.allTurns[aGame.id]) {
+        if ((aGame.id === '1' || aGame.id === '2') && !this.allTurns[aGame.id]) {
             this.initializeTurns(aGame);
         }
-        
-        if (! this.allTurns[aGame.id]) {
+
+        if (!this.allTurns[aGame.id]) {
             this.allTurns[aGame.id] = Array<Turn>();
         }
 
@@ -48,9 +48,10 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
         } else {
             this.allTurns[aTurn.game.id] = Array<Turn>();
         }
-        aTurn.id = (currentTurnNumber + 1).toString();
-
-        this.allTurns[aTurn.game.id].push(aTurn);
+        if (! aTurn.id) {
+            aTurn.id = (currentTurnNumber + 1).toString();
+            this.allTurns[aTurn.game.id].push(aTurn);
+        }
     }
 
 }
