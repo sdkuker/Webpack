@@ -16,9 +16,9 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
         }
     }
 
-    getTurns = (aGame: Game) => {
+    getTurns = ( aGame: Game ) => {
 
-        if ((aGame.id ==='1' || aGame.id ==='2') && ! this.allTurns[aGame.id]) {
+        if ((aGame.id === '1' || aGame.id === '2') && ! this.allTurns[aGame.id]) {
             this.initializeTurns(aGame);
         }
         
@@ -45,10 +45,12 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
         var currentTurnNumber = 0;
         if (this.allTurns[aTurn.game.id]) {
             currentTurnNumber = this.allTurns[aTurn.game.id].length;
+        } else {
+            this.allTurns[aTurn.game.id] = Array<Turn>();
         }
         aTurn.id = (currentTurnNumber + 1).toString();
 
-        this.allTurns[aTurn.game.id][currentTurnNumber - 1] = aTurn;
+        this.allTurns[aTurn.game.id].push(aTurn);
     }
 
 }

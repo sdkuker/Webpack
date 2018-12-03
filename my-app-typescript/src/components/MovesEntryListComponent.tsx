@@ -29,7 +29,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
             isModalOpen: false,
             countryToDisplay: '',
             validationResults: new MoveValidationResults(false, 'placeholder'),
-            moves: this.props.moveWarehouse.getMoves(this.props.game, this.props.countryName, this.props.turn, true)
+            moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true)
         };
         this.moveSelected = this.moveSelected.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -115,7 +115,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
     }
     movePersisted() {
         // tslint:disable-next-line
-        this.setState({moves: this.props.moveWarehouse.getMoves(this.props.game, this.props.countryName, this.props.turn, true)});
+        this.setState({moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn, true)});
     }
 
 }

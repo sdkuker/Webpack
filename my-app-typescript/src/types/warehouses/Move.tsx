@@ -7,7 +7,7 @@ import { MoveValidationResults } from './MoveValidationResults';
 export class Move {
 
     @observable order: string;
-    id: number;
+    id: string;
     pieceType?: PieceTypes;
     currentLocationName?: string;
     action?: MoveAction;
@@ -19,7 +19,7 @@ export class Move {
     owningCountryName?: string;
     turn: Turn;
 
-    constructor(anId: number, anOrder: string, anOwningCountrName: string, aTurn: Turn) {
+    constructor(anId: string, anOrder: string, anOwningCountrName: string, aTurn: Turn) {
         this.id = anId;
         this.owningCountryName = anOwningCountrName;
         this.turn = aTurn;

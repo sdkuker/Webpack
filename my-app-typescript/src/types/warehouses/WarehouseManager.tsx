@@ -31,7 +31,7 @@ export class WarehouseManager  {
             this.gameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
             this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
             this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null), null);
-            this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider(null, null, this.turnWarehouse));
+            this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider(null));
             this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider(null));
         }
     }

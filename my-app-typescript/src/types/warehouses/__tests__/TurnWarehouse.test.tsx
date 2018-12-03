@@ -7,6 +7,7 @@ import { StaticTurnDataProvider } from '.././StaticTurnDataProvider';
 let game1 = new Game('1', 'test');
 let game2 = new Game('2', 'test2');
 let game3 = new Game('3', 'test3');
+let game4 = new Game('4', 'Game with no turns');
 let myTurnWarehouse : TurnWarehouse;
 
 beforeAll(() => {
@@ -49,9 +50,14 @@ it('getting open turn for game 1', () => {
 
 })
 
-it('getting no open turn for game 3', () => {
+it('game 3 had no open turn - should get most recent turn', () => {
     const openTurn = myTurnWarehouse.getOpenTurn(game3);
-    expect(openTurn).toBeNull();
+    expect(openTurn).not.toBeNull();
+    if (openTurn) {
+        expect(openTurn.game).toEqual(game3);
+        expect(openTurn.year).toEqual(1);
+        expect(openTurn.season).toEqual(SeasonTypes.Spring);
+    }
 })
 
 it('get turn for game1 year 1 spring', () => {
@@ -69,4 +75,15 @@ it('get turn for game1 year 1 spring', () => {
 it('get turn that does not exist', () => {
     const myTurn = myTurnWarehouse.getTurn(game1, 3, SeasonTypes.Spring)
     expect(myTurn).toBeNull();
+})
+
+it('creating the first turn for a game', () => {
+
+    const myTurn = myTurnWarehouse.generateNextTurn(game4);
+    expect(myTurn).not.toBeNull();
+    expect(myTurn.id).toEqual('1');
+    expect(myTurn.game).toEqual(game4);
+    expect(myTurn.season).toEqual(SeasonTypes.Spring);
+    expect(myTurn.status).toEqual(TurnStatus.Open);
+    expect(myTurn.year).toEqual(1);
 })

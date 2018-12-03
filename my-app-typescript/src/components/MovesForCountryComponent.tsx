@@ -11,7 +11,7 @@ import { Game } from '../types/warehouses/Game';
 interface PropValues {
     moveWarehouse: IMoveWarehouse;
     myGame: Game;
-    myTurn: Turn | null;
+    myTurn: Turn;
 }
 interface StateValues {
     countryToDisplay: string;
@@ -44,7 +44,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                     <MovesListComponent
                         key={this.state.countryToDisplay}
                         moves={this.props.moveWarehouse.getMoves(
-                            this.props.myGame, this.state.countryToDisplay, this.props.myTurn, false)}
+                            this.state.countryToDisplay, this.props.myTurn, false)}
                     />
                 );
         }

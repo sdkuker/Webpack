@@ -1,6 +1,4 @@
 import { IMoveDataProvider } from './IMoveDataProvider';
-import { Game } from './Game';
-import { ITurnWarehouse } from './ITurnWarehouse';
 import { SeasonTypes } from './DomainTypes';
 import { Move } from './Move';
 import { Turn } from './Turn';
@@ -8,69 +6,41 @@ import { observable, action } from 'mobx';
 
 export class StaticMoveDataProvider implements IMoveDataProvider {
 
+    // contains the moves for a single turn.  
     @observable moves: Array<Move>;
+    movesTurnId: string;
     nextAvailableMoveKey: number = 1;
-    myGame: Game;
-    myTurnWarehouse: ITurnWarehouse;
+    allMovesForGame: { [turnId: string]: Array<Move> } = {};
 
-    constructor(myMoves: Array<Move> | null, aGame: Game | null,
-                aTurnWarehouse: ITurnWarehouse | null) {
-        if (myMoves) {
+    constructor(myMoves: Array<Move> | null) {
+        if ( myMoves && myMoves.length > 0 ) {
+            this.allMovesForGame[myMoves[0].id] = myMoves;
+            this.movesTurnId = myMoves[0].id;
             this.moves = myMoves;
-        } else {
-            if (aGame) {
-                this.myGame = aGame;
-            }
-            if (aTurnWarehouse) {
-                this.myTurnWarehouse = aTurnWarehouse;
-            }
-            if (this.myGame && this.myTurnWarehouse) {
-                this.initializeMoves();
-            }
-        }
+        } 
     }
 
-    getMoves = (forGame: Game) => {
-        if (forGame !== this.myGame) {
-            this.myGame = forGame;
-            this.initializeMoves();
-        }
+    getMoves = (forTurn: Turn) => {
+
+        this.adjustCacheForTurnId(forTurn.id);
+
         return this.moves;
     }
 
-    initializeMoves = () => {
+    adjustCacheForTurnId = (aTurnId: string) => {
 
-        let turn1Spring = this.myTurnWarehouse.getTurn(this.myGame, 1, SeasonTypes.Spring);
-        let turn1Fall = this.myTurnWarehouse.getTurn(this.myGame, 1, SeasonTypes.Fall);
-
-        const myMoves = Array<Move>();
-
-        if (turn1Spring && turn1Fall) {
-            myMoves.push(new Move(this.nextAvailableMoveKey++,
-                                  'Fleet London movesTo North_Sea', 'England', turn1Spring));
-            myMoves.push(new Move(this.nextAvailableMoveKey++,
-                                  'Army Liverpool movesTo Yorkshire', 'England', turn1Spring));
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Paris movesTo Picardy', 'France', turn1Spring));
-            myMoves.push(new Move(this.nextAvailableMoveKey++,
-                                  'Army Marseilles movesTo Gascony', 'France', turn1Spring));
-
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Fleet North_Sea movesTo Norway', 'England', turn1Fall));
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Yorkshire movesTo Wales', 'England', turn1Fall));
-
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Picardy movesTo Belguim', 'France', turn1Fall));
-            myMoves.push(new Move(this.nextAvailableMoveKey++, 'Army Gascony movesTo Spain_(sc)', 'France', turn1Fall));
-
-        }
-
-        this.moves = myMoves;
+        if ( aTurnId ! === this.movesTurnId ) {
+            if (this.allMovesForGame[aTurnId]) {
+                this.moves = this.allMovesForGame[aTurnId];
+                this.movesTurnId = aTurnId;
+            }
+        } 
     }
 
     @action
-    deleteMove = (forGame: Game, aMove: Move) => {
-        if (forGame !== this.myGame) {
-            this.myGame = forGame;
-            this.initializeMoves();
-        }
+    deleteMove = (aMove: Move) => {
+
+        this.adjustCacheForTurnId(aMove.turn.id);
 
         let i: number;
         for (i = 0; i < this.moves.length; i++) {
@@ -80,25 +50,18 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
         }
     }
     @action
-    persistMove = (forGame: Game, aMove: Move, aNonPersistentMoveOrder: string) => {
+    persistMove = (aMove: Move, aNonPersistentMoveOrder: string) => {
 
-        if (forGame !== this.myGame) {
-            this.myGame = forGame;
-            this.initializeMoves();
-        }
+        this.adjustCacheForTurnId(aMove.turn.id);
+
         if (aMove.order !== aNonPersistentMoveOrder) {
-            if (aMove.id === (this.nextAvailableMoveKey - 1)) {
-                this.moves.push(aMove);
-            }
+            this.moves.push(aMove);
         }
     }
 
     @action
-    createNonPersistentMove = (forGame: Game, aCountryName: string, aTurn: Turn, aNonPersistentMoveOrder: string) => {
-        if (forGame !== this.myGame) {
-            this.myGame = forGame;
-            this.initializeMoves();
-        }
-        return new Move(this.nextAvailableMoveKey++, aNonPersistentMoveOrder, aCountryName, aTurn);
+    createNonPersistentMove = (aCountryName: string, aTurn: Turn, aNonPersistentMoveOrder: string) => {
+
+        return new Move(aTurn.id + this.nextAvailableMoveKey++, aNonPersistentMoveOrder, aCountryName, aTurn);
     }
 }

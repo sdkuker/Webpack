@@ -9,10 +9,9 @@ import { MoveWarehouse } from '../../types/warehouses/MoveWarehouse';
 import { StaticMoveDataProvider } from '../../types/warehouses/StaticMoveDataProvider'
 import { GameWarehouse } from '../../types/warehouses/GameWarehouse';
 import { StaticGameDataProvider } from '../../types/warehouses/StaticGameDataProvider'
-import { TurnWarehouse } from '../../types/warehouses/TurnWarehouse';
 import { StaticTurnDataProvider } from '../../types/warehouses/StaticTurnDataProvider'
 
-enzyme.configure({adapter: new Adapter()});
+enzyme.configure({ adapter: new Adapter() });
 
 const myGameDataProvider = new StaticGameDataProvider(null);
 const myGameWarehouse = new GameWarehouse(myGameDataProvider);
@@ -24,8 +23,7 @@ if (gameWarehouseGame) {
     myGame = new Game('1', 'Steve');
 }
 const myTurnDataProvider = new StaticTurnDataProvider(null, null);
-const myTurnWarehouse = new TurnWarehouse(myTurnDataProvider);
-const myMoveDataProvider = new StaticMoveDataProvider(null, myGame, myTurnWarehouse);
+const myMoveDataProvider = new StaticMoveDataProvider(null);
 const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);
 
 it('open turn has MovesEntryListComponent', () => {

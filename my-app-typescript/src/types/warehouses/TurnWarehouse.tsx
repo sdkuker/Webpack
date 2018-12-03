@@ -5,7 +5,7 @@ import { ITurnWarehouse } from './ITurnWarehouse';
 import { ITurnDataProvider } from './ITurnDataProvider';
 
 export class TurnWarehouse implements ITurnWarehouse {
-   
+
     dataProvider: ITurnDataProvider;
 
     constructor(aDataProvider: ITurnDataProvider) {
@@ -20,13 +20,37 @@ export class TurnWarehouse implements ITurnWarehouse {
     getOpenTurn = (aGame: Game) => {
 
         let index: number;
+        let theReturn: Turn;
+        let highestTurn: Turn;
         const turnsForGame = this.getTurns(aGame);
         for (index = 0; index < turnsForGame.length; index++) {
-            if (turnsForGame[index].status === TurnStatus.Open)  {
-                    return turnsForGame[index];
+            if (turnsForGame[index].status === TurnStatus.Open) {
+                theReturn = turnsForGame[index];
+            } else {
+                // @ts-ignore
+                if (highestTurn) {
+                    if (highestTurn.year < turnsForGame[index].year) {
+                        highestTurn = turnsForGame[index];
+                    } else {
+                        if (highestTurn.year === turnsForGame[index].year &&
+                            highestTurn.season === SeasonTypes.Spring) {
+                            highestTurn = turnsForGame[index];
+                        }
+                    }
+
+                } else {
+                    highestTurn = turnsForGame[index];
                 }
+            }
         }
-        return null;
+
+        // @ts-ignore
+        if (!theReturn) {
+            // @ts-ignore
+            theReturn = highestTurn;
+        }
+
+        return theReturn;
     }
 
     getTurn = (aGame: Game, aYear: number, aSeason: SeasonTypes) => {
@@ -34,16 +58,16 @@ export class TurnWarehouse implements ITurnWarehouse {
         let index: number;
         const turnsForGame = this.getTurns(aGame);
         for (index = 0; index < turnsForGame.length; index++) {
-            if (turnsForGame[index].year === aYear && turnsForGame[index].season === aSeason)  {
-                    return turnsForGame[index];
-                }
+            if (turnsForGame[index].year === aYear && turnsForGame[index].season === aSeason) {
+                return turnsForGame[index];
+            }
         }
         return null;
     }
 
     generateNextTurn = (aGame: Game) => {
 
-        //TODO write some nice unit test for this...
+        // TODO write some nice unit test for this...
 
         let currentlyOpenTurn = this.getOpenTurn(aGame);
         if (currentlyOpenTurn) {

@@ -12,7 +12,7 @@ enzyme.configure({adapter: new Adapter()});
 
 const myGame = new Game('1', 'test');
 const myTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Open);
-const myMove = new Move(1, "my order", "England", myTurn);
+const myMove = new Move('1', "my order", "England", myTurn);
 const onMoveEntryValidationdMock = jest.fn(); 
 const persistMoveMock = jest.fn(); 
 const deleteMoveMock = jest.fn();

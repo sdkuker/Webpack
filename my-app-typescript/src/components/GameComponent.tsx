@@ -17,7 +17,7 @@ interface PropertyValues {
 }
 
 interface StateValues {
-    selectedTurn: Turn | null;
+    selectedTurn: Turn;
 }
 
 @observer
