@@ -3,20 +3,13 @@ import { Game } from './Game';
 
 export class StaticGameDataProvider implements IGameDataProvider {
 
-    games: Array<Game>;
+    games = new Array<Game>();
     lastUsedId = 0;
 
     constructor(myGames: Array<Game> | null) {
         if (myGames) {
             this.games = myGames;
-        } else {
-            const staticGames = Array<Game>();
-            staticGames.push(new Game('1', 'Diplomacy - Greatest Ever'));
-            this.lastUsedId ++;
-            staticGames.push(new Game('2', 'Diplomacy - Almost the Greatest Ever'));
-            this.lastUsedId ++;
-            this.games = staticGames;
-        }
+        } 
     }
 
     getGames = () => {
@@ -29,6 +22,25 @@ export class StaticGameDataProvider implements IGameDataProvider {
         let theReturn = new Game(this.lastUsedId.toString(), 'Game Name');
 
         return theReturn;
+    }
+
+    persistGame = (aGame: Game) => {
+
+        // might be a brand new game or just a change to the name
+
+        let i: number;
+        let newGame = true;
+        for (i = 0; i < this.games.length; i++) {
+            if (this.games[i].id === aGame.id) {
+                newGame = false;
+            }
+        }
+
+        if (newGame) {
+             this.games.push(aGame);
+        }
+       
+        return aGame;
     }
 
 }

@@ -1,5 +1,4 @@
 import { IMoveDataProvider } from './IMoveDataProvider';
-import { SeasonTypes } from './DomainTypes';
 import { Move } from './Move';
 import { Turn } from './Turn';
 import { observable, action } from 'mobx';

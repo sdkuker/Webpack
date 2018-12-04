@@ -106,7 +106,7 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
     }
 
     nameChanged(aNewGameName: string) {
-        console.log('name was changed to: ' + aNewGameName);
+        this.props.gameWarehouse.updateGameName(this.props.game, aNewGameName);
     }
 
     openGame() {

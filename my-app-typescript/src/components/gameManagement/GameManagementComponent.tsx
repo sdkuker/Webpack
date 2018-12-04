@@ -136,7 +136,9 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
     }
 
     addGame() {
-        this.setState({ redirectPath: 'addGame' });
+        let newGame = this.props.warehouseManager.gameWarehouse.createGame();
+        this.setState({ selectedGameId: newGame.id});
+        this.setState({ redirectPath: 'administerGame' });
     }
 
     deleteGame() {

@@ -14,6 +14,11 @@ export class TurnWarehouse implements ITurnWarehouse {
 
     getTurns = (aGame: Game) => {
 
+        let theTurns = this.dataProvider.getTurns(aGame);
+        if (theTurns.length === 0 ) {
+            let firstTurn = new Turn(null, aGame, 1, SeasonTypes.Spring, TurnStatus.Open);
+            this.dataProvider.persistTurn(firstTurn);
+        }
         return this.dataProvider.getTurns(aGame);
     }
 

@@ -43,7 +43,16 @@ export class GameWarehouse implements IGameWarehouse {
     
     createGame = () => {
         let theNewGame = this.dataProvider.createGame();
+        this.dataProvider.persistGame(theNewGame);
+        this.games = this.dataProvider.getGames();
 
         return theNewGame;
+    }
+
+    updateGameName = (aGame: Game, newGameName: string) => {
+
+        aGame.name = newGameName;
+        
+        return this.dataProvider.persistGame(aGame);
     }
 }
