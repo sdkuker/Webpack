@@ -23,7 +23,7 @@ if (gameWarehouseGame) {
     myGame = new Game('1', 'Steve');
 }
 const myTurnDataProvider = new StaticTurnDataProvider(null, null);
-const myMoveDataProvider = new StaticMoveDataProvider(null);
+const myMoveDataProvider = new StaticMoveDataProvider();
 const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);
 
 it('open turn has MovesEntryListComponent', () => {

@@ -19,8 +19,10 @@ export class Move {
     owningCountryName?: string;
     turn: Turn;
 
-    constructor(anId: string, anOrder: string, anOwningCountrName: string, aTurn: Turn) {
-        this.id = anId;
+    constructor(anId: string | null, anOrder: string, anOwningCountrName: string, aTurn: Turn) {
+        if (anId) {
+             this.id = anId;
+        }
         this.owningCountryName = anOwningCountrName;
         this.turn = aTurn;
         this.order = anOrder;

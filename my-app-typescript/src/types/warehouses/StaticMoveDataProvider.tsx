@@ -5,41 +5,46 @@ import { observable, action } from 'mobx';
 
 export class StaticMoveDataProvider implements IMoveDataProvider {
 
-    // contains the moves for a single turn.  
+    // contains the moves for a single turn for a chosen game.  
     @observable moves: Array<Move>;
-    movesTurnId: string;
+    movesTurnId: string = 'initialValue';
     nextAvailableMoveKey: number = 1;
-    allMovesForGame: { [turnId: string]: Array<Move> } = {};
-
-    constructor(myMoves: Array<Move> | null) {
-        if ( myMoves && myMoves.length > 0 ) {
-            this.allMovesForGame[myMoves[0].id] = myMoves;
-            this.movesTurnId = myMoves[0].id;
-            this.moves = myMoves;
-        } 
-    }
+    // the key to the outer map is the game id.  The key to the inner map is the turn id
+    allMoves: Map<string, Map<string, Array<Move>>> = new Map();
 
     getMoves = (forTurn: Turn) => {
 
-        this.adjustCacheForTurnId(forTurn.id);
+        this.adjustCacheForTurn(forTurn);
 
         return this.moves;
     }
 
-    adjustCacheForTurnId = (aTurnId: string) => {
+    adjustCacheForTurn = (aTurn: Turn) => {
 
-        if ( aTurnId ! === this.movesTurnId ) {
-            if (this.allMovesForGame[aTurnId]) {
-                this.moves = this.allMovesForGame[aTurnId];
-                this.movesTurnId = aTurnId;
+        if (aTurn.id !== this.movesTurnId) {
+            if (this.allMoves.get(aTurn.game.id)) {  // have a map for the turn
+                // @ts-ignore
+                if (!this.allMoves.get(aTurn.game.id).get(aTurn.id)) { // no moves for the turn
+                    // @ts-ignore
+                    this.allMoves.get(aTurn.game.id).set(aTurn.id, new Array<Move>());
+                }
+            } else {  // no map for the game - add an empty map
+                this.allMoves.set(aTurn.game.id, new Map<string, Array<Move>>());
+                // also add an array for this turn
+                // @ts-ignore
+                this.allMoves.get(aTurn.game.id).set(aTurn.id, new Array<Move>());
             }
-        } 
+
+            // @ts-ignore
+            this.moves = this.allMoves.get(aTurn.game.id).get(aTurn.id);
+            this.movesTurnId = aTurn.id;
+        }
     }
 
     @action
     deleteMove = (aMove: Move) => {
 
-        this.adjustCacheForTurnId(aMove.turn.id);
+        this.adjustCacheForTurn(aMove.turn);
 
         let i: number;
         for (i = 0; i < this.moves.length; i++) {
@@ -49,11 +54,18 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
         }
     }
     @action
-    persistMove = (aMove: Move, aNonPersistentMoveOrder: string) => {
+    persistMove = (aMove: Move, aNonPersistentMoveOrder: string | null) => {
 
-        this.adjustCacheForTurnId(aMove.turn.id);
+        this.adjustCacheForTurn(aMove.turn);
 
         if (aMove.order !== aNonPersistentMoveOrder) {
+            if (!aMove.id) {
+                aMove.id = aMove.turn.id + this.nextAvailableMoveKey++;
+            }
+            // it seems tht you have to push the move in both arrarys.  putting it in this.moves w/o the other doesn't
+            // seem to get it in this.allMoves.  Kinda surprising actually.
+            // @ts-ignore
+            this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).push(aMove);
             this.moves.push(aMove);
         }
     }

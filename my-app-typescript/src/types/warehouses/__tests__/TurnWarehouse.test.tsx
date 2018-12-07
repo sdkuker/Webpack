@@ -78,19 +78,22 @@ it('get turn that does not exist', () => {
     expect(myTurn).toBeNull();
 })
 
-it('creating the first, second, and third for a game', () => {
+it('creating the first, second, third and fourth for a game', () => {
 
-    const myTurn = myTurnWarehouse.generateNextTurn(game5);
-    expect(myTurn).not.toBeNull();
-    expect(myTurn.id).toEqual('1');
-    expect(myTurn.game).toEqual(game5);
-    expect(myTurn.season).toEqual(SeasonTypes.Spring);
-    expect(myTurn.status).toEqual(TurnStatus.Open);
-    expect(myTurn.year).toEqual(1);
+    // the first turn is automatically created when getTurns is called -
+    // which it is from getOpenTurna
+    const myfirstTurn = myTurnWarehouse.getOpenTurn(game5);
+    expect(myfirstTurn).not.toBeNull();
+    expect(myfirstTurn.id).toEqual('1');
+    expect(myfirstTurn.game).toEqual(game5);
+    expect(myfirstTurn.season).toEqual(SeasonTypes.Spring);
+    expect(myfirstTurn.status).toEqual(TurnStatus.Open);
+    expect(myfirstTurn.year).toEqual(1);
+
 
     const mySecondTurn = myTurnWarehouse.generateNextTurn(game5);
-    expect(myTurn.status).toEqual(TurnStatus.Complete);
-    expect(myTurn.id).toEqual('1');
+    expect(myfirstTurn.status).toEqual(TurnStatus.Complete);
+    expect(myfirstTurn.id).toEqual('1');
     expect(mySecondTurn).not.toBeNull();
     expect(mySecondTurn.id).toEqual('2');
     expect(mySecondTurn.game).toEqual(game5);
@@ -99,8 +102,8 @@ it('creating the first, second, and third for a game', () => {
     expect(mySecondTurn.year).toEqual(1);
 
     const myThirdTurn = myTurnWarehouse.generateNextTurn(game5);
-    expect(myTurn.status).toEqual(TurnStatus.Complete);
-    expect(myTurn.id).toEqual('1');
+    expect(myfirstTurn.status).toEqual(TurnStatus.Complete);
+    expect(myfirstTurn.id).toEqual('1');
     expect(mySecondTurn.status).toEqual(TurnStatus.Complete);
     expect(mySecondTurn.id).toEqual('2');
     expect(myThirdTurn).not.toBeNull();

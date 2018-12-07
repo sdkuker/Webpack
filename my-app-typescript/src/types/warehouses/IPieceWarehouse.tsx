@@ -1,5 +1,6 @@
 import { Piece } from './Piece';
+import { Turn } from './Turn';
 
 export interface IPieceWarehouse {
-    getPieces(): Map<String, Piece>;
+    getPieces(forTurn: Turn): Array<Piece>;
 } 

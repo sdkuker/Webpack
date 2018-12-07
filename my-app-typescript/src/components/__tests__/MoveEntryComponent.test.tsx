@@ -17,7 +17,9 @@ const onMoveEntryValidationdMock = jest.fn();
 const persistMoveMock = jest.fn(); 
 const deleteMoveMock = jest.fn();
 const getMovesMock = jest.fn();
-const moveWarehouseMock: IMoveWarehouse = {persistMove : persistMoveMock, deleteMove : deleteMoveMock, getMoves : getMovesMock};
+const createInitialMovesMock = jest.fn();
+const moveWarehouseMock: IMoveWarehouse = 
+    {persistMove : persistMoveMock, deleteMove : deleteMoveMock, getMoves : getMovesMock, createInitialMoves: createInitialMovesMock};
 const onMovePersistedMock = jest.fn();
 
 it('not sure what Im testing yet', () => {

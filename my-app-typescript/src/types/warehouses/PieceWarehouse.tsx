@@ -1,17 +1,16 @@
-import { Piece } from './Piece';
-import { observable } from 'mobx';
+import { Turn } from './Turn';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { IPieceDataProvider } from './IPieceDataProvider';
 
 export class PieceWarehouse implements IPieceWarehouse {
 
-    @observable pieces: Map<String, Piece>;
+    dataProvider: IPieceDataProvider;
 
-    constructor(dataProvider: IPieceDataProvider) {
-        this.pieces = dataProvider.getPieces();
+    constructor(myDataProvider: IPieceDataProvider) {
+        this.dataProvider = myDataProvider;
     }
 
-    getPieces = () => {
-        return this.pieces;
+    getPieces = (forTurn: Turn) => {
+        return this.dataProvider.getPieces(forTurn);
     }
 }

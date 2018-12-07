@@ -1,70 +1,101 @@
 import { IPieceDataProvider } from './IPieceDataProvider';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
 import { Piece } from './Piece';
-import { observable, action } from 'mobx';
-import { LocationTypes } from './DomainTypes';
+import { Turn } from './Turn';
+import { observable } from 'mobx';
+import { LocationTypes, SeasonTypes } from './DomainTypes';
 import { Location } from './Location';
 
 export class StaticPieceDataProvider implements IPieceDataProvider {
 
-    @observable pieces: Map<String, Piece>;
+    // contains all the pieces for a single turn
+    @observable pieces: Array<Piece>;
+    piecesTurnId: string;
+    nextAvailablePieceKey = 0;
+    // the key to the outer map is the game id.  The key to the inner map is the turn id
+    allPieces: Map<string, Map<string, Array<Piece>>> = new Map();
 
-    constructor(myPieces: Map<String, Piece> | null) {
-        if (myPieces) {
-            this.pieces = myPieces;
-        } else {
-            this.initializePieces();
+    getPieces = (forTurn: Turn) => {
+
+        this.adjustCacheForTurn(forTurn);
+
+        if ((this.pieces.length === 0) && forTurn.year === 1 && forTurn.season === SeasonTypes.Spring) {
+            let initializedPieces = this.initializePieces();
+             // @ts-ignore
+            this.allPieces.get(forTurn.game.id).set(forTurn.id, initializedPieces);
+            this.pieces = initializedPieces;
         }
+
+        return this.pieces;
     }
 
-    getPieces = () => {
-        return this.pieces;
+    adjustCacheForTurn = (aTurn: Turn) => {
+
+        if (aTurn.id !== this.piecesTurnId) {
+            if (this.allPieces.get(aTurn.game.id)) {  // have a map for the turn
+                // @ts-ignore
+                if (!this.allPieces.get(aTurn.game.id).get(aTurn.id)) { // no moves for the turn
+                    // @ts-ignore
+                    this.allPieces.get(aTurn.game.id).set(aTurn.id, new Array<Piece>());
+                }
+            } else {  // no map for the game - add an empty map
+                this.allPieces.set(aTurn.game.id, new Map<string, Array<Piece>>());
+                // also add an array for this turn
+                // @ts-ignore
+                this.allPieces.get(aTurn.game.id).set(aTurn.id, new Array<Piece>());
+            }
+
+            // @ts-ignore
+            this.pieces = this.allPieces.get(aTurn.game.id).get(aTurn.id);
+            this.piecesTurnId = aTurn.id;
+        }
     }
 
     initializePieces = () => {
 
-        const myMap = new Map<String, Piece>();
+        const myArray = new Array<Piece>();
         const myLocations = LocationWarehouse.locations;
 
-        this.insertPiece(myMap, myLocations, 'Vienna', 'Austria', 'Army');
-        this.insertPiece(myMap, myLocations, 'Budapest', 'Austria', 'Army');
-        this.insertPiece(myMap, myLocations, 'Trieste', 'Austria', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Vienna', 'Austria', 'Army');
+        this.insertPiece(myArray, myLocations, 'Budapest', 'Austria', 'Army');
+        this.insertPiece(myArray, myLocations, 'Trieste', 'Austria', 'Fleet');
 
-        this.insertPiece(myMap, myLocations, 'London', 'England', 'Fleet');
-        this.insertPiece(myMap, myLocations, 'Edinburgh', 'England', 'Fleet');
-        this.insertPiece(myMap, myLocations, 'Liverpool', 'England', 'Army');
+        this.insertPiece(myArray, myLocations, 'London', 'England', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Edinburgh', 'England', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Liverpool', 'England', 'Army');
 
-        this.insertPiece(myMap, myLocations, 'Paris', 'France', 'Army');
-        this.insertPiece(myMap, myLocations, 'Marseilles', 'France', 'Army');
-        this.insertPiece(myMap, myLocations, 'Brest', 'France', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Paris', 'France', 'Army');
+        this.insertPiece(myArray, myLocations, 'Marseilles', 'France', 'Army');
+        this.insertPiece(myArray, myLocations, 'Brest', 'France', 'Fleet');
 
-        this.insertPiece(myMap, myLocations, 'Berlin', 'Germany', 'Army');
-        this.insertPiece(myMap, myLocations, 'Munich', 'Germany', 'Army');
-        this.insertPiece(myMap, myLocations, 'Kiel', 'Germany', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Berlin', 'Germany', 'Army');
+        this.insertPiece(myArray, myLocations, 'Munich', 'Germany', 'Army');
+        this.insertPiece(myArray, myLocations, 'Kiel', 'Germany', 'Fleet');
 
-        this.insertPiece(myMap, myLocations, 'Rome', 'Italy', 'Army');
-        this.insertPiece(myMap, myLocations, 'Venice', 'Italy', 'Army');
-        this.insertPiece(myMap, myLocations, 'Naples', 'Italy', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Rome', 'Italy', 'Army');
+        this.insertPiece(myArray, myLocations, 'Venice', 'Italy', 'Army');
+        this.insertPiece(myArray, myLocations, 'Naples', 'Italy', 'Fleet');
 
-        this.insertPiece(myMap, myLocations, 'Moscow', 'Russia', 'Army');
-        this.insertPiece(myMap, myLocations, 'Sevastopol', 'Russia', 'Fleet');
-        this.insertPiece(myMap, myLocations, 'StPetersburg', 'Russia', 'Fleet');
-        this.insertPiece(myMap, myLocations, 'Warsaw', 'Russia', 'Army');
+        this.insertPiece(myArray, myLocations, 'Moscow', 'Russia', 'Army');
+        this.insertPiece(myArray, myLocations, 'Sevastopol', 'Russia', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'StPetersburg', 'Russia', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Warsaw', 'Russia', 'Army');
 
-        this.insertPiece(myMap, myLocations, 'Ankara', 'Turkey', 'Fleet');
-        this.insertPiece(myMap, myLocations, 'Constantinople', 'Turkey', 'Army');
-        this.insertPiece(myMap, myLocations, 'Smyrna', 'Turkey', 'Army');
+        this.insertPiece(myArray, myLocations, 'Ankara', 'Turkey', 'Fleet');
+        this.insertPiece(myArray, myLocations, 'Constantinople', 'Turkey', 'Army');
+        this.insertPiece(myArray, myLocations, 'Smyrna', 'Turkey', 'Army');
 
-        this.pieces = myMap;
+        return myArray;
     }
 
-    insertPiece = (pieceMap: Map<String, Piece>, locationMap: Map<String, Location>, 
-                   locationName: string, countryName: string, type: string) => {
-        const locationKey: string  = locationName + LocationTypes.Piece;
-        const theLocation: Location | undefined =  locationMap.get(locationKey);
+    insertPiece = ( pieceArray: Array<Piece>, locationMap: Map<String, Location>,
+                    locationName: string, countryName: string, type: string) => {
+        const locationKey: string = locationName + LocationTypes.Piece;
+        const theLocation: Location | undefined = locationMap.get(locationKey);
         if (theLocation) {
-            const thePiece = new Piece(countryName, theLocation, type);
-            pieceMap.set(locationName + type, thePiece);
+            this.nextAvailablePieceKey++;
+            const thePiece = new Piece(this.nextAvailablePieceKey.toString(), countryName, theLocation, type);
+            pieceArray.push(thePiece);
         }
     }
 }

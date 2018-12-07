@@ -1,5 +1,6 @@
 import { Move } from './Move';
 import { Turn } from './Turn';
+import { Piece } from './Piece';
 import { IMoveDataProvider } from './IMoveDataProvider';
 import { IMoveWarehouse } from './IMoveWarehouse';
 import { action } from 'mobx';
@@ -44,6 +45,21 @@ export class MoveWarehouse implements IMoveWarehouse {
         }
 
         return theReturn;
+    }
+
+    createInitialMoves = (aTurn: Turn, pieces: Array<Piece>) => {
+
+        const theReturn = Array<Move>();
+
+        pieces.forEach((aPiece: Piece, anIndex: number) => {
+            let moveOrder = aPiece.type + ' ' + aPiece.owningCountryName + ' Holds';
+            let aMove = new Move(null, moveOrder, aPiece.owningCountryName, aTurn);
+            this.persistMove(aMove);
+            theReturn.push(aMove);
+        });
+
+        return theReturn;
+
     }
 
 }
