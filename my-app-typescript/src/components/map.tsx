@@ -1,10 +1,12 @@
 import * as React from 'react';
 import '../map.css';
 import MapBuilder from './MapBuilder';
+import { Turn } from '.././types/warehouses/Turn';
 import { IPieceWarehouse } from '.././types/warehouses/IPieceWarehouse';
 
 interface PropValues {
   pieceWarehouse: IPieceWarehouse;
+  turn: Turn | null;
 }
 
 export class Map extends React.Component<PropValues, {}> {
@@ -840,7 +842,7 @@ export class Map extends React.Component<PropValues, {}> {
           />
           <text x="350" y="304">War</text>
         </g> 
-        <MapBuilder pieceWarehouse={this.props.pieceWarehouse}/>
+        <MapBuilder pieceWarehouse={this.props.pieceWarehouse} turn={this.props.turn}/>
       </svg>
     );
   }

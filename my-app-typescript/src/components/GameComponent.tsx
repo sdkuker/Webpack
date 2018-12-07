@@ -41,7 +41,10 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 />
                 <div className="row">
                     <div className="col-md-12">
-                        <GameMap pieceWarehouse={this.props.pieceWarehouse} />
+                        <GameMap 
+                            pieceWarehouse={this.props.pieceWarehouse}
+                            turn={this.state.selectedTurn} 
+                        />
                     </div>
                 </div>
                 <MovesForCountryComponent 

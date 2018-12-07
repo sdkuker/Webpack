@@ -8,16 +8,14 @@ import { Turn } from '../types/warehouses/Turn';
 
 interface PropValues {
     pieceWarehouse: IPieceWarehouse;
+    turn: Turn | null;
 }
-interface StateValues {
-    myTurn: Turn | null;
-}
+
 @observer
-class MapBuilder extends React.Component<PropValues, StateValues> {
+class MapBuilder extends React.Component<PropValues, {}> {
 
     constructor(props: PropValues) {
         super(props);
-        this.state = {myTurn:  null};
     }
 
     render() {
@@ -35,9 +33,9 @@ class MapBuilder extends React.Component<PropValues, StateValues> {
                 />);
         });
 
-        if (this.state.myTurn) {
+        if (this.props.turn) {
 
-            let pieces: Array<Piece> = this.props.pieceWarehouse.getPieces(this.state.myTurn);
+            let pieces: Array<Piece> = this.props.pieceWarehouse.getPieces(this.props.turn);
 
             pieces.forEach((aPiece: Piece, anIndex: number) => {
                 if (aPiece.type === 'Fleet') {
@@ -70,10 +68,6 @@ class MapBuilder extends React.Component<PropValues, StateValues> {
                 {theReturn}
             </g>
         );
-    }
-
-    setTurn = (aTurn: Turn ) => {
-        this.state = {myTurn: aTurn};
     }
 }
 
