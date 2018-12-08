@@ -1,8 +1,10 @@
 import { IGameDataProvider } from './IGameDataProvider';
 import { Game } from './Game';
+import { observable } from 'mobx';
 
 export class StaticGameDataProvider implements IGameDataProvider {
 
+    @observable
     games = new Array<Game>();
     lastUsedId = 0;
 

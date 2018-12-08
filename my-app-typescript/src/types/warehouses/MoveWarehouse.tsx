@@ -30,18 +30,16 @@ export class MoveWarehouse implements IMoveWarehouse {
     getMoves = (countryName: string, aTurn: Turn, includeNonPersistentMove: boolean | null) => {
 
         const theReturn = Array<Move>();
-
-        if (aTurn) {
-            let index: number;
-            for (index = 0; index < this.dataProvider.getMoves(aTurn).length; index++) {
-                if (this.dataProvider.getMoves(aTurn)[index].owningCountryName === countryName &&
-                    this.dataProvider.getMoves(aTurn)[index].turn === aTurn) {
-                    theReturn.push(this.dataProvider.getMoves(aTurn)[index]);
-                }
+        let index: number;
+        let theMoves = this.dataProvider.getMoves(aTurn);
+        for (index = 0; index < theMoves.length; index++) {
+            if (theMoves[index].owningCountryName === countryName &&
+                theMoves[index].turn === aTurn) {
+                theReturn.push(theMoves[index]);
             }
-            if (includeNonPersistentMove) {
-                theReturn.push(this.createNonPersistentMove(countryName, aTurn));
-            }
+        }
+        if (includeNonPersistentMove) {
+            theReturn.push(this.createNonPersistentMove(countryName, aTurn));
         }
 
         return theReturn;

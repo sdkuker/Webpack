@@ -82,7 +82,7 @@ it('creating the first, second, third and fourth for a game', () => {
 
     // the first turn is automatically created when getTurns is called -
     // which it is from getOpenTurna
-    const myfirstTurn = myTurnWarehouse.getOpenTurn(game5);
+    const myfirstTurn = myTurnWarehouse.generateNextTurn(game5);
     expect(myfirstTurn).not.toBeNull();
     expect(myfirstTurn.id).toEqual('1');
     expect(myfirstTurn.game).toEqual(game5);

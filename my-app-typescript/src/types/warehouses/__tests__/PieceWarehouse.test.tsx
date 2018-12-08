@@ -22,11 +22,10 @@ it('warehouse should exist', () => {
     expect(myPieceWarehouse).not.toBeNull();
 })
 
-it('should default pieces for game 1 turn 1 spring', () => {
+it('the array should be created, but it should have nothing in it', () => {
     let pieces = myPieceWarehouse.getPieces(turnGame1Spring);
     expect(pieces).not.toBeNull();
-    expect(pieces.length).toEqual(22);
-    expect(pieces[0].id).toEqual('1');
+    expect(pieces.length).toEqual(0);
 })
 
 it('should not default pieces for game 1 turn 1 fall', () => {
@@ -38,15 +37,12 @@ it('should not default pieces for game 1 turn 1 fall', () => {
 it('should default pieces for game 2 turn 1 spring', () => {
     let pieces = myPieceWarehouse.getPieces(turnGame2Spring);
     expect(pieces).not.toBeNull();
-    expect(pieces.length).toEqual(22);
-    // make sure the pieces are different than the ones for game 1
-    expect(pieces[0].id).toEqual('23');
+    expect(pieces.length).toEqual(0);
 })
 
 it('should return the same pieces that were created earlier', () => {
     let pieces = myPieceWarehouse.getPieces(turnGame1Spring);
     expect(pieces).not.toBeNull();
-    expect(pieces.length).toEqual(22);
-    expect(pieces[0].id).toEqual('1');
+    expect(pieces.length).toEqual(0);
 })
 
