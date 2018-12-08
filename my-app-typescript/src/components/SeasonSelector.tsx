@@ -29,6 +29,8 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
     render() {
         // tslint:disable-next-line
         let yearOptions: any = [];
+        let hasSpringTurn = false;
+        let hasFallTurn = false;
         if (this.props.myGame) {
             this.props.myTurnWarehouse.getTurns(this.props.myGame).forEach((aTurn: Turn) => {
                 if (this.state.selectedTurn === aTurn) {
@@ -37,18 +39,26 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
                 } else {
                     yearOptions.push(<option>{aTurn.year}</option>);
                 }
+                if (aTurn.year === this.state.selectedTurn.year) {
+                    if (aTurn.season === SeasonTypes.Spring) {
+                        hasSpringTurn = true;
+                    } else {
+                        hasFallTurn = true;
+                    }
+                }
             });
         }
         // tslint:disable-next-line
         let seasonOptions: any = [];
         for (let aType in SeasonTypes) {
             if (SeasonTypes.hasOwnProperty(aType)) {
-                // console.log(this.state.selectedTurn.season + " : " + SeasonTypes[aType]);
                 if (this.state.selectedTurn.season === SeasonTypes[aType]) {
                     // tslint:disable-next-line
                     seasonOptions.push(<option selected key={aType}>{aType}</option>);
                 } else {
-                    seasonOptions.push(<option key={aType}>{aType}</option>);
+                    if ( (aType === 'Spring' && hasSpringTurn) || (aType === 'Fall' && hasFallTurn)) {
+                         seasonOptions.push(<option key={aType}>{aType}</option>);
+                    }
                 }
             }
         }
