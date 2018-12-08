@@ -60,7 +60,8 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
 
         if (aMove.order !== aNonPersistentMoveOrder) {
             if (!aMove.id) {
-                aMove.id = aMove.turn.id + this.nextAvailableMoveKey++;
+                this.nextAvailableMoveKey++ 
+                aMove.id = this.nextAvailableMoveKey.toString();
             }
             // it seems tht you have to push the move in both arrarys.  putting it in this.moves w/o the other doesn't
             // seem to get it in this.allMoves.  Kinda surprising actually.

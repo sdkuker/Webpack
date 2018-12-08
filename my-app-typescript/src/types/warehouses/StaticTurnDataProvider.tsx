@@ -8,6 +8,7 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
     @observable turns: Array<Turn>;
     gameId: string;
     allTurns: { [gameId: string]: Array<Turn> } = {};
+    nextAvailableTurnId = 0;
 
     constructor(aGame: Game | null, myTurns: Array<Turn> | null) {
         if (aGame && myTurns) {
@@ -26,13 +27,12 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
 
     persistTurn = (aTurn: Turn) => {
         var currentTurnNumber = 0;
-        if (this.allTurns[aTurn.game.id]) {
-            currentTurnNumber = this.allTurns[aTurn.game.id].length;
-        } else {
+        if (! this.allTurns[aTurn.game.id]) {
             this.allTurns[aTurn.game.id] = Array<Turn>();
-        }
+        } 
         if (! aTurn.id) {
-            aTurn.id = (currentTurnNumber + 1).toString();
+            this.nextAvailableTurnId++;
+            aTurn.id = this.nextAvailableTurnId.toString();
             this.allTurns[aTurn.game.id].push(aTurn);
         }
     }

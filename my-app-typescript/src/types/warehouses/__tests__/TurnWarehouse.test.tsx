@@ -84,7 +84,7 @@ it('creating the first, second, third and fourth for a game', () => {
     // which it is from getOpenTurna
     const myfirstTurn = myTurnWarehouse.generateNextTurn(game5);
     expect(myfirstTurn).not.toBeNull();
-    expect(myfirstTurn.id).toEqual('1');
+    expect(myfirstTurn.id).toEqual('8');
     expect(myfirstTurn.game).toEqual(game5);
     expect(myfirstTurn.season).toEqual(SeasonTypes.Spring);
     expect(myfirstTurn.status).toEqual(TurnStatus.Open);
@@ -93,9 +93,9 @@ it('creating the first, second, third and fourth for a game', () => {
 
     const mySecondTurn = myTurnWarehouse.generateNextTurn(game5);
     expect(myfirstTurn.status).toEqual(TurnStatus.Complete);
-    expect(myfirstTurn.id).toEqual('1');
+    expect(myfirstTurn.id).toEqual('8');
     expect(mySecondTurn).not.toBeNull();
-    expect(mySecondTurn.id).toEqual('2');
+    expect(mySecondTurn.id).toEqual('9');
     expect(mySecondTurn.game).toEqual(game5);
     expect(mySecondTurn.season).toEqual(SeasonTypes.Fall);
     expect(mySecondTurn.status).toEqual(TurnStatus.Open);
@@ -103,11 +103,11 @@ it('creating the first, second, third and fourth for a game', () => {
 
     const myThirdTurn = myTurnWarehouse.generateNextTurn(game5);
     expect(myfirstTurn.status).toEqual(TurnStatus.Complete);
-    expect(myfirstTurn.id).toEqual('1');
+    expect(myfirstTurn.id).toEqual('8');
     expect(mySecondTurn.status).toEqual(TurnStatus.Complete);
-    expect(mySecondTurn.id).toEqual('2');
+    expect(mySecondTurn.id).toEqual('9');
     expect(myThirdTurn).not.toBeNull();
-    expect(myThirdTurn.id).toEqual('3');
+    expect(myThirdTurn.id).toEqual('10');
     expect(myThirdTurn.game).toEqual(game5);
     expect(myThirdTurn.season).toEqual(SeasonTypes.Spring);
     expect(myThirdTurn.status).toEqual(TurnStatus.Open);

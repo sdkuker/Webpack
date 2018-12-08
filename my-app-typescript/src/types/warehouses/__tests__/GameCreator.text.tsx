@@ -1,4 +1,3 @@
-import { Turn } from '.././Turn';
 import { MoveAction } from '.././DomainTypes';
 import { GameCreator } from '.././GameCreator';
 import { SeasonTypes, TurnStatus } from '.././DomainTypes';
@@ -49,6 +48,8 @@ it('the piece warehouse should have the pieces', () => {
     let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns(newGame)[0]);
     expect(allPieces).not.toBeNull();
     expect(allPieces.length).toEqual(22);
+    expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(1);
+    expect(Number(allPieces[0].id)).toBeLessThanOrEqual(22);
 })
 
 it('the move warehouse should have the moves', () => {
@@ -56,4 +57,37 @@ it('the move warehouse should have the moves', () => {
     expect(allEnglishMoves).not.toBeNull();
     expect(allEnglishMoves.length).toEqual(3);
     expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
+    expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(1);
+    expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(22);
+})
+
+it('the second game should have been created', () => {
+    let secondGame = gameCreator.createGame();
+    expect(secondGame).not.toBeNull();
+    expect(secondGame.id).toEqual('2');
+
+    let allGames = gameWarehouse.getAllGames();
+    expect(allGames).not.toBeNull();
+    expect(allGames.length).toEqual(2);
+    expect(allGames[1].id).toEqual('2');
+
+    let allTurns = turnWarehouse.getTurns(secondGame);
+    expect(allTurns).not.toBeNull();
+    expect(allTurns.length).toEqual(1);
+    expect(allTurns[0].id).toEqual('2');
+    expect(allTurns[0].year).toEqual(1);
+    expect(allTurns[0].season).toEqual(SeasonTypes.Spring);
+
+    let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns(secondGame)[0]);
+    expect(allPieces).not.toBeNull();
+    expect(allPieces.length).toEqual(22);
+    expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(23);
+    expect(Number(allPieces[0].id)).toBeLessThanOrEqual(44);
+
+    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns(secondGame)[0], false);
+    expect(allEnglishMoves).not.toBeNull();
+    expect(allEnglishMoves.length).toEqual(3);
+    expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
+    expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(23);
+    expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(44);
 })
