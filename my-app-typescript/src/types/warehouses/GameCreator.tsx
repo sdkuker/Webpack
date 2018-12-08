@@ -56,7 +56,7 @@ export class GameCreator  {
 
         this.createPiece(theNewGame, initialTurn, 'Moscow', 'Russia', 'Army');
         this.createPiece(theNewGame, initialTurn, 'Sevastopol', 'Russia', 'Fleet');
-        this.createPiece(theNewGame, initialTurn, 'StPetersburg', 'Russia', 'Fleet');
+        this.createPiece(theNewGame, initialTurn, 'StPetersburg_sc', 'Russia', 'Fleet');
         this.createPiece(theNewGame, initialTurn, 'Warsaw', 'Russia', 'Army');
 
         this.createPiece(theNewGame, initialTurn, 'Ankara', 'Turkey', 'Fleet');
