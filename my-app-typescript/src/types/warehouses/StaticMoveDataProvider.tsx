@@ -8,7 +8,7 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     // contains the moves for a single turn for a chosen game.  
     @observable moves: Array<Move>;
     movesTurnId: string = 'initialValue';
-    nextAvailableMoveKey: number = 1;
+    nextAvailableMoveKey: number = 0;
     // the key to the outer map is the game id.  The key to the inner map is the turn id
     allMoves: Map<string, Map<string, Array<Move>>> = new Map();
 
@@ -60,14 +60,15 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
 
         if (aMove.order !== aNonPersistentMoveOrder) {
             if (!aMove.id) {
-                this.nextAvailableMoveKey++ 
+                this.nextAvailableMoveKey++
                 aMove.id = this.nextAvailableMoveKey.toString();
+
+                // it seems tht you have to push the move in both arrarys.  putting it in this.moves w/o the other doesn't
+                // seem to get it in this.allMoves.  Kinda surprising actually.
+                // @ts-ignore
+                this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).push(aMove);
+                this.moves.push(aMove);
             }
-            // it seems tht you have to push the move in both arrarys.  putting it in this.moves w/o the other doesn't
-            // seem to get it in this.allMoves.  Kinda surprising actually.
-            // @ts-ignore
-            this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).push(aMove);
-            this.moves.push(aMove);
         }
     }
 

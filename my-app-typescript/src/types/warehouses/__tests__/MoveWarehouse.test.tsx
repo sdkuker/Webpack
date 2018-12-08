@@ -17,17 +17,17 @@ beforeAll(() => {
 
     myDataProvider = new StaticMoveDataProvider();
 
-    myDataProvider.persistMove(new Move('1', 'Fleet London movesTo North_Sea', 'England', turn1Spring), null);
+    myDataProvider.persistMove(new Move(null, 'Fleet London movesTo North_Sea', 'England', turn1Spring), null);
 
-    myDataProvider.persistMove(new Move('2', 'Army Paris movesTo Picardy', 'France', turn1Spring), null);
-    myDataProvider.persistMove(new Move('3', 'Army Marseilles movesTo Gascony', 'France', turn1Spring), null);
-    myDataProvider.persistMove(new Move('4', 'Fleet Brest movesTo North_Atlantic_Ocean', 'France', turn1Spring), null);
+    myDataProvider.persistMove(new Move(null, 'Army Paris movesTo Picardy', 'France', turn1Spring), null);
+    myDataProvider.persistMove(new Move(null, 'Army Marseilles movesTo Gascony', 'France', turn1Spring), null);
+    myDataProvider.persistMove(new Move(null, 'Fleet Brest movesTo North_Atlantic_Ocean', 'France', turn1Spring), null);
 
-    myDataProvider.persistMove(new Move('5', 'Fleet North_Sea movesTo Norway', 'England', turn1Fall), null);
-    myDataProvider.persistMove(new Move('6', 'Army Yorkshire movesTo Wales', 'England', turn1Fall), null);
+    myDataProvider.persistMove(new Move(null, 'Fleet North_Sea movesTo Norway', 'England', turn1Fall), null);
+    myDataProvider.persistMove(new Move(null, 'Army Yorkshire movesTo Wales', 'England', turn1Fall), null);
 
-    myDataProvider.persistMove(new Move('7', 'Army Picardy movesTo Belguim', 'France', turn1Fall), null);
-    myDataProvider.persistMove(new Move('8', 'Army Gascony movesTo Spain_(sc)', 'France', turn1Fall), null);
+    myDataProvider.persistMove(new Move(null, 'Army Picardy movesTo Belguim', 'France', turn1Fall), null);
+    myDataProvider.persistMove(new Move(null, 'Army Gascony movesTo Spain_(sc)', 'France', turn1Fall), null);
 
     myMoveWarehouse = new MoveWarehouse(myDataProvider);
 
