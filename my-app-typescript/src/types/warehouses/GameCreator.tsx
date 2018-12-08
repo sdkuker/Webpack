@@ -5,7 +5,7 @@ import { IGameWarehouse } from './IGameWarehouse';
 import { IMoveWarehouse } from './IMoveWarehouse';
 import { ITurnWarehouse } from './ITurnWarehouse';
 import { IPieceWarehouse } from './IPieceWarehouse';
-import { Warehouse as LocationWarehouse } from './LocationWarehouse'
+import { Warehouse as LocationWarehouse } from './LocationWarehouse';
 
 export class GameCreator  {
 
@@ -66,7 +66,8 @@ export class GameCreator  {
         return this.pieceWarehouse.getPieces(initialTurn);
     }
 
-    createPiece = (theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string, pieceType: string) => {
+    createPiece = ( theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string, 
+                    pieceType: string) => {
 
         const myLocation = this.findLocation(locationName);
 

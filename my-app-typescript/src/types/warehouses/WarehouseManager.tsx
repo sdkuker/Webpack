@@ -14,6 +14,7 @@ import { StaticMoveDataProvider } from './StaticMoveDataProvider';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { PieceWarehouse } from './PieceWarehouse';
 import { StaticPieceDataProvider } from './StaticPieceDataProvider';
+import { GameCreator } from './GameCreator';
 
 import { myConfig } from './Config';
 
@@ -24,6 +25,7 @@ export class WarehouseManager  {
     countryWarehouse: ICountryWarehouse;
     moveWarehouse: IMoveWarehouse;
     pieceWarehouse: IPieceWarehouse;
+    gameCreator: GameCreator;
 
     constructor() {
 
@@ -33,6 +35,8 @@ export class WarehouseManager  {
             this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null), null);
             this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
             this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
+            this.gameCreator = new GameCreator( this.gameWarehouse, this.turnWarehouse, 
+                                                this.pieceWarehouse, this.moveWarehouse);
         }
     }
 }

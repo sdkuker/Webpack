@@ -50,7 +50,7 @@ export class MoveWarehouse implements IMoveWarehouse {
         const theReturn = Array<Move>();
 
         pieces.forEach((aPiece: Piece, anIndex: number) => {
-            let moveOrder = aPiece.type + ' ' + aPiece.owningCountryName + ' Holds';
+            let moveOrder = aPiece.type + ' ' + aPiece.locationName + ' Holds';
             let aMove = new Move(null, moveOrder, aPiece.owningCountryName, aTurn);
             this.persistMove(aMove);
             theReturn.push(aMove);
