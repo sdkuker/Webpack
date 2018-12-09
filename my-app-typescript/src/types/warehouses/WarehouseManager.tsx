@@ -15,6 +15,7 @@ import { IPieceWarehouse } from './IPieceWarehouse';
 import { PieceWarehouse } from './PieceWarehouse';
 import { StaticPieceDataProvider } from './StaticPieceDataProvider';
 import { GameCreator } from './GameCreator';
+import { IGameCreator } from './IGameCreator';
 
 import { myConfig } from './Config';
 
@@ -25,7 +26,7 @@ export class WarehouseManager  {
     countryWarehouse: ICountryWarehouse;
     moveWarehouse: IMoveWarehouse;
     pieceWarehouse: IPieceWarehouse;
-    gameCreator: GameCreator;
+    gameCreator: IGameCreator;
 
     constructor() {
 

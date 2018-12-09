@@ -1,4 +1,5 @@
 import { MoveAction } from '.././DomainTypes';
+import { IGameCreator } from '.././IGameCreator';
 import { GameCreator } from '.././GameCreator';
 import { SeasonTypes, TurnStatus } from '.././DomainTypes';
 import { IGameWarehouse } from '.././IGameWarehouse';
@@ -19,7 +20,7 @@ let gameWarehouse: IGameWarehouse = new GameWarehouse(new StaticGameDataProvider
 let turnWarehouse: ITurnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
 let moveWarehouse: IMoveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
 let pieceWarehouse: IPieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
-let gameCreator = new GameCreator(gameWarehouse, turnWarehouse, pieceWarehouse, moveWarehouse);
+let gameCreator: IGameCreator = new GameCreator(gameWarehouse, turnWarehouse, pieceWarehouse, moveWarehouse);
 
 let newGame = gameCreator.createGame();
 

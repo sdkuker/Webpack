@@ -1,13 +1,14 @@
 import { Game } from './Game';
 import { Turn } from './Turn';
 import { LocationTypes } from './DomainTypes';
+import { IGameCreator } from './IGameCreator';
 import { IGameWarehouse } from './IGameWarehouse';
 import { IMoveWarehouse } from './IMoveWarehouse';
 import { ITurnWarehouse } from './ITurnWarehouse';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
 
-export class GameCreator  {
+export class GameCreator implements IGameCreator {
 
     gameWarehouse: IGameWarehouse;
     turnWarehouse: ITurnWarehouse;
@@ -20,6 +21,12 @@ export class GameCreator  {
                     this.turnWarehouse = myTurnWarehouse;
                     this.pieceWarehouse = myPieceWarehouse;
                     this.moveWarehouse = myMoveWarehouse;
+    }
+
+    deleteGame = (aGame: Game) => {
+        let theReturn = true;
+
+        return theReturn;
     }
     
     createGame = () => {

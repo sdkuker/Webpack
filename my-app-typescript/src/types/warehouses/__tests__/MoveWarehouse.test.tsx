@@ -81,9 +81,9 @@ it('Successfully get France 1-fall moves', () => {
 
 it('Create initial moves for a turn', () => {
     const location1 = new Location('1', '1');
-    const piece1 = new Piece(null, 'England', location1, 'London', PieceTypes.Army);
+    const piece1 = new Piece(null, turn1Spring.id, 'England', location1, 'London', PieceTypes.Army);
     const location2 = new Location('2', '2');
-    const piece2 = new Piece(null, 'France', location2, 'Paris', PieceTypes.Fleet);
+    const piece2 = new Piece(null, turn1Spring.id, 'France', location2, 'Paris', PieceTypes.Fleet);
     const pieces = new Array<Piece>();
     pieces.push(piece1);
     pieces.push(piece2);

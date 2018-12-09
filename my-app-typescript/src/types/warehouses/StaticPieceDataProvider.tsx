@@ -47,13 +47,13 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
                     countryName: string, type: string) => {
 
         this.nextAvailablePieceKey++;
-        const thePiece = new Piece( this.nextAvailablePieceKey.toString(), countryName, 
+        const thePiece = new Piece( this.nextAvailablePieceKey.toString(), forTurn.id, countryName, 
                                     theLocation, theLocationName, type);
         this.adjustCacheForTurn(forTurn);
         // @ts-ignore
         this.allPieces.get(forGame.id).get(forTurn.id).push(thePiece);
         // @ts-ignore
-        this.pieces = this.allPieces.get(forGame.id).get(forTurn.id);
+        this.pieces.push(thePiece);
 
         return thePiece;
 
