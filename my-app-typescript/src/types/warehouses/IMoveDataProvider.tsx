@@ -4,7 +4,7 @@ import { Game } from './Game';
 
 export interface IMoveDataProvider {
     getMoves(aTurn: Turn): Array<Move>;
-    deleteMove(aMove: Move): void;
+    deleteMove(aMove: Move): boolean;
     persistMove(aMove: Move, aNonPersistentMoveOrder: string): void;
     createNonPersistentMove(aCountryName: string, aTurn: Turn, aNonPersistentMoveOrder: string): Move;
 } 

@@ -10,8 +10,8 @@ import { Piece } from '../Piece';
 let myGame = new Game('1', 'test');
 let turn1Spring = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
 let turn1Fall = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
-let myMoveWarehouse : MoveWarehouse;
-let myDataProvider : StaticMoveDataProvider;
+let myMoveWarehouse: MoveWarehouse;
+let myDataProvider: StaticMoveDataProvider;
 
 beforeAll(() => {
 
@@ -33,23 +33,23 @@ beforeAll(() => {
 
 });
 
-it ('is the cache the same array as allMoves', () => {
+it('is the cache the same array as allMoves', () => {
     const theReturn = myMoveWarehouse.getMoves('England', turn1Spring, false);
     let movesArray = myDataProvider.moves;
     // @ts-ignore
-    let allMovesArrayYear1Spring =  myDataProvider.allMoves.get('1').get('1');
+    let allMovesArrayYear1Spring = myDataProvider.allMoves.get('1').get('1');
     expect(theReturn.length).toEqual(1);
     expect(movesArray.length).toEqual(4);
-     // @ts-ignore
+    // @ts-ignore
     expect(allMovesArrayYear1Spring.length).toEqual(4);
 
     const theReturnFall = myMoveWarehouse.getMoves('England', turn1Fall, false);
     let movesArrayFall = myDataProvider.moves;
     // @ts-ignore
-    let allMovesArrayYear1Fall =  myDataProvider.allMoves.get('1').get('2');
+    let allMovesArrayYear1Fall = myDataProvider.allMoves.get('1').get('2');
     expect(theReturnFall.length).toEqual(2);
     expect(movesArrayFall.length).toEqual(4);
-     // @ts-ignore
+    // @ts-ignore
     expect(allMovesArrayYear1Fall.length).toEqual(4);
 
 })
@@ -89,6 +89,51 @@ it('Create initial moves for a turn', () => {
     pieces.push(piece2);
     const theReturn = myMoveWarehouse.createInitialMoves(turn1Spring, pieces);
     expect(theReturn.length).toEqual(2);
+})
+
+it('Delete a single move from a turn and all the moves from a turn', () => {
+    
+    let myGame = new Game('3', 'deleteTestGame');
+    let turn1Spring = new Turn('10', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
+    let turn1Fall = new Turn('11', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    let move1 = new Move(null, 'a move order', 'England', turn1Spring);
+    let move2 = new Move(null, 'a move order', 'England', turn1Spring);
+    let move3 = new Move(null, 'a move order', 'England', turn1Fall);
+
+    let mySecondGame = new Game('4', 'deleteTestGame2');
+    let turn1SpringGame2 = new Turn('12', mySecondGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
+    let turn1FallGame2 = new Turn('13', mySecondGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    let move4 = new Move(null, 'a move order', 'England', turn1SpringGame2);
+    let move5 = new Move(null, 'a move order', 'England', turn1SpringGame2);
+    let move6 = new Move(null, 'a move order', 'England', turn1FallGame2);
+
+    myMoveWarehouse.persistMove(move1);
+    myMoveWarehouse.persistMove(move2);
+    myMoveWarehouse.persistMove(move3);
+    myMoveWarehouse.persistMove(move4);
+    myMoveWarehouse.persistMove(move5);
+    myMoveWarehouse.persistMove(move6);
+
+    expect(myMoveWarehouse.getMoves('England', turn1Spring, null).length).toEqual(2);
+    expect(myMoveWarehouse.getMoves('England', turn1Fall, null).length).toEqual(1);
+    expect(myMoveWarehouse.getMoves('England', turn1SpringGame2, null).length).toEqual(2);
+    expect(myMoveWarehouse.getMoves('England', turn1FallGame2, null).length).toEqual(1);
+
+    const allMovedDeleted = myMoveWarehouse.deleteMove(move2);
+
+    expect(allMovedDeleted).toBeTruthy();
+    expect(myMoveWarehouse.getMoves('England', turn1Spring, null).length).toEqual(1);
+    expect(myMoveWarehouse.getMoves('England', turn1Fall, null).length).toEqual(1);
+    expect(myMoveWarehouse.getMoves('England', turn1SpringGame2, null).length).toEqual(2);
+    expect(myMoveWarehouse.getMoves('England', turn1FallGame2, null).length).toEqual(1);
+
+    myMoveWarehouse.deleteMoves(turn1SpringGame2);
+
+    expect(myMoveWarehouse.getMoves('England', turn1Spring, null).length).toEqual(1);
+    expect(myMoveWarehouse.getMoves('England', turn1Fall, null).length).toEqual(1);
+    expect(myMoveWarehouse.getMoves('England', turn1SpringGame2, null).length).toEqual(0);
+    expect(myMoveWarehouse.getMoves('England', turn1FallGame2, null).length).toEqual(1);
+
 })
 
 

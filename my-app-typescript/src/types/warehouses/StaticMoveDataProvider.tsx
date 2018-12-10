@@ -44,18 +44,25 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     @action
     deleteMove = (aMove: Move) => {
 
+        let moveDeleted = false;
         this.adjustCacheForTurn(aMove.turn);
 
         let i: number;
         for (i = 0; i < this.moves.length; i++) {
             if (this.moves[i].id === aMove.id) {
+                // @ts-ignore
+                // this assumes the indices are the same in both arrays.  They should be...
+                this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).splice(i,1);
                 this.moves.splice(i, 1);
+                moveDeleted = true;
             }
         }
+
+        return moveDeleted;
     }
     @action
     persistMove = (aMove: Move, aNonPersistentMoveOrder: string | null) => {
-
+        
         this.adjustCacheForTurn(aMove.turn);
 
         if (aMove.order !== aNonPersistentMoveOrder) {

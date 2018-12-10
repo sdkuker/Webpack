@@ -16,10 +16,11 @@ const myMove = new Move('1', "my order", "England", myTurn);
 const onMoveEntryValidationdMock = jest.fn(); 
 const persistMoveMock = jest.fn(); 
 const deleteMoveMock = jest.fn();
+const deleteMovesMock = jest.fn();
 const getMovesMock = jest.fn();
 const createInitialMovesMock = jest.fn();
 const moveWarehouseMock: IMoveWarehouse = 
-    {persistMove : persistMoveMock, deleteMove : deleteMoveMock, getMoves : getMovesMock, createInitialMoves: createInitialMovesMock};
+    {persistMove : persistMoveMock, deleteMove : deleteMoveMock, deleteMoves: deleteMovesMock, getMoves : getMovesMock, createInitialMoves: createInitialMovesMock};
 const onMovePersistedMock = jest.fn();
 
 it('not sure what Im testing yet', () => {

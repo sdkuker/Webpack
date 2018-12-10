@@ -16,7 +16,22 @@ export class MoveWarehouse implements IMoveWarehouse {
 
     @action
     deleteMove = (aMove: Move) => {
-        this.dataProvider.deleteMove(aMove);
+        return this.dataProvider.deleteMove(aMove);
+    }
+
+    deleteMoves = (aTurn: Turn) => {
+
+        let allMovesDeleted = true;
+        let thisMoveDeleted = true;
+        let theMoves = this.dataProvider.getMoves(aTurn);
+        let index = theMoves.length;
+        while (index--) {
+            thisMoveDeleted = this.deleteMove(theMoves[index]);
+            if (! thisMoveDeleted) {
+                allMovesDeleted = false;
+            }
+        }
+        return allMovesDeleted;
     }
     @action
     persistMove = (aMove: Move) => {
