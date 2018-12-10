@@ -60,9 +60,10 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
 
         return moveDeleted;
     }
+    
     @action
     persistMove = (aMove: Move, aNonPersistentMoveOrder: string | null) => {
-        
+
         this.adjustCacheForTurn(aMove.turn);
 
         if (aMove.order !== aNonPersistentMoveOrder) {

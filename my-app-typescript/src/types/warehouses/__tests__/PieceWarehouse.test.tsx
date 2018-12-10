@@ -7,7 +7,6 @@ import { Warehouse as LocationWarehouse } from '../LocationWarehouse';
 import { LocationTypes } from '../DomainTypes';
 
 let game1 = new Game('1', 'test');
-let game2 = new Game('2', 'test2');
 let turnGame1Spring = new Turn('1', game1, 1, SeasonTypes.Spring, TurnStatus.Open);
 let turnGame1Fall = new Turn('2', game1, 1, SeasonTypes.Fall, TurnStatus.Open);
 
@@ -33,10 +32,8 @@ it('pieces added should be returned', () => {
     let pieces = myPieceWarehouse.getPieces(turnGame1Spring);
     expect(pieces).not.toBeNull();
     expect(pieces.length).toEqual(0);
-    console.log('looking for location');
     let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
     if (londonLocation) {
-        console.log('found location');
         myPieceWarehouse.createPiece(game1, turnGame1Spring, londonLocation, 'London', 'England', 'FLEET');
     };
     pieces = myPieceWarehouse.getPieces(turnGame1Spring);
@@ -46,12 +43,33 @@ it('pieces added should be returned', () => {
     expect(myPiece.location).toEqual(londonLocation);
     expect(myPiece.locationName).toEqual('London');
     expect(myPiece.owningCountryName).toEqual('England');
-    expect(myPiece.turnId).toEqual('1');
+    expect(myPiece.turn.id).toEqual('1');
     expect(myPiece.type).toEqual(PieceTypes.Fleet);
 })
 
-it('should not default pieces for game 1 turn 1 fall', () => {
-    let pieces = myPieceWarehouse.getPieces(turnGame1Fall);
-    expect(pieces).not.toBeNull();
-    expect(pieces.length).toEqual(0);
+it('deleting pieces', () => {
+    let springPieces = myPieceWarehouse.getPieces(turnGame1Spring);
+    expect(springPieces).not.toBeNull();
+    expect(springPieces.length).toEqual(1);
+
+    let fallPieces = myPieceWarehouse.getPieces(turnGame1Fall);
+    expect(fallPieces).not.toBeNull();
+    expect(fallPieces.length).toEqual(0);
+
+    let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
+    if (londonLocation) {
+        myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET');
+        myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET');
+    };
+    fallPieces = myPieceWarehouse.getPieces(turnGame1Fall);
+    expect(fallPieces.length).toEqual(2);
+
+    myPieceWarehouse.deletePieces(turnGame1Fall);
+    fallPieces = myPieceWarehouse.getPieces(turnGame1Fall);
+    expect(fallPieces).not.toBeNull();
+    expect(fallPieces.length).toEqual(0);
+    springPieces = myPieceWarehouse.getPieces(turnGame1Spring);
+    expect(springPieces).not.toBeNull();
+    expect(springPieces.length).toEqual(1);
+
 })

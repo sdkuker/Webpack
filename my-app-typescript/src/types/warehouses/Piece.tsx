@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
 import { Location } from './Location';
+import { Turn } from './Turn';
 
 export class Piece {
     id: string;
@@ -7,14 +8,14 @@ export class Piece {
     @observable location: Location;
     type: string;
     locationName: string;
-    turnId: string;
+    turn: Turn;
 
-    constructor(anId: string | null, aTurnId: string, anOwningCountryName: string, aLocation: Location, 
+    constructor(anId: string | null, aTurn: Turn, anOwningCountryName: string, aLocation: Location, 
                 aLocationName: string, aType: string) {
         if (anId) {
             this.id = anId;
         }
-        this.turnId = aTurnId;
+        this.turn = aTurn;
         this.owningCountryName = anOwningCountryName;
         this.location = aLocation;
         this.locationName = aLocationName;

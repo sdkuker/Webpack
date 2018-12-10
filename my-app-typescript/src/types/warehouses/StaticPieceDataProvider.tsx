@@ -43,12 +43,12 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
         }
     }
 
-    createPiece = ( forGame: Game, forTurn: Turn, theLocation: Location, theLocationName: string, 
-                    countryName: string, type: string) => {
+    createPiece = (forGame: Game, forTurn: Turn, theLocation: Location, theLocationName: string,
+        countryName: string, type: string) => {
 
         this.nextAvailablePieceKey++;
-        const thePiece = new Piece( this.nextAvailablePieceKey.toString(), forTurn.id, countryName, 
-                                    theLocation, theLocationName, type);
+        const thePiece = new Piece(this.nextAvailablePieceKey.toString(), forTurn, countryName,
+            theLocation, theLocationName, type);
         this.adjustCacheForTurn(forTurn);
         // @ts-ignore
         this.allPieces.get(forGame.id).get(forTurn.id).push(thePiece);
@@ -57,5 +57,24 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
 
         return thePiece;
 
+    }
+
+    deletePiece = (aPiece: Piece) => {
+
+        let moveDeleted = false;
+        this.adjustCacheForTurn(aPiece.turn);
+
+        let i: number;
+        for (i = 0; i < this.pieces.length; i++) {
+            if (this.pieces[i].id === aPiece.id) {
+                // @ts-ignore
+                // this assumes the indices are the same in both arrays.  They should be...
+                this.allPieces.get(aPiece.turn.game.id).get(aPiece.turn.id).splice(i, 1);
+                this.pieces.splice(i, 1);
+                moveDeleted = true;
+            }
+        }
+
+        return moveDeleted;
     }
 }

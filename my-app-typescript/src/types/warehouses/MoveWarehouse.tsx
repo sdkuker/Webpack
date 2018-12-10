@@ -33,6 +33,7 @@ export class MoveWarehouse implements IMoveWarehouse {
         }
         return allMovesDeleted;
     }
+    
     @action
     persistMove = (aMove: Move) => {
         this.dataProvider.persistMove(aMove, this.nonPersistentMoveOrder);
