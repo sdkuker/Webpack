@@ -1,8 +1,7 @@
 import { Turn } from './Turn';
-import { Game } from './Game';
 
 export interface ITurnDataProvider {
-    getTurns(aGame: Game): Array<Turn>;
+    getTurns(aGameId: string): Array<Turn>;
     persistTurn(aTurn: Turn): void;
     deleteTurn(aTurn: Turn): boolean;
 } 

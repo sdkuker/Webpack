@@ -12,17 +12,17 @@ export class TurnWarehouse implements ITurnWarehouse {
         this.dataProvider = aDataProvider;
     }
 
-    getTurns = (aGame: Game) => {
+    getTurns = (aGameId: string) => {
 
-        return this.dataProvider.getTurns(aGame);
+        return this.dataProvider.getTurns(aGameId);
     }
 
-    getOpenTurn = (aGame: Game) => {
+    getOpenTurn = (aGameId: string) => {
 
         let index: number;
         let theReturn: Turn;
         let highestTurn: Turn;
-        const turnsForGame = this.getTurns(aGame);
+        const turnsForGame = this.getTurns(aGameId);
         for (index = 0; index < turnsForGame.length; index++) {
             if (turnsForGame[index].status === TurnStatus.Open) {
                 theReturn = turnsForGame[index];
@@ -53,10 +53,10 @@ export class TurnWarehouse implements ITurnWarehouse {
         return theReturn;
     }
 
-    getTurn = (aGame: Game, aYear: number, aSeason: SeasonTypes) => {
+    getTurn = (aGameId: string, aYear: number, aSeason: SeasonTypes) => {
 
         let index: number;
-        const turnsForGame = this.getTurns(aGame);
+        const turnsForGame = this.getTurns(aGameId);
         for (index = 0; index < turnsForGame.length; index++) {
             if (turnsForGame[index].year === aYear && turnsForGame[index].season === aSeason) {
                 return turnsForGame[index];
@@ -69,9 +69,9 @@ export class TurnWarehouse implements ITurnWarehouse {
         return this.dataProvider.deleteTurn(aTurn);
     }
 
-    generateNextTurn = (aGame: Game) => {
+    generateNextTurn = (aGameId: string) => {
 
-        let currentlyOpenTurn = this.getOpenTurn(aGame);
+        let currentlyOpenTurn = this.getOpenTurn(aGameId);
         if (currentlyOpenTurn) {
             var newSeason: SeasonTypes;
             var newYear: number;
@@ -85,13 +85,13 @@ export class TurnWarehouse implements ITurnWarehouse {
             currentlyOpenTurn.status = TurnStatus.Complete;
             this.dataProvider.persistTurn(currentlyOpenTurn);
 
-            const nextTurn = new Turn(null, aGame, newYear, newSeason, TurnStatus.Open);
+            const nextTurn = new Turn(null, aGameId, newYear, newSeason, TurnStatus.Open);
             this.dataProvider.persistTurn(nextTurn);
             return nextTurn;
 
         } else {
             // assume there are no turns at all - make the first one
-            const nextTurn = new Turn(null, aGame, 1, SeasonTypes.Spring, TurnStatus.Open);
+            const nextTurn = new Turn(null, aGameId, 1, SeasonTypes.Spring, TurnStatus.Open);
             this.dataProvider.persistTurn(nextTurn);
             return nextTurn;
         }

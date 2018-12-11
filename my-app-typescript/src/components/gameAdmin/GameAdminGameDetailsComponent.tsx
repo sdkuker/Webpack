@@ -26,7 +26,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
 
     render() {
 
-        let openTurn = this.props.turnWarehouse.getOpenTurn(this.props.game);
+        let openTurn = this.props.turnWarehouse.getOpenTurn(this.props.game.id);
         return (
             <div>
                 <div className="form-group">

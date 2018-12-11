@@ -124,7 +124,7 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
         if (this.state.selectedGameId) {
             const myGame = this.props.warehouseManager.gameWarehouse.getGameById(this.state.selectedGameId);
             if (myGame) {
-                this.props.warehouseManager.turnWarehouse.getTurns(myGame);
+                this.props.warehouseManager.turnWarehouse.getTurns(myGame.id);
                 this.setState({ redirectPath: 'openGame' });
             } else {
                 this.setState({

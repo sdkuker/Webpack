@@ -1,19 +1,19 @@
-import { MoveAction } from '.././DomainTypes';
-import { IGameCreator } from '.././IGameCreator';
-import { GameCreator } from '.././GameCreator';
-import { SeasonTypes, TurnStatus } from '.././DomainTypes';
-import { IGameWarehouse } from '.././IGameWarehouse';
-import { GameWarehouse } from '.././GameWarehouse';
-import { StaticGameDataProvider } from '.././StaticGameDataProvider';
-import { ITurnWarehouse } from '.././ITurnWarehouse';
-import { TurnWarehouse } from '.././TurnWarehouse';
-import { StaticTurnDataProvider } from '.././StaticTurnDataProvider';
-import { IMoveWarehouse } from '.././IMoveWarehouse';
-import { MoveWarehouse } from '.././MoveWarehouse';
-import { StaticMoveDataProvider } from '.././StaticMoveDataProvider';
-import { IPieceWarehouse } from '.././IPieceWarehouse';
-import { PieceWarehouse } from '.././PieceWarehouse';
-import { StaticPieceDataProvider } from '.././StaticPieceDataProvider';
+import { MoveAction } from '../DomainTypes';
+import { IGameCreator } from '../IGameCreator';
+import { GameCreator } from '../GameCreator';
+import { SeasonTypes, TurnStatus } from '../DomainTypes';
+import { IGameWarehouse } from '../IGameWarehouse';
+import { GameWarehouse } from '../GameWarehouse';
+import { StaticGameDataProvider } from '../StaticGameDataProvider';
+import { ITurnWarehouse } from '../ITurnWarehouse';
+import { TurnWarehouse } from '../TurnWarehouse';
+import { StaticTurnDataProvider } from '../StaticTurnDataProvider';
+import { IMoveWarehouse } from '../IMoveWarehouse';
+import { MoveWarehouse } from '../MoveWarehouse';
+import { StaticMoveDataProvider } from '../StaticMoveDataProvider';
+import { IPieceWarehouse } from '../IPieceWarehouse';
+import { PieceWarehouse } from '../PieceWarehouse';
+import { StaticPieceDataProvider } from '../StaticPieceDataProvider';
 
 
 let gameWarehouse: IGameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
@@ -37,7 +37,7 @@ it('the game warehouse should have the game', () => {
 })
 
 it('the turn warehouse should have the turn', () => {
-    let allTurns = turnWarehouse.getTurns(newGame);
+    let allTurns = turnWarehouse.getTurns('1');
     expect(allTurns).not.toBeNull();
     expect(allTurns.length).toEqual(1);
     expect(allTurns[0].id).toEqual('1');
@@ -46,7 +46,7 @@ it('the turn warehouse should have the turn', () => {
 })
 
 it('the piece warehouse should have the pieces', () => {
-    let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns(newGame)[0]);
+    let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns('1')[0]);
     expect(allPieces).not.toBeNull();
     expect(allPieces.length).toEqual(22);
     expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(1);
@@ -54,7 +54,7 @@ it('the piece warehouse should have the pieces', () => {
 })
 
 it('the move warehouse should have the moves', () => {
-    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns(newGame)[0], false);
+    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns('1')[0], false);
     expect(allEnglishMoves).not.toBeNull();
     expect(allEnglishMoves.length).toEqual(3);
     expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
@@ -72,20 +72,20 @@ it('the second game should have been created', () => {
     expect(allGames.length).toEqual(2);
     expect(allGames[1].id).toEqual('2');
 
-    let allTurns = turnWarehouse.getTurns(secondGame);
+    let allTurns = turnWarehouse.getTurns('2');
     expect(allTurns).not.toBeNull();
     expect(allTurns.length).toEqual(1);
     expect(allTurns[0].id).toEqual('2');
     expect(allTurns[0].year).toEqual(1);
     expect(allTurns[0].season).toEqual(SeasonTypes.Spring);
 
-    let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns(secondGame)[0]);
+    let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns('2')[0]);
     expect(allPieces).not.toBeNull();
     expect(allPieces.length).toEqual(22);
     expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(23);
     expect(Number(allPieces[0].id)).toBeLessThanOrEqual(44);
 
-    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns(secondGame)[0], false);
+    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns('2')[0], false);
     expect(allEnglishMoves).not.toBeNull();
     expect(allEnglishMoves.length).toEqual(3);
     expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
@@ -96,7 +96,7 @@ it('the second game should have been created', () => {
 it('delete a game', () => {
 
     expect(gameWarehouse.getAllGames().length).toEqual(2);
-    let turns = turnWarehouse.getTurns(newGame);
+    let turns = turnWarehouse.getTurns('1');
     expect(turns.length).toEqual(1);
     let myTurn = turns[0];
     expect(moveWarehouse.getMoves('England', myTurn, null).length).toEqual(3);
@@ -104,7 +104,7 @@ it('delete a game', () => {
 
     expect(gameCreator.deleteGame(newGame)).toBeTruthy;
     expect(gameWarehouse.getAllGames().length).toEqual(1);
-    expect(turnWarehouse.getTurns(newGame).length).toEqual(0);
+    expect(turnWarehouse.getTurns('1').length).toEqual(0);
     expect(moveWarehouse.getMoves('England', myTurn, null).length).toEqual(0);
     expect(pieceWarehouse.getPieces(myTurn).length).toEqual(0);
 })

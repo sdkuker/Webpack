@@ -26,7 +26,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
     constructor(props: PropertyValues) {
         super(props);
         this.turnSelected = this.turnSelected.bind(this);
-        this.state = { selectedTurn: this.props.turnWarehouse.getOpenTurn(props.selectedGame) };
+        this.state = { selectedTurn: this.props.turnWarehouse.getOpenTurn(props.selectedGame.id) };
     }
 
     render() {

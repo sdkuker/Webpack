@@ -24,21 +24,21 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
     adjustCacheForTurn = (aTurn: Turn) => {
 
         if (aTurn.id !== this.piecesTurnId) {
-            if (this.allPieces.get(aTurn.game.id)) {  // have a map for the turn
+            if (this.allPieces.get(aTurn.gameId)) {  // have a map for the turn
                 // @ts-ignore
-                if (!this.allPieces.get(aTurn.game.id).get(aTurn.id)) { // no moves for the turn
+                if (!this.allPieces.get(aTurn.gameId).get(aTurn.id)) { // no moves for the turn
                     // @ts-ignore
-                    this.allPieces.get(aTurn.game.id).set(aTurn.id, new Array<Piece>());
+                    this.allPieces.get(aTurn.gameId).set(aTurn.id, new Array<Piece>());
                 }
             } else {  // no map for the game - add an empty map
-                this.allPieces.set(aTurn.game.id, new Map<string, Array<Piece>>());
+                this.allPieces.set(aTurn.gameId, new Map<string, Array<Piece>>());
                 // also add an array for this turn
                 // @ts-ignore
-                this.allPieces.get(aTurn.game.id).set(aTurn.id, new Array<Piece>());
+                this.allPieces.get(aTurn.gameId).set(aTurn.id, new Array<Piece>());
             }
 
             // @ts-ignore
-            this.pieces = this.allPieces.get(aTurn.game.id).get(aTurn.id);
+            this.pieces = this.allPieces.get(aTurn.gameId).get(aTurn.id);
             this.piecesTurnId = aTurn.id;
         }
     }
@@ -69,7 +69,7 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
             if (this.pieces[i].id === aPiece.id) {
                 // @ts-ignore
                 // this assumes the indices are the same in both arrays.  They should be...
-                this.allPieces.get(aPiece.turn.game.id).get(aPiece.turn.id).splice(i, 1);
+                this.allPieces.get(aPiece.turn.gameId).get(aPiece.turn.id).splice(i, 1);
                 this.pieces.splice(i, 1);
                 moveDeleted = true;
             }

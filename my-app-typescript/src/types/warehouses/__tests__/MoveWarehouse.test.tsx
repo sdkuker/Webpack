@@ -1,15 +1,13 @@
 import { Move } from '.././Move';
 import { Turn } from '.././Turn';
-import { Game } from '.././Game';
 import { Location } from '.././Location';
 import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
 import { MoveWarehouse } from '.././MoveWarehouse';
 import { StaticMoveDataProvider } from '.././StaticMoveDataProvider';
 import { Piece } from '../Piece';
 
-let myGame = new Game('1', 'test');
-let turn1Spring = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-let turn1Fall = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+let turn1Spring = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
+let turn1Fall = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
 let myMoveWarehouse: MoveWarehouse;
 let myDataProvider: StaticMoveDataProvider;
 
@@ -93,16 +91,14 @@ it('Create initial moves for a turn', () => {
 
 it('Delete a single move from a turn and all the moves from a turn', () => {
     
-    let myGame = new Game('3', 'deleteTestGame');
-    let turn1Spring = new Turn('10', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-    let turn1Fall = new Turn('11', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    let turn1Spring = new Turn('10', '3', 1, SeasonTypes.Spring, TurnStatus.Complete);
+    let turn1Fall = new Turn('11', '3', 1, SeasonTypes.Fall, TurnStatus.Open);
     let move1 = new Move(null, 'a move order', 'England', turn1Spring);
     let move2 = new Move(null, 'a move order', 'England', turn1Spring);
     let move3 = new Move(null, 'a move order', 'England', turn1Fall);
 
-    let mySecondGame = new Game('4', 'deleteTestGame2');
-    let turn1SpringGame2 = new Turn('12', mySecondGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-    let turn1FallGame2 = new Turn('13', mySecondGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    let turn1SpringGame2 = new Turn('12', '4', 1, SeasonTypes.Spring, TurnStatus.Complete);
+    let turn1FallGame2 = new Turn('13', '4', 1, SeasonTypes.Fall, TurnStatus.Open);
     let move4 = new Move(null, 'a move order', 'England', turn1SpringGame2);
     let move5 = new Move(null, 'a move order', 'England', turn1SpringGame2);
     let move6 = new Move(null, 'a move order', 'England', turn1FallGame2);

@@ -1,11 +1,10 @@
-import { Game } from './Game';
 import { Turn } from './Turn';
 import { SeasonTypes } from './DomainTypes';
 
 export interface ITurnWarehouse {
-    getTurns (aGame : Game): Array<Turn>;
-    getTurn (aGame : Game, aYear : number, aSeason : SeasonTypes) : Turn | null;
-    getOpenTurn (aGame : Game) : Turn;
-    generateNextTurn (aGame: Game) : Turn;
+    getTurns (aGameId : string): Array<Turn>;
+    getTurn (aGameId : string, aYear : number, aSeason : SeasonTypes) : Turn | null;
+    getOpenTurn (aGameId : string) : Turn;
+    generateNextTurn (aGameId: string) : Turn;
     deleteTurn(aTurn: Turn): boolean;
 } 

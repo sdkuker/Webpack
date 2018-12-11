@@ -22,21 +22,21 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     adjustCacheForTurn = (aTurn: Turn) => {
 
         if (aTurn.id !== this.movesTurnId) {
-            if (this.allMoves.get(aTurn.game.id)) {  // have a map for the turn
+            if (this.allMoves.get(aTurn.gameId)) {  // have a map for the turn
                 // @ts-ignore
-                if (!this.allMoves.get(aTurn.game.id).get(aTurn.id)) { // no moves for the turn
+                if (!this.allMoves.get(aTurn.gameId).get(aTurn.id)) { // no moves for the turn
                     // @ts-ignore
-                    this.allMoves.get(aTurn.game.id).set(aTurn.id, new Array<Move>());
+                    this.allMoves.get(aTurn.gameId).set(aTurn.id, new Array<Move>());
                 }
             } else {  // no map for the game - add an empty map
-                this.allMoves.set(aTurn.game.id, new Map<string, Array<Move>>());
+                this.allMoves.set(aTurn.gameId, new Map<string, Array<Move>>());
                 // also add an array for this turn
                 // @ts-ignore
-                this.allMoves.get(aTurn.game.id).set(aTurn.id, new Array<Move>());
+                this.allMoves.get(aTurn.gameId).set(aTurn.id, new Array<Move>());
             }
 
             // @ts-ignore
-            this.moves = this.allMoves.get(aTurn.game.id).get(aTurn.id);
+            this.moves = this.allMoves.get(aTurn.gameId).get(aTurn.id);
             this.movesTurnId = aTurn.id;
         }
     }
@@ -52,7 +52,7 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
             if (this.moves[i].id === aMove.id) {
                 // @ts-ignore
                 // this assumes the indices are the same in both arrays.  They should be...
-                this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).splice(i, 1);
+                this.allMoves.get(aMove.turn.gameId).get(aMove.turn.id).splice(i, 1);
                 this.moves.splice(i, 1);
                 moveDeleted = true;
             }
@@ -75,7 +75,7 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
                 // putting it in this.moves w/o the other doesn't
                 // seem to get it in this.allMoves.  Kinda surprising actually.
                 // @ts-ignore
-                this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).push(aMove);
+                this.allMoves.get(aMove.turn.gameId).get(aMove.turn.id).push(aMove);
                 this.moves.push(aMove);
             }
         }

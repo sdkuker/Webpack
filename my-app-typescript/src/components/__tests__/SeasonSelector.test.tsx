@@ -11,8 +11,8 @@ enzyme.configure({adapter: new Adapter()});
 const myGame = new Game('1', 'test');
 
 it('Get Open Season', () => {
-    const completeTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-    const openTurn = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
+    const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
 
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
@@ -44,8 +44,8 @@ it('Get Open Season', () => {
 })
 
 it('Get Complete Season', () => {
-    const completeTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
-    const openTurn = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
+    const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
     const arrayOfTurns = [completeTurn];
 
     const onTurnsSelectedMock = jest.fn(); 

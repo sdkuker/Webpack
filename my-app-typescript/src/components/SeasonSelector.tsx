@@ -32,7 +32,7 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
         let hasSpringTurn = false;
         let hasFallTurn = false;
         if (this.props.myGame) {
-            this.props.myTurnWarehouse.getTurns(this.props.myGame).forEach((aTurn: Turn) => {
+            this.props.myTurnWarehouse.getTurns(this.props.myGame.id).forEach((aTurn: Turn) => {
                 if (this.state.selectedTurn === aTurn) {
                     // tslint:disable-next-line
                     yearOptions.push(<option selected>{aTurn.year}</option>);
@@ -88,7 +88,7 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
     yearSelected(event: React.FormEvent<HTMLSelectElement>) {
         let myValue: string = event.currentTarget.value;
         let mySelectedTurn = this.props.myTurnWarehouse.getTurn(
-            this.props.myGame,
+            this.props.myGame.id,
             parseInt(myValue, 10),
             this.state.selectedTurn.season);
         if (mySelectedTurn) {
@@ -106,7 +106,7 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
             mySeason = SeasonTypes.Spring;
         }
         const mySelectedTurn = this.props.myTurnWarehouse.getTurn(
-            this.props.myGame,
+            this.props.myGame.id,
             this.state.selectedTurn.year,
             mySeason);
         if (mySelectedTurn) {

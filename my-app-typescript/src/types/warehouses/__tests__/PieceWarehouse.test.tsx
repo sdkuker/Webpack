@@ -6,9 +6,9 @@ import { PieceWarehouse } from '../PieceWarehouse';
 import { Warehouse as LocationWarehouse } from '../LocationWarehouse';
 import { LocationTypes } from '../DomainTypes';
 
-let game1 = new Game('1', 'test');
-let turnGame1Spring = new Turn('1', game1, 1, SeasonTypes.Spring, TurnStatus.Open);
-let turnGame1Fall = new Turn('2', game1, 1, SeasonTypes.Fall, TurnStatus.Open);
+let game1 = new Game('1', 'myGame');
+let turnGame1Spring = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Open);
+let turnGame1Fall = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
 
 let myPieceWarehouse: PieceWarehouse;
 
