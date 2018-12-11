@@ -14,13 +14,17 @@ import { StaticMoveDataProvider } from '../StaticMoveDataProvider';
 import { IPieceWarehouse } from '../IPieceWarehouse';
 import { PieceWarehouse } from '../PieceWarehouse';
 import { StaticPieceDataProvider } from '../StaticPieceDataProvider';
-
+import { ICountryWarehouse } from '../ICountryWarehouse';
+import { CountryWarehouse } from '../CountryWarehouse';
+import { StaticCountryDataProvider } from '../StaticCountryDataProvider';
 
 let gameWarehouse: IGameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
 let turnWarehouse: ITurnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
 let moveWarehouse: IMoveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
 let pieceWarehouse: IPieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
-let gameCreator: IGameCreator = new GameCreator(gameWarehouse, turnWarehouse, pieceWarehouse, moveWarehouse);
+let countryWarehouse: ICountryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
+let gameCreator: IGameCreator = new GameCreator(gameWarehouse, turnWarehouse, pieceWarehouse, 
+                                                moveWarehouse, countryWarehouse);
 
 let newGame = gameCreator.createGame();
 
@@ -63,6 +67,12 @@ it('the move warehouse should have the moves', () => {
     expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(22);
 })
 
+it('the country warehouse should have the countries', () => {
+    let allCountries = countryWarehouse.getAllCountries('1');
+    expect(allCountries).not.toBeNull();
+    expect(allCountries.length).toEqual(7);
+})
+
 it('the second game should have been created', () => {
     let secondGame = gameCreator.createGame();
     expect(secondGame).not.toBeNull();
@@ -103,10 +113,12 @@ it('delete a game', () => {
     let myTurn = turns[0];
     expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(3);
     expect(pieceWarehouse.getPieces(myTurn).length).toEqual(22);
+    expect(countryWarehouse.getAllCountries('1').length).toEqual(7);
 
     expect(gameCreator.deleteGame(newGame)).toBeTruthy;
     expect(gameWarehouse.getAllGames().length).toEqual(1);
     expect(turnWarehouse.getTurns('1').length).toEqual(0);
     expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(0);
     expect(pieceWarehouse.getPieces(myTurn).length).toEqual(0);
+    expect(countryWarehouse.getAllCountries('1').length).toEqual(0);
 })

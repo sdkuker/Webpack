@@ -7,6 +7,7 @@ import { IMoveWarehouse } from './IMoveWarehouse';
 import { ITurnWarehouse } from './ITurnWarehouse';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
+import { ICountryWarehouse } from './ICountryWarehouse';
 
 export class GameCreator implements IGameCreator {
 
@@ -14,13 +15,16 @@ export class GameCreator implements IGameCreator {
     turnWarehouse: ITurnWarehouse;
     pieceWarehouse: IPieceWarehouse;
     moveWarehouse: IMoveWarehouse;
+    countryWarehouse: ICountryWarehouse;
 
     constructor(myGameWarehouse: IGameWarehouse, myTurnWarehouse: ITurnWarehouse, 
-                myPieceWarehouse: IPieceWarehouse, myMoveWarehouse: IMoveWarehouse) {
+                myPieceWarehouse: IPieceWarehouse, myMoveWarehouse: IMoveWarehouse,
+                myCountryWarehouse: ICountryWarehouse) {
                     this.gameWarehouse = myGameWarehouse;
                     this.turnWarehouse = myTurnWarehouse;
                     this.pieceWarehouse = myPieceWarehouse;
                     this.moveWarehouse = myMoveWarehouse;
+                    this.countryWarehouse = myCountryWarehouse;
     }
 
     deleteGame = (aGame: Game) => {
@@ -36,6 +40,7 @@ export class GameCreator implements IGameCreator {
             everythingDeleted = everythingDeleted && movesForTurnDeleted && 
                                 piecesForTurnDeleted && turnDeleted;
         }
+        let countriesDeleted = this.countryWarehouse.deleteCountries(aGame.id);
         let gameDeleted = this.gameWarehouse.deleteGame(aGame);
         return everythingDeleted;
     }
@@ -46,6 +51,7 @@ export class GameCreator implements IGameCreator {
         let initialTurn = this.turnWarehouse.generateNextTurn(theNewGame.id);
         let initialPieces = this.createInitialPieces(theNewGame, initialTurn);
         let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, theNewGame.id, initialPieces);
+        let countriesCreated = this.countryWarehouse.initializeCountries(theNewGame.id);
 
         return theNewGame;
     }

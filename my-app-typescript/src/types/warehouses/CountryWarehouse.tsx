@@ -1,61 +1,46 @@
-import { Game } from './Game';
 import { Country } from './Country';
 import { ICountryDataProvider } from './ICountryDataProvider';
-import { observable } from 'mobx';
 import { ICountryWarehouse } from './ICountryWarehouse';
 
 export class CountryWarehouse implements ICountryWarehouse {
 
-    @observable countries: Array<Country>;
-    myGame: Game;
     myDataProvider: ICountryDataProvider;
 
-    constructor(dataProvider: ICountryDataProvider, aGame: Game | null) {
+    constructor(dataProvider: ICountryDataProvider, aGameId: string | null) {
         this.myDataProvider = dataProvider;
-        if (aGame) {
-            this.initializeCache(aGame);
+        if (aGameId) {
+            this.initializeCountries(aGameId);
         }
     }
 
-    initializeCache = (forGame: Game) => {
-        this.myGame = forGame;
-        this.countries = this.myDataProvider.getCountries(this.myGame);
+    initializeCountries = (forGameId: string) => {
+
+        return this.myDataProvider.initializeCountries(forGameId);
     }
 
-    getCountryByName = (aCountryName: String, forGame: Game) => {
-
-        if (this.myGame !== forGame) {
-            this.initializeCache(forGame);
-        }
+    getCountryByName = (aCountryName: String, forGameId: string) => {
 
         let theReturn: Country | undefined;
 
-        this.countries.forEach((aCountry: Country) => {
+        this.myDataProvider.getCountries(forGameId).forEach((aCountry: Country) => {
             if (aCountry.name === aCountryName) {
                 theReturn = aCountry;
             }
         });
+
         return theReturn;
     }
 
-    getAllCountries = (forGame: Game) => {
+    getAllCountries = (forGameId: string) => {
 
-        if (this.myGame !== forGame) {
-            this.initializeCache(forGame);
-        }
-
-        return this.countries;
+        return this.myDataProvider.getCountries(forGameId);
     }
 
-    getCountryById = (aCountryId: String, forGame: Game) => {
-
-        if (this.myGame !== forGame) {
-            this.initializeCache(forGame);
-        }
+    getCountryById = (aCountryId: String, forGameId: string) => {
 
         let theReturn: Country | undefined;
 
-        this.countries.forEach((aCountry: Country) => {
+        this.myDataProvider.getCountries(forGameId).forEach((aCountry: Country) => {
             if (aCountry.id === aCountryId) {
                 theReturn = aCountry;
             }
@@ -65,8 +50,12 @@ export class CountryWarehouse implements ICountryWarehouse {
 
     }
 
-    updatePlayerNameForCountry = (aGame: Game, aCountry: Country, newPlayerName: string) => {
-        this.myDataProvider.updatePlayerNameForCountry(aGame, aCountry, newPlayerName);
+    updatePlayerNameForCountry = (forGameId: string, aCountry: Country, newPlayerName: string) => {
+        this.myDataProvider.updatePlayerNameForCountry(forGameId, aCountry, newPlayerName);
+    }
+
+    deleteCountries = (forGameId: string) => {
+        return this.myDataProvider.deleteCountries(forGameId);
     }
 
 }

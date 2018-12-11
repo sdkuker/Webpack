@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-
 import CountryListCountryComponent from './CountryListCountryComponent';
 import { ICountryWarehouse } from '../../types/warehouses/ICountryWarehouse';
 import { Country } from '../../types/warehouses/Country';
@@ -19,7 +18,7 @@ class CountryListComponent extends React.Component<PropValues, StateValues> {
         super(props);
         this.playerChanged = this.playerChanged.bind(this);
         this.state = {
-            countries: this.props.countryWarehouse.getAllCountries(this.props.game),
+            countries: this.props.countryWarehouse.getAllCountries(this.props.game.id),
         };
     }
 
@@ -60,7 +59,7 @@ class CountryListComponent extends React.Component<PropValues, StateValues> {
 
     playerChanged(forCountry: Country, aPlayerName: string) {
 
-        this.props.countryWarehouse.updatePlayerNameForCountry(this.props.game, forCountry, aPlayerName);
+        this.props.countryWarehouse.updatePlayerNameForCountry(this.props.game.id, forCountry, aPlayerName);
     }
 }
 

@@ -1,9 +1,10 @@
 import { Country } from './Country';
-import { Game } from './Game';
 
 export interface ICountryWarehouse {
-    getCountryByName(aCountryName: String, forGame: Game): Country | undefined;
-    getAllCountries(forGame: Game) : Country[];
-    getCountryById(aCountryId: String, forGame: Game): Country | undefined;
-    updatePlayerNameForCountry(forGame: Game, aCountry: Country, newPlayerName: string) : void;
+    getCountryByName(aCountryName: String, forGameId: string): Country | undefined;
+    getAllCountries(forGameId: string) : Country[];
+    getCountryById(aCountryId: String, forGameId: string): Country | undefined;
+    updatePlayerNameForCountry(forGameId: string, aCountry: Country, newPlayerName: string) : void;
+    initializeCountries(forGameId: string): boolean;
+    deleteCountries(forGameId: string) : boolean;
 } 

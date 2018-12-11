@@ -1,7 +1,8 @@
 import { Country } from './Country';
-import { Game } from './Game';
 
 export interface ICountryDataProvider {
-    getCountries(forGame: Game) : Country[];
-    updatePlayerNameForCountry(forGame: Game, aCountry: Country, newPlayerName: string) : void;
+    getCountries(forGameId: string) : Country[];
+    updatePlayerNameForCountry(forGameId: string, aCountry: Country, newPlayerName: string) : void;
+    initializeCountries(forGameId: string) : boolean;
+    deleteCountries(forGameId: string) : boolean;
 } 

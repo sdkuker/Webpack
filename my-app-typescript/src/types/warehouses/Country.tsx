@@ -1,17 +1,16 @@
 
 import { observable } from 'mobx';
-import { Game } from './Game';
 
 export class Country {
     @observable id: string;
     @observable name: string;
     @observable playerName: string;
-    @observable game: Game;
+    @observable gameId: string;
 
-    constructor(anId: string, aName: string, aPlayerName: string | null, aGame: Game) {
+    constructor(anId: string, aName: string, aPlayerName: string | null, aGameId: string) {
         this.id = anId;
         this.name = aName;
-        this.game = aGame;
+        this.gameId = aGameId;
         if (aPlayerName) {
             this.playerName = aPlayerName;
         }

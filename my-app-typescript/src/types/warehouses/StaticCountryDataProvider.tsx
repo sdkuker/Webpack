@@ -4,35 +4,65 @@ import { Game } from './Game';
 
 export class StaticCountryDataProvider implements ICountryDataProvider {
 
-    countries: Array<Country>;
+    allCountries: { [gameId: string]: Array<Country> } = {};
+    nextAvailableCountryId = 0;
 
-    constructor(myCountries: Array<Country> | null) {
-        if (myCountries) {
-            this.countries = myCountries;
-        } else {
-            const staticCountries = Array<Country>();
-            const myGame = new Game('1', 'myGame');
-            staticCountries.push(new Country('1', 'Austria', 'Beth', myGame));
-            staticCountries.push(new Country('2', 'England', 'Michelle', myGame));
-            staticCountries.push(new Country('3', 'France', 'Marie', myGame));
-            staticCountries.push(new Country('4', 'Germany', 'Steve', myGame));
-            staticCountries.push(new Country('5', 'Russia', 'Kurtis', myGame));
-            staticCountries.push(new Country('6', 'Turkey', 'Alex', myGame));
-            staticCountries.push(new Country('7', 'Italy', 'Hootie', myGame));
-            
-            this.countries = staticCountries;
+    constructor(aGameId: string | null, myCountries: Array<Country> | null) {
+        if (aGameId && myCountries) {
+            this.allCountries[aGameId] = myCountries;
         }
     }
 
-    getCountries = (forGame: Game) => {
+    initializeCountries = (forGameId: string) => {
 
-        // for the static provider, ignore the game for now.
-        return this.countries;
+        let wasSuccessfull = true;
+
+        let myArray = new Array<Country>();
+
+        this.nextAvailableCountryId++;
+        myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Austria', 'Beth', forGameId));
+        this.nextAvailableCountryId++;
+        myArray.push(new Country(this.nextAvailableCountryId.toString(), 'England', 'Michelle', forGameId));
+        this.nextAvailableCountryId++;
+        myArray.push(new Country(this.nextAvailableCountryId.toString(), 'France', 'Marie', forGameId));
+        this.nextAvailableCountryId++;
+        myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Germany', 'Steve', forGameId));
+        this.nextAvailableCountryId++;
+        myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Russia', 'Kurtis', forGameId));
+        this.nextAvailableCountryId++;
+        myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Turkey', 'Alex', forGameId));
+        this.nextAvailableCountryId++;
+        myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Italy', 'Hootie', forGameId));
+
+        this.allCountries[forGameId] =  myArray;
+
+        return wasSuccessfull;
+
     }
 
-    updatePlayerNameForCountry = (forGame: Game, aCountry: Country, newPlayerName: string) => {
+    getCountries = (forGameId: string) => {
+
+        if (! this.allCountries[forGameId]) {
+            this.allCountries[forGameId] = new Array<Country>();
+        }
+
+        return this.allCountries[forGameId];
+    }
+
+    updatePlayerNameForCountry = (forGameId: string, aCountry: Country, newPlayerName: string) => {
 
         aCountry.playerName = newPlayerName;
 
+    }
+
+    deleteCountries = (forGameId: string) => {
+
+        let successfulDeletion = true;
+
+        if (this.allCountries[forGameId]) {
+            delete this.allCountries[forGameId];
+        }
+
+        return successfulDeletion;
     }
 }
