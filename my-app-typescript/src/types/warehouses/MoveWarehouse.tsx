@@ -1,5 +1,4 @@
 import { Move } from './Move';
-import { Turn } from './Turn';
 import { Piece } from './Piece';
 import { IMoveDataProvider } from './IMoveDataProvider';
 import { IMoveWarehouse } from './IMoveWarehouse';
@@ -19,11 +18,11 @@ export class MoveWarehouse implements IMoveWarehouse {
         return this.dataProvider.deleteMove(aMove);
     }
 
-    deleteMoves = (aTurn: Turn) => {
+    deleteMoves = (aTurnId: string, aGameId: string) => {
 
         let allMovesDeleted = true;
         let thisMoveDeleted = true;
-        let theMoves = this.dataProvider.getMoves(aTurn);
+        let theMoves = this.dataProvider.getMoves(aTurnId, aGameId);
         let index = theMoves.length;
         while (index--) {
             thisMoveDeleted = this.deleteMove(theMoves[index]);
@@ -39,35 +38,35 @@ export class MoveWarehouse implements IMoveWarehouse {
         this.dataProvider.persistMove(aMove, this.nonPersistentMoveOrder);
     }
 
-    createNonPersistentMove = (aCountryName: string, aTurn: Turn) => {
-        return this.dataProvider.createNonPersistentMove(aCountryName, aTurn, this.nonPersistentMoveOrder);
+    createNonPersistentMove = (aCountryName: string, aTurnId: string, aGameId: string) => {
+        return this.dataProvider.createNonPersistentMove(aCountryName, aTurnId, aGameId, this.nonPersistentMoveOrder);
     }
 
-    getMoves = (countryName: string, aTurn: Turn, includeNonPersistentMove: boolean | null) => {
+    getMoves = (countryName: string, aTurnId: string, aGameId: string, includeNonPersistentMove: boolean | null) => {
 
         const theReturn = Array<Move>();
         let index: number;
-        let theMoves = this.dataProvider.getMoves(aTurn);
+        let theMoves = this.dataProvider.getMoves(aTurnId, aGameId);
         for (index = 0; index < theMoves.length; index++) {
             if (theMoves[index].owningCountryName === countryName &&
-                theMoves[index].turn === aTurn) {
+                theMoves[index].turnId === aTurnId) {
                 theReturn.push(theMoves[index]);
             }
         }
         if (includeNonPersistentMove) {
-            theReturn.push(this.createNonPersistentMove(countryName, aTurn));
+            theReturn.push(this.createNonPersistentMove(countryName, aTurnId, aGameId));
         }
 
         return theReturn;
     }
 
-    createInitialMoves = (aTurn: Turn, pieces: Array<Piece>) => {
+    createInitialMoves = (aTurnId: string, aGameId: string, pieces: Array<Piece>) => {
 
         const theReturn = Array<Move>();
 
         pieces.forEach((aPiece: Piece, anIndex: number) => {
             let moveOrder = aPiece.type + ' ' + aPiece.locationName + ' Holds';
-            let aMove = new Move(null, moveOrder, aPiece.owningCountryName, aTurn);
+            let aMove = new Move(null, moveOrder, aPiece.owningCountryName, aTurnId, aGameId);
             this.persistMove(aMove);
             theReturn.push(aMove);
         });

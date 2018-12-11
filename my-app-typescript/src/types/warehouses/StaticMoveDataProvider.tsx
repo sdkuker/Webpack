@@ -12,32 +12,32 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     // the key to the outer map is the game id.  The key to the inner map is the turn id
     allMoves: Map<string, Map<string, Array<Move>>> = new Map();
 
-    getMoves = (forTurn: Turn) => {
+    getMoves = (forTurnId: string, forGameId: string) => {
 
-        this.adjustCacheForTurn(forTurn);
+        this.adjustCacheForTurn(forTurnId, forGameId);
 
         return this.moves;
     }
 
-    adjustCacheForTurn = (aTurn: Turn) => {
+    adjustCacheForTurn = (aTurnId: string, aGameId: string) => {
 
-        if (aTurn.id !== this.movesTurnId) {
-            if (this.allMoves.get(aTurn.gameId)) {  // have a map for the turn
+        if (aTurnId !== this.movesTurnId) {
+            if (this.allMoves.get(aGameId)) {  // have a map for the turn
                 // @ts-ignore
-                if (!this.allMoves.get(aTurn.gameId).get(aTurn.id)) { // no moves for the turn
+                if (!this.allMoves.get(aGameId).get(aTurnId)) { // no moves for the turn
                     // @ts-ignore
-                    this.allMoves.get(aTurn.gameId).set(aTurn.id, new Array<Move>());
+                    this.allMoves.get(aGameId).set(aTurnId, new Array<Move>());
                 }
             } else {  // no map for the game - add an empty map
-                this.allMoves.set(aTurn.gameId, new Map<string, Array<Move>>());
+                this.allMoves.set(aGameId, new Map<string, Array<Move>>());
                 // also add an array for this turn
                 // @ts-ignore
-                this.allMoves.get(aTurn.gameId).set(aTurn.id, new Array<Move>());
+                this.allMoves.get(aGameId).set(aTurnId, new Array<Move>());
             }
 
             // @ts-ignore
-            this.moves = this.allMoves.get(aTurn.gameId).get(aTurn.id);
-            this.movesTurnId = aTurn.id;
+            this.moves = this.allMoves.get(aGameId).get(aTurnId);
+            this.movesTurnId = aTurnId;
         }
     }
 
@@ -45,14 +45,14 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     deleteMove = (aMove: Move) => {
 
         let moveDeleted = false;
-        this.adjustCacheForTurn(aMove.turn);
+        this.adjustCacheForTurn(aMove.turnId, aMove.gameId);
 
         let i: number;
         for (i = 0; i < this.moves.length; i++) {
             if (this.moves[i].id === aMove.id) {
                 // @ts-ignore
                 // this assumes the indices are the same in both arrays.  They should be...
-                this.allMoves.get(aMove.turn.gameId).get(aMove.turn.id).splice(i, 1);
+                this.allMoves.get(aMove.gameId).get(aMove.turnId).splice(i, 1);
                 this.moves.splice(i, 1);
                 moveDeleted = true;
             }
@@ -64,7 +64,7 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     @action
     persistMove = (aMove: Move, aNonPersistentMoveOrder: string | null) => {
 
-        this.adjustCacheForTurn(aMove.turn);
+        this.adjustCacheForTurn(aMove.turnId, aMove.gameId);
 
         if (aMove.order !== aNonPersistentMoveOrder) {
             if (!aMove.id) {
@@ -75,15 +75,16 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
                 // putting it in this.moves w/o the other doesn't
                 // seem to get it in this.allMoves.  Kinda surprising actually.
                 // @ts-ignore
-                this.allMoves.get(aMove.turn.gameId).get(aMove.turn.id).push(aMove);
+                this.allMoves.get(aMove.gameId).get(aMove.turnId).push(aMove);
                 this.moves.push(aMove);
             }
         }
     }
 
     @action
-    createNonPersistentMove = (aCountryName: string, aTurn: Turn, aNonPersistentMoveOrder: string) => {
+    createNonPersistentMove = ( aCountryName: string, aTurnId: string, aGameId: string, 
+                                aNonPersistentMoveOrder: string) => {
 
-        return new Move(aTurn.id + this.nextAvailableMoveKey++, aNonPersistentMoveOrder, aCountryName, aTurn);
+        return new Move(aTurnId + this.nextAvailableMoveKey++, aNonPersistentMoveOrder, aCountryName, aTurnId, aGameId);
     }
 }

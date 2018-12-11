@@ -1,7 +1,6 @@
 import { observable } from 'mobx';
 import { PieceTypes, LocationTypes, MoveAction } from './DomainTypes';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
-import { Turn } from './Turn';
 import { MoveValidationResults } from './MoveValidationResults';
 
 export class Move {
@@ -17,14 +16,16 @@ export class Move {
     secondaryAction?: MoveAction;
     secondaryEndingLocationName?: string;
     owningCountryName?: string;
-    turn: Turn;
+    turnId: string;
+    gameId: string;
 
-    constructor(anId: string | null, anOrder: string, anOwningCountrName: string, aTurn: Turn) {
+    constructor(anId: string | null, anOrder: string, anOwningCountrName: string, aTurnId: string, aGameId: string) {
         if (anId) {
              this.id = anId;
         }
         this.owningCountryName = anOwningCountrName;
-        this.turn = aTurn;
+        this.turnId = aTurnId;
+        this.gameId = aGameId;
         this.order = anOrder;
         this.parseOrder();
     }

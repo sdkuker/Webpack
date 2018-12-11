@@ -54,7 +54,8 @@ it('the piece warehouse should have the pieces', () => {
 })
 
 it('the move warehouse should have the moves', () => {
-    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns('1')[0], false);
+    let allEnglishMoves = moveWarehouse.getMoves(   'England', turnWarehouse.getTurns('1')[0].id, 
+                                                    turnWarehouse.getTurns('1')[0].gameId, false);
     expect(allEnglishMoves).not.toBeNull();
     expect(allEnglishMoves.length).toEqual(3);
     expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
@@ -85,7 +86,8 @@ it('the second game should have been created', () => {
     expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(23);
     expect(Number(allPieces[0].id)).toBeLessThanOrEqual(44);
 
-    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns('2')[0], false);
+    let allEnglishMoves = moveWarehouse.getMoves(   'England', turnWarehouse.getTurns('2')[0].id, 
+                                                    turnWarehouse.getTurns('2')[0].gameId, false);
     expect(allEnglishMoves).not.toBeNull();
     expect(allEnglishMoves.length).toEqual(3);
     expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
@@ -99,12 +101,12 @@ it('delete a game', () => {
     let turns = turnWarehouse.getTurns('1');
     expect(turns.length).toEqual(1);
     let myTurn = turns[0];
-    expect(moveWarehouse.getMoves('England', myTurn, null).length).toEqual(3);
+    expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(3);
     expect(pieceWarehouse.getPieces(myTurn).length).toEqual(22);
 
     expect(gameCreator.deleteGame(newGame)).toBeTruthy;
     expect(gameWarehouse.getAllGames().length).toEqual(1);
     expect(turnWarehouse.getTurns('1').length).toEqual(0);
-    expect(moveWarehouse.getMoves('England', myTurn, null).length).toEqual(0);
+    expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(0);
     expect(pieceWarehouse.getPieces(myTurn).length).toEqual(0);
 })

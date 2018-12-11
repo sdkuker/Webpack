@@ -29,7 +29,8 @@ export class GameCreator implements IGameCreator {
         let turnsForGame = this.turnWarehouse.getTurns(aGame.id);
         let index = turnsForGame.length;
         while (index--) {
-            let movesForTurnDeleted = this.moveWarehouse.deleteMoves(turnsForGame[index]);
+            let movesForTurnDeleted = this.moveWarehouse.deleteMoves(turnsForGame[index].id, 
+                                                                     turnsForGame[index].gameId);
             let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
             let turnDeleted = this.turnWarehouse.deleteTurn(turnsForGame[index]);
             everythingDeleted = everythingDeleted && movesForTurnDeleted && 
@@ -44,7 +45,7 @@ export class GameCreator implements IGameCreator {
         let theNewGame = this.gameWarehouse.createGame();
         let initialTurn = this.turnWarehouse.generateNextTurn(theNewGame.id);
         let initialPieces = this.createInitialPieces(theNewGame, initialTurn);
-        let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn, initialPieces);
+        let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, theNewGame.id, initialPieces);
 
         return theNewGame;
     }

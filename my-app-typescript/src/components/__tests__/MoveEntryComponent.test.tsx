@@ -1,7 +1,5 @@
 import { Move } from '../../types/warehouses/Move';
-import { Turn } from '../../types/warehouses/Turn';
 import { Game } from '../../types/warehouses/Game';
-import { SeasonTypes, TurnStatus } from '../../types/warehouses/DomainTypes';
 import { IMoveWarehouse } from '../../types/warehouses/IMoveWarehouse';
 import * as React from 'react';
 import * as Adapter from 'enzyme-adapter-react-16';
@@ -10,9 +8,10 @@ import MoveEntryComponent from '../MoveEntryComponent';
 
 enzyme.configure({adapter: new Adapter()});
 
-const myGame = new Game('1', 'test');
-const myTurn = new Turn('1', myGame.id, 1, SeasonTypes.Spring, TurnStatus.Open);
-const myMove = new Move('1', "my order", "England", myTurn);
+const myGameId = '1';
+const myTurnId = '1';
+const myGame = new Game(myGameId, 'test');
+const myMove = new Move('1', "my order", "England", myTurnId, myGameId);
 const onMoveEntryValidationdMock = jest.fn(); 
 const persistMoveMock = jest.fn(); 
 const deleteMoveMock = jest.fn();

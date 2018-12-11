@@ -1,10 +1,8 @@
 import { Move } from './Move';
-import { Turn } from './Turn';
-import { Game } from './Game';
 
 export interface IMoveDataProvider {
-    getMoves(aTurn: Turn): Array<Move>;
+    getMoves(aTurnId: string, aGameId: string): Array<Move>;
     deleteMove(aMove: Move): boolean;
     persistMove(aMove: Move, aNonPersistentMoveOrder: string): void;
-    createNonPersistentMove(aCountryName: string, aTurn: Turn, aNonPersistentMoveOrder: string): Move;
+    createNonPersistentMove(aCountryName: string, aTurnId: string, aGameId: string, aNonPersistentMoveOrder: string): Move;
 } 

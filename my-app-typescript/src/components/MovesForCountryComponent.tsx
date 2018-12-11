@@ -44,7 +44,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                     <MovesListComponent
                         key={this.state.countryToDisplay}
                         moves={this.props.moveWarehouse.getMoves(
-                            this.state.countryToDisplay, this.props.myTurn, false)}
+                            this.state.countryToDisplay, this.props.myTurn.id, this.props.myTurn.gameId, false)}
                     />
                 );
         }
