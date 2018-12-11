@@ -52,7 +52,7 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
             if (this.moves[i].id === aMove.id) {
                 // @ts-ignore
                 // this assumes the indices are the same in both arrays.  They should be...
-                this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).splice(i,1);
+                this.allMoves.get(aMove.turn.game.id).get(aMove.turn.id).splice(i, 1);
                 this.moves.splice(i, 1);
                 moveDeleted = true;
             }

@@ -7,6 +7,7 @@ import { IMoveWarehouse } from './IMoveWarehouse';
 import { ITurnWarehouse } from './ITurnWarehouse';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { Warehouse as LocationWarehouse } from './LocationWarehouse';
+import everything from 'mobx';
 
 export class GameCreator implements IGameCreator {
 
@@ -24,9 +25,19 @@ export class GameCreator implements IGameCreator {
     }
 
     deleteGame = (aGame: Game) => {
-        let theReturn = true;
 
-        return theReturn;
+        let everythingDeleted = true;
+        let turnsForGame = this.turnWarehouse.getTurns(aGame);
+        let index = turnsForGame.length;
+        while (index--) {
+            let movesForTurnDeleted = this.moveWarehouse.deleteMoves(turnsForGame[index]);
+            let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
+            let turnDeleted = this.turnWarehouse.deleteTurn(turnsForGame[index]);
+            everythingDeleted = everythingDeleted && movesForTurnDeleted && 
+                                piecesForTurnDeleted && turnDeleted;
+        }
+
+        return everythingDeleted;
     }
     
     createGame = () => {

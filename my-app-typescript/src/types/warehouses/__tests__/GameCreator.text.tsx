@@ -92,3 +92,18 @@ it('the second game should have been created', () => {
     expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(23);
     expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(44);
 })
+
+it('delete a game', () => {
+
+    expect(gameWarehouse.getAllGames().length).toEqual(2);
+    let turns = turnWarehouse.getTurns(newGame);
+    expect(turns.length).toEqual(1);
+    let myTurn = turns[0];
+    expect(moveWarehouse.getMoves('England', myTurn, null).length).toEqual(3);
+    expect(pieceWarehouse.getPieces(myTurn).length).toEqual(22);
+
+    expect(gameCreator.deleteGame(newGame)).toBeTruthy;
+    expect(turnWarehouse.getTurns(newGame).length).toEqual(0);
+    expect(moveWarehouse.getMoves('England', myTurn, null).length).toEqual(0);
+    expect(pieceWarehouse.getPieces(myTurn).length).toEqual(0);
+})
