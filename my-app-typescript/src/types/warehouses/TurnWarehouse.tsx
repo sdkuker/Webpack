@@ -65,6 +65,10 @@ export class TurnWarehouse implements ITurnWarehouse {
         return null;
     }
 
+    deleteTurn = (aTurn: Turn) => {
+        return this.dataProvider.deleteTurn(aTurn);
+    }
+
     generateNextTurn = (aGame: Game) => {
 
         let currentlyOpenTurn = this.getOpenTurn(aGame);

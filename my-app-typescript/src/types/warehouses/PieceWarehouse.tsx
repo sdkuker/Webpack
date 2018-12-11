@@ -27,10 +27,7 @@ export class PieceWarehouse implements IPieceWarehouse {
         let thisPieceDeleted = true;
         let thePieces = this.dataProvider.getPieces(forTurn);
         let index = thePieces.length;
-        console.log('nbr to delete: ' + index);
         while (index--) {
-            console.log('index being deleted: ' + index);
-            console.log('piece turn id: ' + thePieces[index].turn.id + ' game id: ' + thePieces[index].turn.game.id);
             thisPieceDeleted = this.dataProvider.deletePiece(thePieces[index]);
             if (! thisPieceDeleted) {
                 allPiecesDeleted = false;

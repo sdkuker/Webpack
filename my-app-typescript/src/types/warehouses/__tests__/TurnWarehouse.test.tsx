@@ -113,3 +113,12 @@ it('creating the first, second, third and fourth for a game', () => {
     expect(myThirdTurn.status).toEqual(TurnStatus.Open);
     expect(myThirdTurn.year).toEqual(2);
 })
+
+it('test deleting a turn', () => {
+    expect(myTurnWarehouse.getTurns(game5).length).toEqual(3);
+    let turnToDelete = myTurnWarehouse.getTurn(game5, 2, SeasonTypes.Spring);
+    expect(turnToDelete).not.toBeNull();
+    // @ts-ignore
+    myTurnWarehouse.deleteTurn(turnToDelete);
+    expect(myTurnWarehouse.getTurns(game5).length).toEqual(2);
+})
