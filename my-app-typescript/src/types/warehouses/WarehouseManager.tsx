@@ -29,15 +29,38 @@ export class WarehouseManager  {
 
     constructor() {
 
-        if (myConfig.dataProviders === 'static') {
+        if (myConfig.gameWarehouseDataProvider === 'static') {
             this.gameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
-            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
-            this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
-            this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
-            this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
-            this.gameCreator = new GameCreator( this.gameWarehouse, this.turnWarehouse, 
-                                                this.pieceWarehouse, this.moveWarehouse,
-                                                this.countryWarehouse);
+        } else {
+            this.gameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
         }
+
+        if (myConfig.turnWarehouseDataProvider === 'static') {
+            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
+        } else {
+            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
+        }
+
+        if (myConfig.countryWarehouseDataProvider === 'static') {
+            this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
+        } else {
+            this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
+        }
+
+        if (myConfig.moveWarehouseDataProvider === 'static') {
+            this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
+        } else {
+            this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
+        }
+
+        if (myConfig.pieceWarehouseDataProvider === 'static') {
+            this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
+        } else {
+            this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
+        }
+
+        this.gameCreator = new GameCreator( this.gameWarehouse, this.turnWarehouse, 
+                                            this.pieceWarehouse, this.moveWarehouse,
+                                            this.countryWarehouse);
     }
 }
