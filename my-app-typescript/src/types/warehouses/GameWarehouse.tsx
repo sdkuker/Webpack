@@ -51,4 +51,9 @@ export class GameWarehouse implements IGameWarehouse {
         
         return this.dataProvider.persistGame(aGame);
     }
+
+    deleteGame = (aGame: Game) => {
+
+        return this.dataProvider.deleteGame(aGame);
+    }
 }

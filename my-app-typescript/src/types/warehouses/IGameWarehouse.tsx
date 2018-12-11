@@ -6,4 +6,5 @@ export interface IGameWarehouse {
     getGameById(aGameId: String): Game | undefined;
     createGame() : Game;
     updateGameName(aGame: Game, newGameName: string): Game;
+    deleteGame(aGame: Game): boolean;
 } 

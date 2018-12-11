@@ -46,10 +46,12 @@ it('Get Open Season', () => {
 it('Get Complete Season', () => {
     const completeTurn = new Turn('1', myGame, 1, SeasonTypes.Spring, TurnStatus.Complete);
     const openTurn = new Turn('2', myGame, 1, SeasonTypes.Fall, TurnStatus.Open);
+    const arrayOfTurns = [completeTurn];
 
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
     const getTurnsMock = jest.fn();
+    getTurnsMock.mockReturnValueOnce(arrayOfTurns);
     const getOpenTurnMock = jest.fn();
     const generateNextTurnMock = jest.fn();
     const deleteTurnMock = jest.fn();

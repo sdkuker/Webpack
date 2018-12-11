@@ -103,6 +103,7 @@ it('delete a game', () => {
     expect(pieceWarehouse.getPieces(myTurn).length).toEqual(22);
 
     expect(gameCreator.deleteGame(newGame)).toBeTruthy;
+    expect(gameWarehouse.getAllGames().length).toEqual(1);
     expect(turnWarehouse.getTurns(newGame).length).toEqual(0);
     expect(moveWarehouse.getMoves('England', myTurn, null).length).toEqual(0);
     expect(pieceWarehouse.getPieces(myTurn).length).toEqual(0);

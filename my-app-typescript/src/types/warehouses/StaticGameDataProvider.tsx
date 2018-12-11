@@ -45,4 +45,22 @@ export class StaticGameDataProvider implements IGameDataProvider {
         return aGame;
     }
 
+    deleteGame = (aGame: Game) => {
+
+        let index = 0;
+        let indexOfGameToDelete = -1;
+
+        for (index = 0; index < this.games.length; index++) {
+            if (this.games[index].id === aGame.id) {
+                indexOfGameToDelete = index;
+            }
+        }
+
+        if (indexOfGameToDelete > -1) {
+            this.games.splice(indexOfGameToDelete, 1);
+        }
+
+        return indexOfGameToDelete > -1;
+    }
+
 }

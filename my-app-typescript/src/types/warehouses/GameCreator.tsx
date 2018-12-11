@@ -36,7 +36,7 @@ export class GameCreator implements IGameCreator {
             everythingDeleted = everythingDeleted && movesForTurnDeleted && 
                                 piecesForTurnDeleted && turnDeleted;
         }
-
+        let gameDeleted = this.gameWarehouse.deleteGame(aGame);
         return everythingDeleted;
     }
     

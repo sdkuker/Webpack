@@ -127,8 +127,10 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                 this.props.warehouseManager.turnWarehouse.getTurns(myGame);
                 this.setState({ redirectPath: 'openGame' });
             } else {
-                this.setState({ isModalOpen: true, 
-                                errorDescription: 'Not able to find game with ID:' + this.state.selectedGameId });
+                this.setState({
+                    isModalOpen: true,
+                    errorDescription: 'Not able to find game with ID:' + this.state.selectedGameId
+                });
             }
         } else {
             this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
@@ -137,13 +139,20 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
 
     addGame() {
         let newGame = this.props.warehouseManager.gameCreator.createGame();
-        this.setState({ selectedGameId: newGame.id});
+        this.setState({ selectedGameId: newGame.id });
         this.setState({ redirectPath: 'administerGame' });
     }
 
     deleteGame() {
         if (this.state.selectedGameId) {
-            this.setState({ redirectPath: 'deleteGame' });
+            let gameToDelete = this.props.warehouseManager.gameWarehouse.getGameById(this.state.selectedGameId);
+            if (gameToDelete) {
+                this.props.warehouseManager.gameCreator.deleteGame(gameToDelete);
+                this.setState({ selectedGameId: null });
+            } else {
+                this.setState({ isModalOpen: true, errorDescription: 'Unable to delete the game' });
+            }
+
         } else {
             this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
         }
