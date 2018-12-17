@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { observable } from 'mobx';
 import GameMap from './Map';
 import SeasonSelector from './SeasonSelector';
 import MovesForCountryComponent from './MovesForCountryComponent';
@@ -8,50 +9,77 @@ import { Turn } from '../types/warehouses/Turn';
 import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
 import { IPieceWarehouse } from '../types/warehouses/IPieceWarehouse';
 import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
+import { IGameWarehouse } from '../types/warehouses/IGameWarehouse';
 
 interface PropertyValues {
     turnWarehouse: ITurnWarehouse;
     pieceWarehouse: IPieceWarehouse;
     moveWarehouse: IMoveWarehouse;
-    selectedGame: Game;
-}
-
-interface StateValues {
-    selectedTurn: Turn;
+    gameWarehouse: IGameWarehouse;
+    gameId: string;
 }
 
 @observer
-class GameComponent extends React.Component<PropertyValues, StateValues> {
+class GameComponent extends React.Component<PropertyValues, {}> {
+
+    @observable
+    myGame: Game;
+    @observable
+    myTurn: Turn;
 
     constructor(props: PropertyValues) {
         super(props);
         this.turnSelected = this.turnSelected.bind(this);
-        this.state = { selectedTurn: this.props.turnWarehouse.getOpenTurn(props.selectedGame.id) };
+    }
+
+    componentDidMount = () => {
+        let self = this;
+        this.props.gameWarehouse.getGameById(this.props.gameId).then((selectedGame) => {
+            if (selectedGame) {
+                self.myGame = selectedGame;
+                self.myTurn = this.props.turnWarehouse.getOpenTurn(selectedGame.id);
+            }
+        }).catch((error) => {
+            console.log('error getting game for ID: ' + this.props.gameId + ' with error: ' + error);
+        });
     }
 
     render() {
-        return (
-            <div className="container">
-                <h1>{this.props.selectedGame.name}</h1>
+        // tslint:disable-next-line
+        let theReturn: any = [];
+        if (this.myGame && this.myTurn) {
+            theReturn.push(
+                <h1>{this.myGame.name}</h1>
+            );
+            theReturn.push(
                 <SeasonSelector
                     onTurnSelected={this.turnSelected}
-                    myGame={this.props.selectedGame}
-                    initialTurn={this.state.selectedTurn}
+                    myGame={this.myGame}
+                    initialTurn={this.myTurn}
                     myTurnWarehouse={this.props.turnWarehouse}
                 />
+            );
+            theReturn.push(
                 <div className="row">
                     <div className="col-md-12">
-                        <GameMap 
+                        <GameMap
                             pieceWarehouse={this.props.pieceWarehouse}
-                            turn={this.state.selectedTurn} 
+                            turn={this.myTurn}
                         />
                     </div>
                 </div>
-                <MovesForCountryComponent 
-                    myGame={this.props.selectedGame} 
-                    moveWarehouse={this.props.moveWarehouse} 
-                    myTurn={this.state.selectedTurn} 
+            );
+            theReturn.push(
+                <MovesForCountryComponent
+                    myGame={this.myGame}
+                    moveWarehouse={this.props.moveWarehouse}
+                    myTurn={this.myTurn}
                 />
+            );
+        }
+        return (
+            <div className="container">
+                {theReturn}
             </div>
         );
     }

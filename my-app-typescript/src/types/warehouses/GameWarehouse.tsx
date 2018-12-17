@@ -3,7 +3,7 @@ import { IGameDataProvider } from './IGameDataProvider';
 import { IGameWarehouse } from './IGameWarehouse';
 
 export class GameWarehouse implements IGameWarehouse {
-   
+
     dataProvider: IGameDataProvider;
 
     constructor(myDataProvider: IGameDataProvider) {
@@ -11,49 +11,97 @@ export class GameWarehouse implements IGameWarehouse {
     }
 
     getGameByName = (aGameName: string) => {
-        let theReturn: Game   | undefined;
 
-        this.dataProvider.getGames().forEach((aGame: Game) => {
-            if (aGame.name === aGameName) {
-                theReturn = aGame;
-            }
+        let myPromise = new Promise<Game | undefined>((resolve, reject) => {
+            this.dataProvider.getGames().then((gameArray) => {
+                let theReturn: Game | undefined;
+                gameArray.forEach((aGame: Game) => {
+                    if (aGame.name === aGameName) {
+                        theReturn = aGame;
+                    }
+                });
+                resolve(theReturn);
+            }).catch((error) => {
+                reject(error);
+            });
         });
-        return theReturn;
+
+        return myPromise;
     }
 
     getAllGames = () => {
-        return this.dataProvider.getGames();
+
+        let myPromise = new Promise<Array<Game>>((resolve, reject) => {
+            this.dataProvider.getGames().then((gameArray) => {
+                resolve(gameArray);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+
+        return myPromise;
     }
 
     getGameById = (aGameId: string) => {
-        let theReturn: Game | undefined;
 
-        this.dataProvider.getGames().forEach((aGame: Game) => {
-            if (aGame.id === aGameId) {
-                theReturn = aGame;
-            }
+        let myPromise = new Promise<Game | undefined>((resolve, reject) => {
+            this.dataProvider.getGames().then((gameArray) => {
+                let theReturn: Game | undefined;
+                gameArray.forEach((aGame: Game) => {
+                    if (aGame.id === aGameId) {
+                        theReturn = aGame;
+                    }
+                });
+                resolve(theReturn);
+            }).catch((error) => {
+                reject(error);
+            });
         });
 
-        return theReturn;
-
+        return myPromise;
     }
-    
-    createGame = () => {
-        let theNewGame = this.dataProvider.createGame();
-        this.dataProvider.persistGame(theNewGame);
 
-        return theNewGame;
+    createGame = () => {
+
+        let myPromise = new Promise<Game>((resolve, reject) => {
+            this.dataProvider.createGame().then((newGame) => {
+                this.dataProvider.persistGame(newGame).then((persistedGame) => {
+                    resolve(persistedGame);
+                }).catch((error) => {
+                    reject(error);
+                });
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+
+        return myPromise;
     }
 
     updateGameName = (aGame: Game, newGameName: string) => {
 
-        aGame.name = newGameName;
-        
-        return this.dataProvider.persistGame(aGame);
+        let myPromise = new Promise<Game>((resolve, reject) => {
+            aGame.name = newGameName;
+            this.dataProvider.persistGame(aGame).then((persistedGame) => {
+                resolve(persistedGame);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+
+        return myPromise;
     }
 
     deleteGame = (aGame: Game) => {
 
-        return this.dataProvider.deleteGame(aGame);
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            this.dataProvider.deleteGame(aGame).then((booleanResult) => {
+                resolve(booleanResult);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+
+        return myPromise;
     }
 }

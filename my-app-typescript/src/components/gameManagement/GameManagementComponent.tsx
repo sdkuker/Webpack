@@ -122,37 +122,50 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
 
     openSelectedGame() {
         if (this.state.selectedGameId) {
-            const myGame = this.props.warehouseManager.gameWarehouse.getGameById(this.state.selectedGameId);
-            if (myGame) {
-                this.props.warehouseManager.turnWarehouse.getTurns(myGame.id);
-                this.setState({ redirectPath: 'openGame' });
-            } else {
-                this.setState({
-                    isModalOpen: true,
-                    errorDescription: 'Not able to find game with ID:' + this.state.selectedGameId
-                });
-            }
+            this.props.warehouseManager.gameWarehouse.getGameById(this.state.selectedGameId).then((selectedGame) => {
+                if (selectedGame) {
+                    this.props.warehouseManager.turnWarehouse.getTurns(selectedGame.id);
+                    this.setState({ redirectPath: 'openGame' });
+                } else {
+                    this.setState({
+                        isModalOpen: true,
+                        errorDescription: 'Not able to find game with ID:' + this.state.selectedGameId
+                    });
+                }
+            }).catch((error) => {
+                console.log('unable to acquire selected game: ' + error);
+            });
         } else {
             this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
         }
     }
 
-    addGame() {
-        let newGame = this.props.warehouseManager.gameCreator.createGame();
-        this.setState({ selectedGameId: newGame.id });
-        this.setState({ redirectPath: 'administerGame' });
+    addGame = () => {
+        let self = this;
+        this.props.warehouseManager.gameCreator.createGame().then((newGame) => {
+            self.setState({ selectedGameId: newGame.id, redirectPath: 'administerGame' });
+        }).catch((error) => {
+            console.log('Error adding a game: ' + error);
+        });
     }
 
     deleteGame() {
         if (this.state.selectedGameId) {
-            let gameToDelete = this.props.warehouseManager.gameWarehouse.getGameById(this.state.selectedGameId);
-            if (gameToDelete) {
-                this.props.warehouseManager.gameCreator.deleteGame(gameToDelete);
-                this.setState({ selectedGameId: null });
-            } else {
-                this.setState({ isModalOpen: true, errorDescription: 'Unable to delete the game' });
-            }
-
+            this.props.warehouseManager.gameWarehouse.getGameById(this.state.selectedGameId).then((gameToDelete) => {
+                if (gameToDelete) {
+                    this.props.warehouseManager.gameCreator.deleteGame(gameToDelete).then((gameWasDeleted) => {
+                        if (gameWasDeleted) {
+                            this.setState({ selectedGameId: null });
+                        }
+                    }).catch((error) => {
+                        console.log('unable to delete game: ' + error);
+                    });
+                } else {
+                    this.setState({ isModalOpen: true, errorDescription: 'Unable to delete the game' });
+                }
+            }).catch((error) => {
+                console.log('unable to get game to delete: ' + error);
+            });
         } else {
             this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
         }

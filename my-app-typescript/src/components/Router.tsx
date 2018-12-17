@@ -14,7 +14,7 @@ class Router extends React.Component<{}, StateValues> {
 
     constructor() {
         super({});
-        this.state = {warehouseManager: new WarehouseManager()};
+        this.state = { warehouseManager: new WarehouseManager() };
     }
     render() {
         return (
@@ -24,46 +24,43 @@ class Router extends React.Component<{}, StateValues> {
                         exact
                         path="/"
                         render={(routeProps) =>
-                            (<GameManagementComponent 
-                                {...routeProps} 
-                                warehouseManager={this.state.warehouseManager} 
+                            (<GameManagementComponent
+                                {...routeProps}
+                                warehouseManager={this.state.warehouseManager}
                             />)}
                     />
                     <Route
                         path="/gameManagement"
                         render={(routeProps) =>
-                            (<GameManagementComponent 
-                                {...routeProps} 
-                                warehouseManager={this.state.warehouseManager} 
+                            (<GameManagementComponent
+                                {...routeProps}
+                                warehouseManager={this.state.warehouseManager}
                             />)}
                     />
                     <Route
                         path="/administerGame/:gameId"
                         render={(routeProps) =>
-                            (this.state.warehouseManager.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
-                                <GameAdminComponent 
-                                    {...routeProps} 
-                                    gameWarehouse={this.state.warehouseManager.gameWarehouse} 
-                                     // @ts-ignore
-                                    game={this.state.warehouseManager.gameWarehouse.getGameById(routeProps.match.params.gameId)} 
+                            (routeProps.match.params.gameId ?
+                                <GameAdminComponent
+                                    {...routeProps}
+                                    gameWarehouse={this.state.warehouseManager.gameWarehouse}
+                                    gameId={routeProps.match.params.gameId}
                                     turnWarehouse={this.state.warehouseManager.turnWarehouse}
                                     countryWarehouse={this.state.warehouseManager.countryWarehouse}
-                                /> :
-                                <ErrorComponent />
-                            )}
+                                />:
+                        <ErrorComponent />)}
                     />
                     <Route
                         path="/game/:gameId"
                         render={(routeProps) =>
                             (this.state.warehouseManager.gameWarehouse.getGameById(routeProps.match.params.gameId) ?
-                                <GameComponent 
-                                    {...routeProps} 
+                                <GameComponent
+                                    {...routeProps}
+                                    gameWarehouse={this.state.warehouseManager.gameWarehouse}
                                     turnWarehouse={this.state.warehouseManager.turnWarehouse}
                                     pieceWarehouse={this.state.warehouseManager.pieceWarehouse}
                                     moveWarehouse={this.state.warehouseManager.moveWarehouse}
-                                    // @ts-ignore
-                                    selectedGame={this.state.warehouseManager.gameWarehouse.
-                                                getGameById(routeProps.match.params.gameId)} 
+                                    gameId={routeProps.match.params.gameId}
                                 /> :
                                 <ErrorComponent />
                             )}

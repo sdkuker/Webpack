@@ -1,9 +1,11 @@
 import { observable } from 'mobx';
 export class Game {
-    @observable id: string;
+    @observable id = '';
     @observable name: string;
-    constructor(myId: string, aName: string) {
-        this.id = myId;
+    constructor(myId: string | null, aName: string) {
+        if (myId) {
+            this.id = myId;
+        }
         this.name = aName;
     }
 }

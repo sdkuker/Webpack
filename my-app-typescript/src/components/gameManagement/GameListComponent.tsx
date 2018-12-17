@@ -3,24 +3,36 @@ import { observer } from 'mobx-react';
 import GameListGameComponent from './GameListGameComponent';
 import { IGameWarehouse } from '../../types/warehouses/IGameWarehouse';
 import { Game } from '../../types/warehouses/Game';
+import { observable } from 'mobx';
 
 interface PropValues {
     gameWarehouse: IGameWarehouse;
     whenGameSelected: Function;
 }
 interface StateValues {
-    games: Game[];
     selectedGameId: String | null;
 }
 @observer
 class GameListComponent extends React.Component<PropValues, StateValues> {
+
+    @observable
+    games = new Array<Game>();
+
     constructor(props: PropValues) {
         super(props);
+        this.selectedGameChanged = this.selectedGameChanged.bind(this);
         this.state = {
-            games: this.props.gameWarehouse.getAllGames(),
             selectedGameId: null
         };
-        this.selectedGameChanged = this.selectedGameChanged.bind(this);
+    }
+
+    componentDidMount = () => {
+        let self = this;
+        this.props.gameWarehouse.getAllGames().then((allGamesArray) => {
+            self.games = allGamesArray;
+        }).catch((error) => {
+            console.log('error getting games: ' + error);
+        });
     }
 
     render() {
@@ -28,7 +40,7 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
         let theReturn: any = [];
 
         // add components for the existing moves
-        this.state.games.forEach((aGame: Game) => {
+        this.games.forEach((aGame: Game) => {
             theReturn.push((
                 <GameListGameComponent
                     game={aGame}
@@ -39,15 +51,16 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
             );
         });
 
+
         return (
             <div id="gamesEntryListComponent">
                 <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Select</th>
-                        <th>Game Name</th>
-                    </tr>
-                </thead>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Game Name</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {theReturn}
                     </tbody>

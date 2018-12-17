@@ -7,22 +7,10 @@ import * as enzyme from 'enzyme';
 import MovesForCountryComponent from '../MovesForCountryComponent';
 import { MoveWarehouse } from '../../types/warehouses/MoveWarehouse';
 import { StaticMoveDataProvider } from '../../types/warehouses/StaticMoveDataProvider'
-import { GameWarehouse } from '../../types/warehouses/GameWarehouse';
-import { StaticGameDataProvider } from '../../types/warehouses/StaticGameDataProvider'
-import { StaticTurnDataProvider } from '../../types/warehouses/StaticTurnDataProvider'
 
 enzyme.configure({ adapter: new Adapter() });
 
-const myGameDataProvider = new StaticGameDataProvider(null);
-const myGameWarehouse = new GameWarehouse(myGameDataProvider);
-const gameWarehouseGame = myGameWarehouse.getGameByName('Diplomacy - Greatest Ever');
-let myGame: Game;
-if (gameWarehouseGame) {
-    myGame = gameWarehouseGame;
-} else {
-    myGame = new Game('1', 'Steve');
-}
-const myTurnDataProvider = new StaticTurnDataProvider(null, null);
+let myGame = new Game('1', 'Steve');
 const myMoveDataProvider = new StaticMoveDataProvider();
 const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);
 

@@ -17,43 +17,58 @@ export class GameCreator implements IGameCreator {
     moveWarehouse: IMoveWarehouse;
     countryWarehouse: ICountryWarehouse;
 
-    constructor(myGameWarehouse: IGameWarehouse, myTurnWarehouse: ITurnWarehouse, 
-                myPieceWarehouse: IPieceWarehouse, myMoveWarehouse: IMoveWarehouse,
-                myCountryWarehouse: ICountryWarehouse) {
-                    this.gameWarehouse = myGameWarehouse;
-                    this.turnWarehouse = myTurnWarehouse;
-                    this.pieceWarehouse = myPieceWarehouse;
-                    this.moveWarehouse = myMoveWarehouse;
-                    this.countryWarehouse = myCountryWarehouse;
+    constructor(
+        myGameWarehouse: IGameWarehouse, myTurnWarehouse: ITurnWarehouse,
+        myPieceWarehouse: IPieceWarehouse, myMoveWarehouse: IMoveWarehouse,
+        myCountryWarehouse: ICountryWarehouse) {
+        this.gameWarehouse = myGameWarehouse;
+        this.turnWarehouse = myTurnWarehouse;
+        this.pieceWarehouse = myPieceWarehouse;
+        this.moveWarehouse = myMoveWarehouse;
+        this.countryWarehouse = myCountryWarehouse;
     }
 
     deleteGame = (aGame: Game) => {
 
-        let everythingDeleted = true;
-        let turnsForGame = this.turnWarehouse.getTurns(aGame.id);
-        let index = turnsForGame.length;
-        while (index--) {
-            let movesForTurnDeleted = this.moveWarehouse.deleteMoves(turnsForGame[index].id, 
-                                                                     turnsForGame[index].gameId);
-            let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
-            let turnDeleted = this.turnWarehouse.deleteTurn(turnsForGame[index]);
-            everythingDeleted = everythingDeleted && movesForTurnDeleted && 
-                                piecesForTurnDeleted && turnDeleted;
-        }
-        let countriesDeleted = this.countryWarehouse.deleteCountries(aGame.id);
-        let gameDeleted = this.gameWarehouse.deleteGame(aGame);
-        return everythingDeleted;
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            let everythingDeleted = true;
+            let turnsForGame = this.turnWarehouse.getTurns(aGame.id);
+            let index = turnsForGame.length;
+            while (index--) {
+                let movesForTurnDeleted = this.moveWarehouse.deleteMoves(   turnsForGame[index].id,
+                                                                            turnsForGame[index].gameId);
+                let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
+                let turnDeleted = this.turnWarehouse.deleteTurn(turnsForGame[index]);
+                everythingDeleted = everythingDeleted && movesForTurnDeleted &&
+                    piecesForTurnDeleted && turnDeleted;
+            }
+            let countriesDeleted = this.countryWarehouse.deleteCountries(aGame.id);
+            this.gameWarehouse.deleteGame(aGame).then((wasGameDeletionSuccessful) => {
+                everythingDeleted = everythingDeleted && countriesDeleted && wasGameDeletionSuccessful;
+                resolve(everythingDeleted);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+
+        return myPromise;
     }
-    
+
     createGame = () => {
 
-        let theNewGame = this.gameWarehouse.createGame();
-        let initialTurn = this.turnWarehouse.generateNextTurn(theNewGame.id);
-        let initialPieces = this.createInitialPieces(theNewGame, initialTurn);
-        let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, theNewGame.id, initialPieces);
-        let countriesCreated = this.countryWarehouse.initializeCountries(theNewGame.id);
+        let myPromise = new Promise<Game>((resolve, reject) => {
+            this.gameWarehouse.createGame().then((newGame) => {
+                let initialTurn = this.turnWarehouse.generateNextTurn(newGame.id);
+                let initialPieces = this.createInitialPieces(newGame, initialTurn);
+                let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces);
+                let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
+                resolve(newGame);
+            }).catch((error) => {
+                reject(error);
+            });
+        });
 
-        return theNewGame;
+        return myPromise;
     }
 
     createInitialPieces = (theNewGame: Game, initialTurn: Turn) => {
@@ -90,13 +105,13 @@ export class GameCreator implements IGameCreator {
         return this.pieceWarehouse.getPieces(initialTurn);
     }
 
-    createPiece = ( theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string, 
+    createPiece = ( theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string,
                     pieceType: string) => {
 
         const myLocation = this.findLocation(locationName);
 
         if (myLocation) {
-             this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation, locationName, countryName, pieceType);
+            this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation, locationName, countryName, pieceType);
         }
     }
 

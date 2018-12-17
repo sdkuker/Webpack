@@ -1,8 +1,8 @@
 import { Game } from './Game';
 
 export interface IGameDataProvider {
-    getGames(): Array<Game>;
-    createGame() : Game;
-    persistGame( aGame: Game) : Game;
-    deleteGame( aGame: Game) : boolean;
+    getGames(): Promise<Array<Game>>;
+    createGame() : Promise<Game>;
+    persistGame( aGame: Game) : Promise<Game>;
+    deleteGame( aGame: Game) : Promise<boolean>;
 } 

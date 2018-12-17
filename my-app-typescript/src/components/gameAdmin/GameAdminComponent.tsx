@@ -8,6 +8,7 @@ import { ITurnWarehouse } from '../../types/warehouses/ITurnWarehouse';
 import { ICountryWarehouse } from '../../types/warehouses/ICountryWarehouse';
 import GameAdminGameDetailsComponent from './GameAdminGameDetailsComponent';
 import CountryListComponent from './CountryListComponent';
+import { observable } from 'mobx';
 
 interface StateValues {
     redirectPath: String | null;
@@ -16,14 +17,17 @@ interface StateValues {
 }
 
 interface PropValues {
+    gameId: string;
     gameWarehouse: IGameWarehouse;
-    game: Game;
     turnWarehouse: ITurnWarehouse;
     countryWarehouse: ICountryWarehouse;
 }
 
 @observer
 class GameAdminComponent extends React.Component<PropValues, StateValues> {
+
+    @observable
+    myGame: Game;
 
     constructor(props: PropValues) {
         super(props);
@@ -36,37 +40,51 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
         this.state = { redirectPath: null, isModalOpen: false, errorDescription: null };
     }
 
+    componentDidMount = () => {
+        let self = this;
+        this.props.gameWarehouse.getGameById(this.props.gameId).then((selectedGame) => {
+            if (selectedGame) {
+                self.myGame = selectedGame;
+            }
+        }).catch((error) => {
+            console.log('error getting game for ID: ' + this.props.gameId + ' with error: ' + error);
+        });
+    }
+
     render() {
 
         // tslint:disable-next-line
         let theReturn: any = [];
         if (this.state.redirectPath) {
             if (this.state.redirectPath === 'openGame') {
-                const myPath = '/game/' + this.props.game.id;
+                const myPath = '/game/' + this.myGame.id;
                 theReturn.push(<Redirect to={myPath} />);
             } else {
                 theReturn.push(<Redirect to="/error/" />);
             }
         } else {
             theReturn.push(
-                    <div className="text-center">
-                        <h1>Game Administration</h1>
-                    </div>
+                <div className="text-center">
+                    <h1>Game Administration</h1>
+                </div>
             );
-            theReturn.push(
-                <GameAdminGameDetailsComponent 
-                    whenOpenGameClicked={this.openGame}
-                    onGameNameChange={this.nameChanged} 
-                    game={this.props.game} 
-                    turnWarehouse={this.props.turnWarehouse} 
-                />
-            );
-            theReturn.push(
-                <CountryListComponent 
-                    game={this.props.game} 
-                    countryWarehouse={this.props.countryWarehouse} 
-                />
-            );
+            if (this.myGame) {
+                theReturn.push(
+                    <GameAdminGameDetailsComponent
+                        whenOpenGameClicked={this.openGame}
+                        onGameNameChange={this.nameChanged}
+                        game={this.myGame}
+                        turnWarehouse={this.props.turnWarehouse}
+                    />
+                );
+                theReturn.push(
+                    <CountryListComponent
+                        game={this.myGame}
+                        countryWarehouse={this.props.countryWarehouse}
+                    />
+                );
+            }
+
         }
         const customStyles = {
             content: {
@@ -106,7 +124,7 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
     }
 
     nameChanged(aNewGameName: string) {
-        this.props.gameWarehouse.updateGameName(this.props.game, aNewGameName);
+        this.props.gameWarehouse.updateGameName(this.myGame, aNewGameName);
     }
 
     openGame() {
