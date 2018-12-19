@@ -1,7 +1,7 @@
-import { Turn } from '.././Turn';
+import { Turn } from '.././turn/Turn';
 import { SeasonTypes, TurnStatus } from '.././DomainTypes';
-import { TurnWarehouse } from '.././TurnWarehouse';
-import { StaticTurnDataProvider } from '.././StaticTurnDataProvider';
+import { TurnWarehouse } from '../turn/TurnWarehouse';
+import { StaticTurnDataProvider } from '../turn/StaticTurnDataProvider';
 
 let myTurnWarehouse : TurnWarehouse;
 

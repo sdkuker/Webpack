@@ -1,5 +1,5 @@
 import { Move } from './Move';
-import { Piece } from './Piece';
+import { Piece } from '../piece/Piece';
 
 export interface IMoveWarehouse {
     persistMove(aMove: Move): void;

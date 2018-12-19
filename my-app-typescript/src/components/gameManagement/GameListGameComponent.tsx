@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Game } from '../../types/warehouses/Game';
+import { Game } from '../../types/warehouses/game/Game';
 
 interface PropValues {
     game: Game;

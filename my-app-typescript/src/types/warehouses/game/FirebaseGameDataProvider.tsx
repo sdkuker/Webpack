@@ -1,7 +1,7 @@
 import { IGameDataProvider } from './IGameDataProvider';
 import { Game } from './Game';
 import { observable } from 'mobx';
-import db from './../../firebase';
+import db from '../../../firebase';
 
 export class FirebaseGameDataProvider {
 

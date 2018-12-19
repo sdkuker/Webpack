@@ -1,13 +1,13 @@
-import { Game } from './Game';
-import { Turn } from './Turn';
+import { Game } from './game/Game';
+import { Turn } from './turn/Turn';
 import { LocationTypes } from './DomainTypes';
 import { IGameCreator } from './IGameCreator';
-import { IGameWarehouse } from './IGameWarehouse';
-import { IMoveWarehouse } from './IMoveWarehouse';
-import { ITurnWarehouse } from './ITurnWarehouse';
-import { IPieceWarehouse } from './IPieceWarehouse';
-import { Warehouse as LocationWarehouse } from './LocationWarehouse';
-import { ICountryWarehouse } from './ICountryWarehouse';
+import { IGameWarehouse } from './game/IGameWarehouse';
+import { IMoveWarehouse } from './move/IMoveWarehouse';
+import { ITurnWarehouse } from './turn/ITurnWarehouse';
+import { IPieceWarehouse } from './piece/IPieceWarehouse';
+import { Warehouse as LocationWarehouse } from './location/LocationWarehouse';
+import { ICountryWarehouse } from './country/ICountryWarehouse';
 
 export class GameCreator implements IGameCreator {
 

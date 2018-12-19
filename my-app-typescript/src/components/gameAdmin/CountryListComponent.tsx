@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import CountryListCountryComponent from './CountryListCountryComponent';
-import { ICountryWarehouse } from '../../types/warehouses/ICountryWarehouse';
-import { Country } from '../../types/warehouses/Country';
-import { Game } from '../../types/warehouses/Game';
+import { ICountryWarehouse } from '../../types/warehouses/country/ICountryWarehouse';
+import { Country } from '../../types/warehouses/country/Country';
+import { Game } from '../../types/warehouses/game/Game';
 
 interface PropValues {
     countryWarehouse: ICountryWarehouse;

@@ -1,5 +1,5 @@
 import { Location } from './Location';
-import { LocationTypes } from './DomainTypes';
+import { LocationTypes } from '../DomainTypes';
 
 class LocationWarehouse {
 

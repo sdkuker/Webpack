@@ -4,12 +4,12 @@ import { observable } from 'mobx';
 import GameMap from './Map';
 import SeasonSelector from './SeasonSelector';
 import MovesForCountryComponent from './MovesForCountryComponent';
-import { Game } from '../types/warehouses/Game';
-import { Turn } from '../types/warehouses/Turn';
-import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
-import { IPieceWarehouse } from '../types/warehouses/IPieceWarehouse';
-import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
-import { IGameWarehouse } from '../types/warehouses/IGameWarehouse';
+import { Game } from '../types/warehouses/game/Game';
+import { Turn } from '../types/warehouses/turn/Turn';
+import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
+import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
+import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
+import { IGameWarehouse } from '../types/warehouses/game/IGameWarehouse';
 
 interface PropertyValues {
     turnWarehouse: ITurnWarehouse;

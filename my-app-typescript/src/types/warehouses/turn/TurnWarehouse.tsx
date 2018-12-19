@@ -1,6 +1,6 @@
 import { Turn } from './Turn';
-import { SeasonTypes, TurnStatus } from './DomainTypes';
-import { Game } from './Game';
+import { SeasonTypes, TurnStatus } from '../DomainTypes';
+import { Game } from '../game/Game';
 import { ITurnWarehouse } from './ITurnWarehouse';
 import { ITurnDataProvider } from './ITurnDataProvider';
 

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { ITurnWarehouse } from '../types/warehouses/ITurnWarehouse';
+import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
 import { SeasonTypes } from '../types/warehouses/DomainTypes';
-import { Game } from '../types/warehouses/Game';
-import { Turn } from '../types/warehouses/Turn';
+import { Game } from '../types/warehouses/game/Game';
+import { Turn } from '../types/warehouses/turn/Turn';
 
 interface PropValues {
     onTurnSelected: Function;

@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
-import { Location } from './Location';
-import { Turn } from './Turn';
+import { Location } from '../location/Location';
+import { Turn } from '../turn/Turn';
 
 export class Piece {
     id: string;

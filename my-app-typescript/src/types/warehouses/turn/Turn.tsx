@@ -1,5 +1,5 @@
 
-import { SeasonTypes, TurnStatus } from './DomainTypes';
+import { SeasonTypes, TurnStatus } from '../DomainTypes';
 import { observable } from 'mobx';
 
 export class Turn {

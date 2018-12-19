@@ -3,10 +3,10 @@ import { observer } from 'mobx-react';
 import MoveCountrySelector from './MoveCountrySelector';
 import MovesListComponent from './MovesListComponent';
 import MovesEntryListComponent from './MovesEntryListComponent';
-import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
-import { Turn } from '../types/warehouses/Turn';
+import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
+import { Turn } from '../types/warehouses/turn/Turn';
 import { TurnStatus } from '../types/warehouses/DomainTypes';
-import { Game } from '../types/warehouses/Game';
+import { Game } from '../types/warehouses/game/Game';
 
 interface PropValues {
     moveWarehouse: IMoveWarehouse;

@@ -1,6 +1,6 @@
-import { Move } from '../../types/warehouses/Move';
-import { Game } from '../../types/warehouses/Game';
-import { IMoveWarehouse } from '../../types/warehouses/IMoveWarehouse';
+import { Move } from '../../types/warehouses/move/Move';
+import { Game } from '../../types/warehouses/game/Game';
+import { IMoveWarehouse } from '../../types/warehouses/move/IMoveWarehouse';
 import * as React from 'react';
 import * as Adapter from 'enzyme-adapter-react-16';
 import * as enzyme from 'enzyme';

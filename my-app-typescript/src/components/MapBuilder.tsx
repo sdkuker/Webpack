@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { warehouse as CapitalWarehouse } from '../types/warehouses/CapitalWarehouse';
-import { IPieceWarehouse } from '../types/warehouses/IPieceWarehouse';
+import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
 import { Capital } from '../types/warehouses/Capital';
-import { Piece } from '../types/warehouses/Piece';
-import { Turn } from '../types/warehouses/Turn';
+import { Piece } from '../types/warehouses/piece/Piece';
+import { Turn } from '../types/warehouses/turn/Turn';
 
 interface PropValues {
     pieceWarehouse: IPieceWarehouse;

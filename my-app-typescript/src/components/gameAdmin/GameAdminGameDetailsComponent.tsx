@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { Game } from '../../types/warehouses/Game';
-import { TurnWarehouse } from '../../types/warehouses/TurnWarehouse';
-import { ITurnWarehouse } from '../../types/warehouses/ITurnWarehouse';
+import { Game } from '../../types/warehouses/game/Game';
+import { TurnWarehouse } from '../../types/warehouses/turn/TurnWarehouse';
+import { ITurnWarehouse } from '../../types/warehouses/turn/ITurnWarehouse';
 
 interface PropValues {
     onGameNameChange: Function;

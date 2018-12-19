@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { Move } from '../types/warehouses/Move';
+import { Move } from '../types/warehouses/move/Move';
 
 interface PropValues {
     moves: Move[];

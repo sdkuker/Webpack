@@ -1,5 +1,4 @@
-import { Move } from '.././Move';
-import { Turn } from '.././Turn';
+import { Move } from '.././move/Move';
 import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
 
 let myTurnId = '1';

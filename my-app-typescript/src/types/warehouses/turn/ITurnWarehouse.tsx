@@ -1,5 +1,5 @@
 import { Turn } from './Turn';
-import { SeasonTypes } from './DomainTypes';
+import { SeasonTypes } from '../DomainTypes';
 
 export interface ITurnWarehouse {
     getTurns (aGameId : string): Array<Turn>;

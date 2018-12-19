@@ -1,4 +1,4 @@
-import { FirebaseGameDataProvider } from '../FirebaseGameDataProvider';
+import { FirebaseGameDataProvider } from '../game/FirebaseGameDataProvider';
 
 it('the game should have been created', () => {
 

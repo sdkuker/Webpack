@@ -1,9 +1,9 @@
-import { Turn } from '.././Turn';
-import { Game } from '.././Game';
+import { Turn } from '.././turn/Turn';
+import { Game } from '../game/Game';
 import { SeasonTypes, TurnStatus, PieceTypes } from '.././DomainTypes';
-import { StaticPieceDataProvider } from '.././StaticPieceDataProvider';
-import { PieceWarehouse } from '../PieceWarehouse';
-import { Warehouse as LocationWarehouse } from '../LocationWarehouse';
+import { StaticPieceDataProvider } from '../piece/StaticPieceDataProvider';
+import { PieceWarehouse } from '../piece/PieceWarehouse';
+import { Warehouse as LocationWarehouse } from '../location/LocationWarehouse';
 import { LocationTypes } from '../DomainTypes';
 
 let game1 = new Game('1', 'myGame');

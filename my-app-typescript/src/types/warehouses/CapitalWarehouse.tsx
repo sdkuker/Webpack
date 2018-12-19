@@ -1,6 +1,6 @@
 import { Capital } from './Capital';
-import { Warehouse as LocationWarehouse } from './LocationWarehouse';
-import { Location } from './Location';
+import { Warehouse as LocationWarehouse } from './location/LocationWarehouse';
+import { Location } from './location/Location';
 import { observable } from 'mobx';
 import { LocationTypes } from './DomainTypes';
 

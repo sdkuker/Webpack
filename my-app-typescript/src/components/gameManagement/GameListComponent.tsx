@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import GameListGameComponent from './GameListGameComponent';
-import { IGameWarehouse } from '../../types/warehouses/IGameWarehouse';
-import { Game } from '../../types/warehouses/Game';
+import { IGameWarehouse } from '../../types/warehouses/game/IGameWarehouse';
+import { Game } from '../../types/warehouses/game/Game';
 import { observable } from 'mobx';
 
 interface PropValues {

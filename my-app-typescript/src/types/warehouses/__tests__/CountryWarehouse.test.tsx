@@ -1,7 +1,7 @@
-import { Country } from '.././Country';
-import { CountryWarehouse } from '.././CountryWarehouse';
-import { ICountryWarehouse } from '.././ICountryWarehouse';
-import { StaticCountryDataProvider } from '.././StaticCountryDataProvider';
+import { Country } from '../country/Country';
+import { CountryWarehouse } from '../country/CountryWarehouse';
+import { ICountryWarehouse } from '../country/ICountryWarehouse';
+import { StaticCountryDataProvider } from '../country/StaticCountryDataProvider';
 
 let myCountryWarehouse : ICountryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
 

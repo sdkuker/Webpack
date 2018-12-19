@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Country } from '../../types/warehouses/Country';
+import { Country } from '../../types/warehouses/country/Country';
 import { observer } from 'mobx-react';
 
 interface PropValues {

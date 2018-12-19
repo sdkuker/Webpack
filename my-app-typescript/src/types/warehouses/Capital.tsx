@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { Location } from './Location';
+import { Location } from './location/Location';
 
 export class Capital {
     @observable name: string;

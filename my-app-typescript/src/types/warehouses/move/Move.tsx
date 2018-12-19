@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
-import { PieceTypes, LocationTypes, MoveAction } from './DomainTypes';
-import { Warehouse as LocationWarehouse } from './LocationWarehouse';
+import { PieceTypes, LocationTypes, MoveAction } from '../DomainTypes';
+import { Warehouse as LocationWarehouse } from '../location/LocationWarehouse';
 import { MoveValidationResults } from './MoveValidationResults';
 
 export class Move {

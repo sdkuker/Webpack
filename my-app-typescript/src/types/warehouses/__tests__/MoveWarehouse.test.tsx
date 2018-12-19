@@ -1,10 +1,10 @@
-import { Move } from '.././Move';
-import { Turn } from '.././Turn';
-import { Location } from '.././Location';
+import { Move } from '../move/Move';
+import { Turn } from '.././turn/Turn';
+import { Location } from '../location/Location';
 import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
-import { MoveWarehouse } from '.././MoveWarehouse';
-import { StaticMoveDataProvider } from '.././StaticMoveDataProvider';
-import { Piece } from '../Piece';
+import { MoveWarehouse } from '../move/MoveWarehouse';
+import { StaticMoveDataProvider } from '../move/StaticMoveDataProvider';
+import { Piece } from '../piece/Piece';
 
 let myGameId = '1';
 let turn1SpringId = '1';

@@ -1,5 +1,5 @@
 import { Move } from './Move';
-import { Piece } from './Piece';
+import { Piece } from '../piece/Piece';
 import { IMoveDataProvider } from './IMoveDataProvider';
 import { IMoveWarehouse } from './IMoveWarehouse';
 import { action } from 'mobx';

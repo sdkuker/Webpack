@@ -1,6 +1,6 @@
-import { Turn } from '../../types/warehouses/Turn';
-import { Game } from '../../types/warehouses/Game';
-import { ITurnWarehouse } from '../../types/warehouses/ITurnWarehouse';
+import { Turn } from '../../types/warehouses/turn/Turn';
+import { Game } from '../../types/warehouses/game/Game';
+import { ITurnWarehouse } from '../../types/warehouses/turn/ITurnWarehouse';
 import { SeasonTypes, TurnStatus } from '../../types/warehouses/DomainTypes';
 import * as React from 'react';
 import * as Adapter from 'enzyme-adapter-react-16';

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { Move } from '../types/warehouses/Move';
-import { Game } from '../types/warehouses/Game';
-import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
+import { Move } from '../types/warehouses/move/Move';
+import { Game } from '../types/warehouses/game/Game';
+import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 
 interface PropValues {
     onMoveEntryValidation: Function;

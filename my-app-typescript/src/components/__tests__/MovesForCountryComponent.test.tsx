@@ -1,12 +1,12 @@
-import { Turn } from '../../types/warehouses/Turn';
-import { Game } from '../../types/warehouses/Game';
+import { Turn } from '../../types/warehouses/turn/Turn';
+import { Game } from '../../types/warehouses/game/Game';
 import { SeasonTypes, TurnStatus } from '../../types/warehouses/DomainTypes';
 import * as React from 'react';
 import * as Adapter from 'enzyme-adapter-react-16';
 import * as enzyme from 'enzyme';
 import MovesForCountryComponent from '../MovesForCountryComponent';
-import { MoveWarehouse } from '../../types/warehouses/MoveWarehouse';
-import { StaticMoveDataProvider } from '../../types/warehouses/StaticMoveDataProvider'
+import { MoveWarehouse } from '../../types/warehouses/move/MoveWarehouse';
+import { StaticMoveDataProvider } from '../../types/warehouses/move/StaticMoveDataProvider'
 
 enzyme.configure({ adapter: new Adapter() });
 

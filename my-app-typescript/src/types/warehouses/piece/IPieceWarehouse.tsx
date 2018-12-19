@@ -1,7 +1,7 @@
 import { Piece } from './Piece';
-import { Turn } from './Turn';
-import { Game } from './Game';
-import { Location } from './Location';
+import { Turn } from '../turn/Turn';
+import { Game } from '../game/Game';
+import { Location } from '../location/Location';
 
 export interface IPieceWarehouse {
     getPieces(forTurn: Turn): Array<Piece>;

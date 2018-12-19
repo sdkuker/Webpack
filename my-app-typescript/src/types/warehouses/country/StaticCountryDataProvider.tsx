@@ -1,6 +1,6 @@
 import { ICountryDataProvider } from './ICountryDataProvider';
 import { Country } from './Country';
-import { Game } from './Game';
+import { Game } from '../game/Game';
 
 export class StaticCountryDataProvider implements ICountryDataProvider {
 

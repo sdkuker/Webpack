@@ -1,8 +1,8 @@
 import * as React from 'react';
 import '../map.css';
 import MapBuilder from './MapBuilder';
-import { Turn } from '.././types/warehouses/Turn';
-import { IPieceWarehouse } from '.././types/warehouses/IPieceWarehouse';
+import { Turn } from '.././types/warehouses/turn/Turn';
+import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
 
 interface PropValues {
   pieceWarehouse: IPieceWarehouse;

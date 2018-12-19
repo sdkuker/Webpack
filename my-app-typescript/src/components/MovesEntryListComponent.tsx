@@ -3,11 +3,11 @@ import * as Modal from 'react-modal';
 import { observer } from 'mobx-react';
 
 import MoveEntryComponent from './MoveEntryComponent';
-import { IMoveWarehouse } from '../types/warehouses/IMoveWarehouse';
-import { Move } from '../types/warehouses/Move';
-import { Turn } from '../types/warehouses/Turn';
-import { Game } from '../types/warehouses/Game';
-import { MoveValidationResults } from '../types/warehouses/MoveValidationResults';
+import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
+import { Move } from '../types/warehouses/move/Move';
+import { Turn } from '../types/warehouses/turn/Turn';
+import { Game } from '../types/warehouses/game/Game';
+import { MoveValidationResults } from '../types/warehouses/move/MoveValidationResults';
 
 interface PropValues {
     countryName: string;

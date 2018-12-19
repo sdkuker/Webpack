@@ -1,8 +1,8 @@
-import { Turn } from './Turn';
-import { Game } from './Game';
+import { Turn } from '../turn/Turn';
+import { Game } from '../game/Game';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { IPieceDataProvider } from './IPieceDataProvider';
-import { Location } from './Location';
+import { Location } from '../location/Location';
 
 export class PieceWarehouse implements IPieceWarehouse {
 
