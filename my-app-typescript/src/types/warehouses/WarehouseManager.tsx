@@ -2,6 +2,7 @@
 import { IGameWarehouse } from './game/IGameWarehouse';
 import { GameWarehouse } from './game/GameWarehouse';
 import { StaticGameDataProvider } from './game/StaticGameDataProvider';
+import { FirebaseGameDataProvider } from './game/FirebaseGameDataProvider';
 import { ITurnWarehouse } from './turn/ITurnWarehouse';
 import { TurnWarehouse } from './turn/TurnWarehouse';
 import { StaticTurnDataProvider } from './turn/StaticTurnDataProvider';
@@ -32,7 +33,7 @@ export class WarehouseManager  {
         if (myConfig.gameWarehouseDataProvider === 'static') {
             this.gameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
         } else {
-            this.gameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
+            this.gameWarehouse = new GameWarehouse(new FirebaseGameDataProvider(null));
         }
 
         if (myConfig.turnWarehouseDataProvider === 'static') {

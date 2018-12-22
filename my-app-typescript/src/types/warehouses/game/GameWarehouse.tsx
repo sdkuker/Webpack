@@ -64,12 +64,8 @@ export class GameWarehouse implements IGameWarehouse {
     createGame = () => {
 
         let myPromise = new Promise<Game>((resolve, reject) => {
-            this.dataProvider.createGame().then((newGame) => {
-                this.dataProvider.persistGame(newGame).then((persistedGame) => {
-                    resolve(persistedGame);
-                }).catch((error) => {
-                    reject(error);
-                });
+            this.dataProvider.createGame(null).then((newGame) => {
+                resolve(newGame);
             }).catch((error) => {
                 reject(error);
             });
@@ -80,10 +76,10 @@ export class GameWarehouse implements IGameWarehouse {
 
     updateGameName = (aGame: Game, newGameName: string) => {
 
-        let myPromise = new Promise<Game>((resolve, reject) => {
+        let myPromise = new Promise<boolean>((resolve, reject) => {
             aGame.name = newGameName;
-            this.dataProvider.persistGame(aGame).then((persistedGame) => {
-                resolve(persistedGame);
+            this.dataProvider.updateGame(aGame).then((wasGameUpdated) => {
+                resolve(wasGameUpdated);
             }).catch((error) => {
                 reject(error);
             });

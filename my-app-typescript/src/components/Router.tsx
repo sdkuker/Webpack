@@ -47,7 +47,7 @@ class Router extends React.Component<{}, StateValues> {
                                     gameId={routeProps.match.params.gameId}
                                     turnWarehouse={this.state.warehouseManager.turnWarehouse}
                                     countryWarehouse={this.state.warehouseManager.countryWarehouse}
-                                />:
+                                /> :
                         <ErrorComponent />)}
                     />
                     <Route

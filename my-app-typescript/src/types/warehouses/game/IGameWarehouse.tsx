@@ -5,6 +5,6 @@ export interface IGameWarehouse {
     getAllGames() : Promise<Array<Game>>;
     getGameById(aGameId: String): Promise<Game | undefined>;
     createGame() : Promise<Game>;
-    updateGameName(aGame: Game, newGameName: string): Promise<Game>;
+    updateGameName(aGame: Game, newGameName: string): Promise<boolean>;
     deleteGame(aGame: Game): Promise<boolean>;
 } 

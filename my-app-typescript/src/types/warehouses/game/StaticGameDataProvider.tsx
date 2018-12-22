@@ -24,32 +24,24 @@ export class StaticGameDataProvider implements IGameDataProvider {
         return myPromise;
     }
 
-    createGame = () => {
+    createGame = (gameName: string | null) => {
 
         let myPromise = new Promise<Game>((resolve, reject) => {
             this.lastUsedId++;
-            let theReturn = new Game(this.lastUsedId.toString(), 'Game Name');
+            let myGameName = gameName ? gameName : 'Game Name';
+            let theReturn = new Game(this.lastUsedId.toString(), myGameName);
+            this.games.push(theReturn);
             resolve(theReturn);
         });
 
         return myPromise;
     }
 
-    persistGame = (aGame: Game) => {
+    updateGame = (aGame: Game) => {
 
-        let myPromise = new Promise<Game>((resolve, reject) => {
-            // might be a brand new game or just a change to the name
-            let i: number;
-            let newGame = true;
-            for (i = 0; i < this.games.length; i++) {
-                if (this.games[i].id === aGame.id) {
-                    newGame = false;
-                }
-            }
-            if (newGame) {
-                this.games.push(aGame);
-            }
-            resolve(aGame);
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            // there is no real persistence so the game was updated before calling this function
+            resolve(true);
         });
         
         return myPromise;

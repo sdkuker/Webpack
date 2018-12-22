@@ -3,7 +3,7 @@ import { Game } from './Game';
 import { observable } from 'mobx';
 import db from '../../../firebase';
 
-export class FirebaseGameDataProvider {
+export class FirebaseGameDataProvider implements IGameDataProvider {
 
     @observable
     games = new Array<Game>();
@@ -18,64 +18,87 @@ export class FirebaseGameDataProvider {
 
         let myPromise = new Promise<Array<Game>>((resolve, reject) => {
             db.collection('games').get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    console.log('${doc.id => ${doc.data()}');
-                })
                 let myArray = new Array<Game>();
-                myArray.push(new Game('1', 'test'));
+                querySnapshot.forEach((doc) => {
+                    // console.log('${doc.id => ${doc.data()}');
+                    // console.log(doc.id,)
+                    myArray.push(new Game(doc.id, doc.data().name));
+                });
+                this.games = myArray;
                 resolve(myArray);
             }).catch((error) => {
                 console.log('have an error getting games: ' + error);
                 reject(error);
-            })
-        })
+            });
+        });
 
         return myPromise;
     }
 
     createGame = () => {
 
-        let theReturn = new Game(null, 'Game Name');
+        let myPromise = new Promise<Game>((resolve, reject) => {
+            db.collection('games').add({
+                name: 'New Game'
+            }).then((docRef) => {
+                let newGame = new Game(docRef.id, 'New Game');
+                resolve(newGame);
+            }).catch((error) => {
+                console.log('have an error creating a game: ' + error);
+                reject(error);
+            });
+        });
 
-        return theReturn;
-    }
-
-    persistGame = (aGame: Game) => {
-
-        // might be a brand new game or just a change to the name
-        if (aGame.id === '') {
-            this.insertGame(aGame);
-        } else {
-            this.updateGame(aGame);
-        }
-
-        return aGame;
-    }
-
-    insertGame = (aGame: Game) => {
-
+        return myPromise;
     }
 
     updateGame = (aGame: Game) => {
 
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            this.getGames().then((gameArray) => {
+                let index = 0;
+                let gameToUpdate: Game | null = null;
+                for (index = 0; index < gameArray.length; index++) {
+                    if (aGame.id === gameArray[index].id) {
+                        gameToUpdate = gameArray[index];
+                    }
+                }
+                if (gameToUpdate) {
+                    let gameRef = db.collection('games').doc(gameToUpdate.id);
+                    gameRef.update({
+                        name: aGame.name
+                    }).then(() => {
+                        // @ts-ignore
+                        resolve(true);
+                    }).catch((error) => {
+                        reject('unable to update the game' + error);
+                    });
+                }
+            }).catch((error) => {
+                console.log('have an error getting games to update one: ' + error);
+                reject(error);
+            });
+        });
+
+        return myPromise;
     }
 
     deleteGame = (aGame: Game) => {
 
-        let index = 0;
-        let indexOfGameToDelete = -1;
+        let myPromise = new Promise<boolean>((resolve, reject) => {
 
-        for (index = 0; index < this.games.length; index++) {
-            if (this.games[index].id === aGame.id) {
-                indexOfGameToDelete = index;
-            }
-        }
+            db.collection('games').doc(aGame.id).delete().then(() => {
+                this.getGames().then((gameArray) => {
+                    resolve(true);
+                }).catch((error) => {
+                    reject('unable to get games after deleting a gme ' + error);
+                });
+            }).catch((error) => {
+                reject('unable to delete the game' + error);
+            });
+        });
 
-        if (indexOfGameToDelete > -1) {
-            this.games.splice(indexOfGameToDelete, 1);
-        }
-
-        return indexOfGameToDelete > -1;
+        return myPromise;
     }
 
 }

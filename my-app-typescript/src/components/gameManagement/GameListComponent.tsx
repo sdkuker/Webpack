@@ -51,7 +51,6 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
             );
         });
 
-
         return (
             <div id="gamesEntryListComponent">
                 <table className="table table-striped">
