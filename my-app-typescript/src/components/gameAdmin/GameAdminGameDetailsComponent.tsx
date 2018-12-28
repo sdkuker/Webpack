@@ -3,6 +3,8 @@ import { observer } from 'mobx-react';
 import { Game } from '../../types/warehouses/game/Game';
 import { TurnWarehouse } from '../../types/warehouses/turn/TurnWarehouse';
 import { ITurnWarehouse } from '../../types/warehouses/turn/ITurnWarehouse';
+import { observable } from 'mobx';
+import { Turn } from '../../types/warehouses/turn/Turn';
 
 interface PropValues {
     onGameNameChange: Function;
@@ -16,6 +18,9 @@ interface StateValues {
 }
 @observer
 class GameAdminGameDetailsComponent extends React.Component<PropValues, StateValues> {
+
+    @observable
+    openTurn: Turn;
     constructor(props: PropValues) {
         super(props);
         this.gameNameOnBlurHandler = this.gameNameOnBlurHandler.bind(this);
@@ -24,9 +29,16 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         this.state = { gameName: this.props.game.name };
     }
 
-    render() {
+    componentDidMount = () => {
+        let self = this;
+        this.props.turnWarehouse.getOpenTurn(this.props.game.id).then((anOpenTurn) => {
+            self.openTurn = anOpenTurn;
+        }).catch((error) => {
+            console.log('error getting the open turn: ' + error);
+        });
+    }
 
-        let openTurn = this.props.turnWarehouse.getOpenTurn(this.props.game.id);
+    render() {
         return (
             <div>
                 <div className="form-group">
@@ -43,9 +55,9 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                 <h2>Current Turn</h2>
                 <p>
                     <b>Year: </b>
-                    {openTurn ? openTurn.year : 'no open turn'} 
+                    {this.openTurn ? this.openTurn.year : 'no open turn'} 
                     <b> Season: </b>
-                    {openTurn ? openTurn.season : 'no open turn'}
+                    {this.openTurn ? this.openTurn.season : 'no open turn'}
                 </p>
                 <div className="btn-toolbar" role="toolbar">
                     <div className="brn-group mr-2" role="group">

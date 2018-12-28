@@ -4,6 +4,7 @@ import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
 import { SeasonTypes } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/game/Game';
 import { Turn } from '../types/warehouses/turn/Turn';
+import { observable } from 'mobx';
 
 interface PropValues {
     onTurnSelected: Function;
@@ -19,11 +20,23 @@ interface StateValues {
 @observer
 class SeasonSelector extends React.Component<PropValues, StateValues> {
 
+    @observable
+    turns = new Array<Turn>();
+
     constructor(props: PropValues) {
         super(props);
         if (props.initialTurn) {
             this.state = { selectedTurn: props.initialTurn };
         }
+    }
+
+    componentDidMount = () => {
+        let self = this;
+        this.props.myTurnWarehouse.getTurns(this.props.myGame.id).then((myTurnArray) => {
+            self.turns = myTurnArray;
+        }).catch((error) => {
+            console.log('error getting the turns: ' + error);
+        });
     }
 
     render() {
@@ -32,12 +45,15 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
         let hasSpringTurn = false;
         let hasFallTurn = false;
         if (this.props.myGame) {
-            this.props.myTurnWarehouse.getTurns(this.props.myGame.id).forEach((aTurn: Turn) => {
-                if (this.state.selectedTurn === aTurn) {
-                    // tslint:disable-next-line
-                    yearOptions.push(<option selected>{aTurn.year}</option>);
-                } else {
-                    yearOptions.push(<option>{aTurn.year}</option>);
+            this.turns.forEach((aTurn: Turn) => {
+                if (aTurn.season === SeasonTypes.Spring) {
+                    // only add the year once
+                    if (this.state.selectedTurn.year === aTurn.year) {
+                        // tslint:disable-next-line
+                        yearOptions.push(<option selected>{aTurn.year}</option>);
+                    } else {
+                        yearOptions.push(<option>{aTurn.year}</option>);
+                    }
                 }
                 if (aTurn.year === this.state.selectedTurn.year) {
                     if (aTurn.season === SeasonTypes.Spring) {
@@ -56,8 +72,8 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
                     // tslint:disable-next-line
                     seasonOptions.push(<option selected key={aType}>{aType}</option>);
                 } else {
-                    if ( (aType === 'Spring' && hasSpringTurn) || (aType === 'Fall' && hasFallTurn)) {
-                         seasonOptions.push(<option key={aType}>{aType}</option>);
+                    if ((aType === 'Spring' && hasSpringTurn) || (aType === 'Fall' && hasFallTurn)) {
+                        seasonOptions.push(<option key={aType}>{aType}</option>);
                     }
                 }
             }
@@ -87,14 +103,19 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
 
     yearSelected(event: React.FormEvent<HTMLSelectElement>) {
         let myValue: string = event.currentTarget.value;
-        let mySelectedTurn = this.props.myTurnWarehouse.getTurn(
+
+        this.props.myTurnWarehouse.getTurn(
             this.props.myGame.id,
             parseInt(myValue, 10),
-            this.state.selectedTurn.season);
-        if (mySelectedTurn) {
-            this.setState({ selectedTurn: mySelectedTurn });
-            this.props.onTurnSelected(mySelectedTurn);
-        }
+            this.state.selectedTurn.season).then((mySelectedTurn) => {
+                if (mySelectedTurn) {
+                    this.setState({ selectedTurn: mySelectedTurn });
+                    this.props.onTurnSelected(mySelectedTurn);
+                }
+            }).catch((error) => {
+                console.log('unable to get a turn to set the year' + error);
+            });
+
     }
 
     seasonSelected(event: React.FormEvent<HTMLSelectElement>) {
@@ -105,14 +126,18 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
         } else {
             mySeason = SeasonTypes.Spring;
         }
-        const mySelectedTurn = this.props.myTurnWarehouse.getTurn(
+        this.props.myTurnWarehouse.getTurn(
             this.props.myGame.id,
             this.state.selectedTurn.year,
-            mySeason);
-        if (mySelectedTurn) {
-            this.setState({ selectedTurn: mySelectedTurn });
-            this.props.onTurnSelected(mySelectedTurn);
-        }
+            mySeason).then((mySelectedTurn) => {
+                if (mySelectedTurn) {
+                    this.setState({ selectedTurn: mySelectedTurn });
+                    this.props.onTurnSelected(mySelectedTurn);
+                }
+            }).catch((error) => {
+                console.log('error getting a turn when a season was selected' + error);
+            });
+
     }
 }
 

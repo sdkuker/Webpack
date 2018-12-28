@@ -32,16 +32,22 @@ export class GameCreator implements IGameCreator {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
             let everythingDeleted = true;
-            let turnsForGame = this.turnWarehouse.getTurns(aGame.id);
-            let index = turnsForGame.length;
-            while (index--) {
-                let movesForTurnDeleted = this.moveWarehouse.deleteMoves(   turnsForGame[index].id,
-                                                                            turnsForGame[index].gameId);
-                let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
-                let turnDeleted = this.turnWarehouse.deleteTurn(turnsForGame[index]);
-                everythingDeleted = everythingDeleted && movesForTurnDeleted &&
-                    piecesForTurnDeleted && turnDeleted;
-            }
+            this.turnWarehouse.getTurns(aGame.id).then((turnsForGame) => {
+                let index = turnsForGame.length;
+                while (index--) {
+                    let movesForTurnDeleted = this.moveWarehouse.deleteMoves(turnsForGame[index].id,
+                                                                             turnsForGame[index].gameId);
+                    let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
+                    this.turnWarehouse.deleteTurn(turnsForGame[index]).then((wasTurnDeleted) => {
+                        everythingDeleted = everythingDeleted && movesForTurnDeleted &&
+                            piecesForTurnDeleted && wasTurnDeleted;
+                    }).catch((error) => {
+                        reject('unable to delete the turn when deleting the game' + error);
+                    });
+                }
+            }).catch((error) => {
+                reject('unable to get turns for a game when trying to delete the game' + error);
+            });
             let countriesDeleted = this.countryWarehouse.deleteCountries(aGame.id);
             this.gameWarehouse.deleteGame(aGame).then((wasGameDeletionSuccessful) => {
                 everythingDeleted = everythingDeleted && countriesDeleted && wasGameDeletionSuccessful;
@@ -58,11 +64,14 @@ export class GameCreator implements IGameCreator {
 
         let myPromise = new Promise<Game>((resolve, reject) => {
             this.gameWarehouse.createGame().then((newGame) => {
-                let initialTurn = this.turnWarehouse.generateNextTurn(newGame.id);
-                let initialPieces = this.createInitialPieces(newGame, initialTurn);
-                let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces);
-                let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
-                resolve(newGame);
+                this.turnWarehouse.generateNextTurn(newGame.id).then((initialTurn) => {
+                    let initialPieces = this.createInitialPieces(newGame, initialTurn);
+                    let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces);
+                    let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
+                    resolve(newGame);
+                }).catch((error) => {
+                    reject(error);
+                });
             }).catch((error) => {
                 reject(error);
             });

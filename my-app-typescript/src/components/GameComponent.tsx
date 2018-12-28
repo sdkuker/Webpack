@@ -37,7 +37,11 @@ class GameComponent extends React.Component<PropertyValues, {}> {
         this.props.gameWarehouse.getGameById(this.props.gameId).then((selectedGame) => {
             if (selectedGame) {
                 self.myGame = selectedGame;
-                self.myTurn = this.props.turnWarehouse.getOpenTurn(selectedGame.id);
+                this.props.turnWarehouse.getOpenTurn(selectedGame.id).then((myOpenTurn) => {
+                    self.myTurn = myOpenTurn;
+                }).catch((error) => {
+                    console.log('error getting open turn' + error);
+                });
             }
         }).catch((error) => {
             console.log('error getting game for ID: ' + this.props.gameId + ' with error: ' + error);

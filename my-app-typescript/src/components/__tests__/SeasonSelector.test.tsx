@@ -10,29 +10,35 @@ import SeasonSelector from '../SeasonSelector';
 enzyme.configure({adapter: new Adapter()});
 const myGame = new Game('1', 'test');
 
-it('Get Open Season', () => {
+it('Get Open Season', async () => {
     const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
     const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
 
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
-    const getTurnsMock = jest.fn();
     const getOpenTurnMock = jest.fn();
     const generateNextTurnMock = jest.fn();
     const deleteTurnMock = jest.fn();
-    getTurnsMock.mockReturnValueOnce([completeTurn,openTurn]);
+    const getTurnsMock = jest.fn( () => Promise.resolve([completeTurn,openTurn]));
 
     const turnWarehouse: ITurnWarehouse = { getTurns: getTurnsMock, getTurn: getTurnMock, 
                                             getOpenTurn: getOpenTurnMock, 
                                             generateNextTurn: generateNextTurnMock,
                                             deleteTurn: deleteTurnMock};
 
-    const wrapper1 = enzyme.shallow(<SeasonSelector 
+    const wrapper1 = await enzyme.mount(<SeasonSelector 
                                         onTurnSelected={onTurnsSelectedMock} 
                                         myGame={myGame} 
                                         initialTurn={openTurn}
                                         myTurnWarehouse={turnWarehouse}
                                          />);
+    wrapper1.update();
+
+    // @ts-ignore
+    //await wrapper1.instance().componentDidMount();
+    //await wrapper1.instance();
+
+    // console.log(wrapper1.debug());
     // year tests
     expect(wrapper1.find('#yearSelector')).toHaveLength(1);
     expect(wrapper1.find('select [selected]').at(0).html().includes('1')).toBeTruthy();
@@ -43,15 +49,14 @@ it('Get Open Season', () => {
 
 })
 
-it('Get Complete Season', () => {
+it('Get Complete Season', async () => {
     const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
     const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
     const arrayOfTurns = [completeTurn];
 
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
-    const getTurnsMock = jest.fn();
-    getTurnsMock.mockReturnValueOnce(arrayOfTurns);
+    const getTurnsMock = jest.fn( () => Promise.resolve(arrayOfTurns));
     const getOpenTurnMock = jest.fn();
     const generateNextTurnMock = jest.fn();
     const deleteTurnMock = jest.fn();
@@ -61,12 +66,13 @@ it('Get Complete Season', () => {
                                             generateNextTurn: generateNextTurnMock,
                                             deleteTurn: deleteTurnMock};
 
-    const wrapper1 = enzyme.shallow(<SeasonSelector 
+    const wrapper1 = await enzyme.mount(<SeasonSelector 
                                         onTurnSelected={onTurnsSelectedMock} 
                                         myGame={myGame} 
                                         initialTurn={completeTurn}
                                         myTurnWarehouse={turnWarehouse}
                                          />);
+    wrapper1.update();
     // year tests
     //console.log(wrapper1.debug());
     expect(wrapper1.find('[id="yearSelector"]')).toHaveLength(1);

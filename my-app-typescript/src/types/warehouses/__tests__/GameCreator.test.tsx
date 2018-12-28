@@ -44,30 +44,43 @@ it('the game warehouse should have the game', () => {
 })
 
 it('the turn warehouse should have the turn', () => {
-    let allTurns = turnWarehouse.getTurns('1');
-    expect(allTurns).not.toBeNull();
-    expect(allTurns.length).toEqual(1);
-    expect(allTurns[0].id).toEqual('1');
-    expect(allTurns[0].year).toEqual(1);
-    expect(allTurns[0].season).toEqual(SeasonTypes.Spring);
+    expect.assertions(5);
+    return turnWarehouse.getTurns('1').then((allTurns) => {
+        expect(allTurns).not.toBeNull();
+        expect(allTurns.length).toEqual(1);
+        expect(allTurns[0].id).toEqual('1');
+        expect(allTurns[0].year).toEqual(1);
+        expect(allTurns[0].season).toEqual(SeasonTypes.Spring);
+    })
+
 })
 
 it('the piece warehouse should have the pieces', () => {
-    let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns('1')[0]);
-    expect(allPieces).not.toBeNull();
-    expect(allPieces.length).toEqual(22);
-    expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(1);
-    expect(Number(allPieces[0].id)).toBeLessThanOrEqual(22);
+    expect.assertions(6);
+    return turnWarehouse.getTurns('1').then((turnsArray) => {
+        expect(turnsArray).not.toBeNull();
+        expect(turnsArray.length).toEqual(1);
+        let allPieces = pieceWarehouse.getPieces(turnsArray[0]);
+        expect(allPieces).not.toBeNull();
+        expect(allPieces.length).toEqual(22);
+        expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(1);
+        expect(Number(allPieces[0].id)).toBeLessThanOrEqual(22);
+    })
+
 })
 
 it('the move warehouse should have the moves', () => {
-    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns('1')[0].id,
-        turnWarehouse.getTurns('1')[0].gameId, false);
-    expect(allEnglishMoves).not.toBeNull();
-    expect(allEnglishMoves.length).toEqual(3);
-    expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
-    expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(1);
-    expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(22);
+    expect.assertions(5);
+    return turnWarehouse.getTurns('1').then((turnsArray) => {
+        let allEnglishMoves = moveWarehouse.getMoves('England', turnsArray[0].id,
+            turnsArray[0].gameId, false);
+        expect(allEnglishMoves).not.toBeNull();
+        expect(allEnglishMoves.length).toEqual(3);
+        expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
+        expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(1);
+        expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(22);
+    })
+
 })
 
 it('the country warehouse should have the countries', () => {
@@ -96,28 +109,34 @@ it('the second game should be in the warehouse', () => {
 })
 
 it('the second game should have turns and pieces', () => {
-    let allTurns = turnWarehouse.getTurns('2');
-    expect(allTurns).not.toBeNull();
-    expect(allTurns.length).toEqual(1);
-    expect(allTurns[0].id).toEqual('2');
-    expect(allTurns[0].year).toEqual(1);
-    expect(allTurns[0].season).toEqual(SeasonTypes.Spring);
+    expect.assertions(9);
+    return turnWarehouse.getTurns('2').then((allTurns) => {
+        expect(allTurns).not.toBeNull();
+        expect(allTurns.length).toEqual(1);
+        expect(allTurns[0].id).toEqual('2');
+        expect(allTurns[0].year).toEqual(1);
+        expect(allTurns[0].season).toEqual(SeasonTypes.Spring);
 
-    let allPieces = pieceWarehouse.getPieces(turnWarehouse.getTurns('2')[0]);
-    expect(allPieces).not.toBeNull();
-    expect(allPieces.length).toEqual(22);
-    expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(23);
-    expect(Number(allPieces[0].id)).toBeLessThanOrEqual(44);
+        let allPieces = pieceWarehouse.getPieces(allTurns[0]);
+        expect(allPieces).not.toBeNull();
+        expect(allPieces.length).toEqual(22);
+        expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(23);
+        expect(Number(allPieces[0].id)).toBeLessThanOrEqual(44);
+    })
 })
 
 it('should have english moves and actions', () => {
-    let allEnglishMoves = moveWarehouse.getMoves('England', turnWarehouse.getTurns('2')[0].id,
-        turnWarehouse.getTurns('2')[0].gameId, false);
-    expect(allEnglishMoves).not.toBeNull();
-    expect(allEnglishMoves.length).toEqual(3);
-    expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
-    expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(23);
-    expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(44);
+    expect.assertions(5);
+    return turnWarehouse.getTurns('2').then((turnsArray) => {
+        let allEnglishMoves = moveWarehouse.getMoves('England', turnsArray[0].id,
+            turnsArray[0].gameId, false);
+        expect(allEnglishMoves).not.toBeNull();
+        expect(allEnglishMoves.length).toEqual(3);
+        expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
+        expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(23);
+        expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(44);
+    })
+
 })
 
 it('delete a game', () => {
@@ -125,21 +144,25 @@ it('delete a game', () => {
     expect.assertions(10);
     return gameWarehouse.getAllGames().then((arrayOfGames) => {
         expect(arrayOfGames.length).toEqual(2);
-        let turns = turnWarehouse.getTurns('1');
-        expect(turns.length).toEqual(1);
-        let myTurn = turns[0];
-        expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(3);
-        expect(pieceWarehouse.getPieces(myTurn).length).toEqual(22);
-        expect(countryWarehouse.getAllCountries('1').length).toEqual(7);
-        return gameCreator.deleteGame(arrayOfGames[0]).then((wasGameSuccessfullyDeleted) => {
-            expect(wasGameSuccessfullyDeleted).toBeTruthy;
-            return gameWarehouse.getAllGames().then((newArrayOfGames) => {
-                expect(newArrayOfGames.length).toEqual(1);
-                expect(turnWarehouse.getTurns('1').length).toEqual(0);
-                expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(0);
-                expect(pieceWarehouse.getPieces(myTurn).length).toEqual(0);
-                expect(countryWarehouse.getAllCountries('1').length).toEqual(0);
+        return turnWarehouse.getTurns('1').then((turns) => {
+            expect(turns.length).toEqual(1);
+            let myTurn = turns[0];
+            expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(3);
+            expect(pieceWarehouse.getPieces(myTurn).length).toEqual(22);
+            expect(countryWarehouse.getAllCountries('1').length).toEqual(7);
+            return gameCreator.deleteGame(arrayOfGames[0]).then((wasGameSuccessfullyDeleted) => {
+                expect(wasGameSuccessfullyDeleted).toBeTruthy;
+                return gameWarehouse.getAllGames().then((newArrayOfGames) => {
+                    expect(newArrayOfGames.length).toEqual(1);
+                    return turnWarehouse.getTurns('1').then((turnArray) => {
+                        expect(turnArray.length).toEqual(0);
+                        expect(moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).length).toEqual(0);
+                        expect(pieceWarehouse.getPieces(myTurn).length).toEqual(0);
+                        expect(countryWarehouse.getAllCountries('1').length).toEqual(0);
+                    })
+                })
             })
         })
+
     })
 })

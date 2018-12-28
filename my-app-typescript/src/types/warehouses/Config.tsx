@@ -1,5 +1,5 @@
 class Config {
-    gameWarehouseDataProvider = 'firebase';
+    gameWarehouseDataProvider = 'static';
     turnWarehouseDataProvider = 'static';
     countryWarehouseDataProvider = 'static';
     moveWarehouseDataProvider = 'static';

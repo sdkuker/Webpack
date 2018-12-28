@@ -14,41 +14,67 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
 
     getTurns = (aGameId: string) => {
 
-        if (!this.allTurns[aGameId]) {
-            this.allTurns[aGameId] = Array<Turn>();
-        }
+        let self = this;
+        let myPromise = new Promise<Array<Turn>>((resolve, reject) => {
 
-        return this.allTurns[aGameId];
+            if (!self.allTurns[aGameId]) {
+                self.allTurns[aGameId] = Array<Turn>();
+            }
+
+            resolve(self.allTurns[aGameId]);
+        });
+
+        return myPromise;
     }
 
-    persistTurn = (aTurn: Turn) => {
-        if (! this.allTurns[aTurn.gameId]) {
-            this.allTurns[aTurn.gameId] = Array<Turn>();
-        } 
-        if (! aTurn.id) {
+    createTurn = (aTurn: Turn) => {
+
+        let myPromise = new Promise<Turn>((resolve, reject) => {
+
             this.nextAvailableTurnId++;
             aTurn.id = this.nextAvailableTurnId.toString();
+
+            if (!this.allTurns[aTurn.gameId]) {
+                this.allTurns[aTurn.gameId] = Array<Turn>();
+            }
             this.allTurns[aTurn.gameId].push(aTurn);
-        }
+
+            resolve(aTurn);
+        });
+
+        return myPromise;
+    }
+
+    updateTurn = (aTurn: Turn) => {
+
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            // there is no real persistence so the turn was updated before calling this function
+            resolve(true);
+        });
+
+        return myPromise;
     }
 
     deleteTurn = (aTurn: Turn) => {
 
-        let turnDeleted = false;
-        
-        let theTurns = this.allTurns[aTurn.gameId];
-        
-        if (theTurns) {
-            let index = theTurns.length;
-            while (index--) {
-                if (aTurn.id === theTurns[index].id) {
-                    theTurns.splice(index, 1);
-                    turnDeleted = true;
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            let turnDeleted = false;
+
+            let theTurns = this.allTurns[aTurn.gameId];
+
+            if (theTurns) {
+                let index = theTurns.length;
+                while (index--) {
+                    if (aTurn.id === theTurns[index].id) {
+                        theTurns.splice(index, 1);
+                        turnDeleted = true;
+                    }
                 }
             }
-        }
+            resolve(turnDeleted);
+        });
 
-        return turnDeleted;
+        return myPromise;
     }
 
 }
