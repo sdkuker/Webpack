@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-modal';
+import ModalComponent from '../ModalComponent';
 import { observer } from 'mobx-react';
 import GameListComponent from './GameListComponent';
 import GameManagementButtonComponent from './GameManagementButtonComponent';
@@ -79,16 +79,6 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                     whenAdministerGameClicked={this.administerGame}
                 />);
         }
-        const customStyles = {
-            content: {
-                top: '50%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                marginRight: '-50%',
-                transform: 'translate(-50%, -50%)'
-            }
-        };
 
         let modalTitle: string = 'Error';
         let modalDescription: string = '';
@@ -100,17 +90,12 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
             <div>
                 {theReturn}
                 <div>
-                    <Modal
-                        isOpen={this.state.isModalOpen}
-                        onRequestClose={this.closeModal}
-                        style={customStyles}
-                        contentLabel="Example Modal"
-                        parentSelector={() => document.body}
-                    >
-                        <h2>{modalTitle}</h2>
-                        <div>{modalDescription}</div>
-                        <button onClick={this.closeModal}>close</button>
-                    </Modal>
+                    <ModalComponent
+                        title={modalTitle}
+                        description={modalDescription}
+                        openInitially={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                    />
                 </div>
             </div>
         );

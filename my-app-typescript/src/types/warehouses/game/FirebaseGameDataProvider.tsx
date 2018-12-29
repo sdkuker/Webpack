@@ -27,8 +27,7 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
                 this.games = myArray;
                 resolve(myArray);
             }).catch((error) => {
-                console.log('have an error getting games: ' + error);
-                reject(error);
+                reject('error getting games: ' + error);
             });
         });
 
@@ -44,8 +43,7 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
                 let newGame = new Game(docRef.id, 'New Game');
                 resolve(newGame);
             }).catch((error) => {
-                console.log('have an error creating a game: ' + error);
-                reject(error);
+                reject('error creating a game: ' + error);
             });
         });
 
@@ -75,8 +73,7 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
                     });
                 }
             }).catch((error) => {
-                console.log('have an error getting games to update one: ' + error);
-                reject(error);
+                reject('error getting games to update one: ' + error);
             });
         });
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import * as Modal from 'react-modal';
 import { observer } from 'mobx-react';
 
+import ModalComponent from './ModalComponent';
 import MoveEntryComponent from './MoveEntryComponent';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { Move } from '../types/warehouses/move/Move';
@@ -29,8 +29,10 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
             isModalOpen: false,
             countryToDisplay: '',
             validationResults: new MoveValidationResults(false, 'placeholder'),
-            moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn.id, 
-                                                     this.props.turn.gameId, true)
+            moves: this.props.moveWarehouse.getMoves(this.props.countryName, 
+                                                     this.props.turn.id,
+                                                     this.props.turn.gameId, 
+                                                     true)
         };
         this.moveSelected = this.moveSelected.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -58,20 +60,9 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
             );
         });
 
-        const customStyles = {
-            content: {
-                top: '50%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                marginRight: '-50%',
-                transform: 'translate(-50%, -50%)'
-            }
-        };
-
         let modalTitle: string = 'Valid Move';
         let modalDescription: string = '';
-        if (! this.state.validationResults.isValid) {
+        if (!this.state.validationResults.isValid) {
             modalTitle = 'Invalid Move';
             modalDescription = this.state.validationResults.description;
         }
@@ -83,17 +74,12 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
                     </tbody>
                 </table>
                 <div>
-                    <Modal
-                        isOpen={this.state.isModalOpen}
-                        onRequestClose={this.closeModal}
-                        style={customStyles}
-                        contentLabel="Example Modal"
-                        parentSelector={() => document.body}
-                    >
-                        <h2>{modalTitle}</h2>
-                        <div>{modalDescription}</div>
-                        <button onClick={this.closeModal}>close</button>
-                    </Modal>
+                    <ModalComponent
+                        title={modalTitle}
+                        description={modalDescription}
+                        openInitially={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                    />
                 </div>
             </div>
         );
@@ -116,7 +102,7 @@ class MovesEntryListComponent extends React.Component<PropValues, StateValues> {
     }
     movePersisted() {
         // tslint:disable-next-line
-        this.setState({moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn.id, this.props.turn.gameId, true)});
+        this.setState({ moves: this.props.moveWarehouse.getMoves(this.props.countryName, this.props.turn.id, this.props.turn.gameId, true) });
     }
 
 }
