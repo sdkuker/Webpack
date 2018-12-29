@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ModalComponent from './ModalComponent';
 import { observer } from 'mobx-react';
 import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
 import { SeasonTypes } from '../types/warehouses/DomainTypes';
@@ -15,18 +16,35 @@ interface PropValues {
 
 interface StateValues {
     selectedTurn: Turn;
+    isModalOpen: boolean;
+    modalTitle: string;
+    modalDescription: string;
 }
 
 @observer
-class SeasonSelector extends React.Component<PropValues, StateValues> {
+class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
 
     @observable
     turns = new Array<Turn>();
 
     constructor(props: PropValues) {
         super(props);
+        this.closeModal = this.closeModal.bind(this);
         if (props.initialTurn) {
-            this.state = { selectedTurn: props.initialTurn };
+            this.state = {
+                selectedTurn: props.initialTurn,
+                isModalOpen: false,
+                modalTitle: '',
+                modalDescription: ''
+            };
+        } else {
+            this.state = {
+                // @ts-ignore
+                selectedTurn: null,
+                isModalOpen: false,
+                modalTitle: '',
+                modalDescription: ''
+            };
         }
     }
 
@@ -35,7 +53,7 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
         this.props.myTurnWarehouse.getTurns(this.props.myGame.id).then((myTurnArray) => {
             self.turns = myTurnArray;
         }).catch((error) => {
-            console.log('error getting the turns: ' + error);
+            this.setState({ isModalOpen: true, modalTitle: 'Error getting the turns', modalDescription: error });
         });
     }
 
@@ -81,20 +99,30 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
 
         return (
             <form className="form-inline row">
-                <div className="col-md-2">
-                    <div className="form-group">
-                        <label htmlFor="yearSelector"><b>Year:</b></label>
-                        <select className="form-control" id="yearSelector" onChange={e => this.yearSelected(e)}>
-                            {yearOptions}
-                        </select>
+                <div>
+                    <div className="col-md-2">
+                        <div className="form-group">
+                            <label htmlFor="yearSelector"><b>Year:</b></label>
+                            <select className="form-control" id="yearSelector" onChange={e => this.yearSelected(e)}>
+                                {yearOptions}
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="seasonSelector"><b>Season:</b> </label>
-                        <select className="form-control" id="seasonSelector" onChange={e => this.seasonSelected(e)}>
-                            {seasonOptions}
-                        </select>
+                    <div className="col-md-4">
+                        <div className="form-group">
+                            <label htmlFor="seasonSelector"><b>Season:</b> </label>
+                            <select className="form-control" id="seasonSelector" onChange={e => this.seasonSelected(e)}>
+                                {seasonOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <ModalComponent
+                            title={this.state.modalTitle}
+                            description={this.state.modalDescription}
+                            openInitially={this.state.isModalOpen}
+                            onClose={this.closeModal}
+                        />
                     </div>
                 </div>
             </form>
@@ -113,7 +141,9 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
                     this.props.onTurnSelected(mySelectedTurn);
                 }
             }).catch((error) => {
-                console.log('unable to get a turn to set the year' + error);
+                this.setState({ isModalOpen: true, 
+                                modalTitle: 'Unable to get a turn to set the year', 
+                                modalDescription: error });
             });
 
     }
@@ -135,10 +165,16 @@ class SeasonSelector extends React.Component<PropValues, StateValues> {
                     this.props.onTurnSelected(mySelectedTurn);
                 }
             }).catch((error) => {
-                console.log('error getting a turn when a season was selected' + error);
+                this.setState({ isModalOpen: true, 
+                    modalTitle: 'error getting a turn when a season was selected', 
+                    modalDescription: error });
             });
 
     }
+
+    closeModal() {
+        this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
+    }
 }
 
-export default SeasonSelector;
+export default SeasonSelectorComponent;

@@ -1,7 +1,7 @@
 import * as React from 'react';
+import ModalComponent from '../ModalComponent';
 import { observer } from 'mobx-react';
 import { Game } from '../../types/warehouses/game/Game';
-import { TurnWarehouse } from '../../types/warehouses/turn/TurnWarehouse';
 import { ITurnWarehouse } from '../../types/warehouses/turn/ITurnWarehouse';
 import { observable } from 'mobx';
 import { Turn } from '../../types/warehouses/turn/Turn';
@@ -15,6 +15,9 @@ interface PropValues {
 
 interface StateValues {
     gameName: string | undefined;
+    isModalOpen: boolean;
+    modalTitle: string;
+    modalDescription: string;
 }
 @observer
 class GameAdminGameDetailsComponent extends React.Component<PropValues, StateValues> {
@@ -26,7 +29,12 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         this.gameNameOnBlurHandler = this.gameNameOnBlurHandler.bind(this);
         this.gameNameOnChangeHandler = this.gameNameOnChangeHandler.bind(this);
         this.openGameClicked = this.openGameClicked.bind(this);
-        this.state = { gameName: this.props.game.name };
+        this.closeModal = this.closeModal.bind(this);
+        this.state = { 
+            gameName: this.props.game.name, 
+            isModalOpen: false, 
+            modalDescription: '', 
+            modalTitle: '' };
     }
 
     componentDidMount = () => {
@@ -34,7 +42,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         this.props.turnWarehouse.getOpenTurn(this.props.game.id).then((anOpenTurn) => {
             self.openTurn = anOpenTurn;
         }).catch((error) => {
-            console.log('error getting the open turn: ' + error);
+            this.setState({ isModalOpen: true, modalTitle: 'Error getting the open turn', modalDescription: error });
         });
     }
 
@@ -71,7 +79,14 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                         <button className="btn btn-outline-dark">Generate Next Turn</button>
                     </div>
                 </div>
-
+                <div>
+                    <ModalComponent
+                        title={this.state.modalTitle}
+                        description={this.state.modalDescription}
+                        openInitially={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                    />
+                </div>
             </div>
         );
     }
@@ -88,6 +103,9 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
 
     openGameClicked(event: React.MouseEvent<HTMLButtonElement>) {
         this.props.whenOpenGameClicked();
+    }
+    closeModal() {
+        this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
     }
 }
 

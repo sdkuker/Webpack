@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ModalComponent from '../ModalComponent';
 import { observer } from 'mobx-react';
 import GameListGameComponent from './GameListGameComponent';
 import { IGameWarehouse } from '../../types/warehouses/game/IGameWarehouse';
@@ -10,7 +11,10 @@ interface PropValues {
     whenGameSelected: Function;
 }
 interface StateValues {
-    selectedGameId: String | null;
+    selectedGameId: string | null;
+    isModalOpen: boolean;
+    modalTitle: string;
+    modalDescription: string;
 }
 @observer
 class GameListComponent extends React.Component<PropValues, StateValues> {
@@ -21,8 +25,12 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
         this.selectedGameChanged = this.selectedGameChanged.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.state = {
-            selectedGameId: null
+            selectedGameId: null,
+            isModalOpen: false,
+            modalTitle: '',
+            modalDescription: ''
         };
     }
 
@@ -31,7 +39,7 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
         this.props.gameWarehouse.getAllGames().then((allGamesArray) => {
             self.games = allGamesArray;
         }).catch((error) => {
-            console.log('error getting games: ' + error);
+            this.setState({ isModalOpen: true, modalTitle: 'Unable to get games', modalDescription: error });
         });
     }
 
@@ -64,11 +72,19 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
                         {theReturn}
                     </tbody>
                 </table>
+                <div>
+                    <ModalComponent
+                        title={this.state.modalTitle}
+                        description={this.state.modalDescription}
+                        openInitially={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                    />
+                </div>
             </div>
         );
     }
 
-    selectedGameChanged(aGameId: String, selected: boolean) {
+    selectedGameChanged(aGameId: string, selected: boolean) {
         if (selected) {
             this.setState({ selectedGameId: aGameId });
             this.props.whenGameSelected(aGameId);
@@ -76,6 +92,9 @@ class GameListComponent extends React.Component<PropValues, StateValues> {
             this.setState({ selectedGameId: null });
             this.props.whenGameSelected(null);
         }
+    }
+    closeModal() {
+        this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
     }
 }
 

@@ -5,7 +5,7 @@ import { SeasonTypes, TurnStatus } from '../../types/warehouses/DomainTypes';
 import * as React from 'react';
 import * as Adapter from 'enzyme-adapter-react-16';
 import * as enzyme from 'enzyme';
-import SeasonSelector from '../SeasonSelector';
+import SeasonSelectorComponent from '../SeasonSelectorComponent';
 
 enzyme.configure({adapter: new Adapter()});
 const myGame = new Game('1', 'test');
@@ -26,7 +26,7 @@ it('Get Open Season', async () => {
                                             generateNextTurn: generateNextTurnMock,
                                             deleteTurn: deleteTurnMock};
 
-    const wrapper1 = await enzyme.mount(<SeasonSelector 
+    const wrapper1 = await enzyme.mount(<SeasonSelectorComponent 
                                         onTurnSelected={onTurnsSelectedMock} 
                                         myGame={myGame} 
                                         initialTurn={openTurn}
@@ -66,7 +66,7 @@ it('Get Complete Season', async () => {
                                             generateNextTurn: generateNextTurnMock,
                                             deleteTurn: deleteTurnMock};
 
-    const wrapper1 = await enzyme.mount(<SeasonSelector 
+    const wrapper1 = await enzyme.mount(<SeasonSelectorComponent 
                                         onTurnSelected={onTurnsSelectedMock} 
                                         myGame={myGame} 
                                         initialTurn={completeTurn}

@@ -10,7 +10,8 @@ interface StateValues {
     selectedGameId: String | null;
     redirectPath: String | null;
     isModalOpen: boolean;
-    errorDescription: string | null;
+    modalTitle: string;
+    modalDescription: string;
 }
 
 interface PropValues {
@@ -30,7 +31,11 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
 
-        this.state = { selectedGameId: null, redirectPath: null, isModalOpen: false, errorDescription: null };
+        this.state = { selectedGameId: null, 
+                       redirectPath: null, 
+                       isModalOpen: false, 
+                       modalDescription: '', 
+                       modalTitle: '' };
     }
 
     render() {
@@ -80,19 +85,13 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                 />);
         }
 
-        let modalTitle: string = 'Error';
-        let modalDescription: string = '';
-        if (this.state.errorDescription) {
-            modalTitle = 'Error';
-            modalDescription = this.state.errorDescription;
-        }
         return (
             <div>
                 {theReturn}
                 <div>
                     <ModalComponent
-                        title={modalTitle}
-                        description={modalDescription}
+                        title={this.state.modalTitle}
+                        description={this.state.modalDescription}
                         openInitially={this.state.isModalOpen}
                         onClose={this.closeModal}
                     />
@@ -114,14 +113,21 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                 } else {
                     this.setState({
                         isModalOpen: true,
-                        errorDescription: 'Not able to find game with ID:' + this.state.selectedGameId
+                        modalTitle: 'Error',
+                        modalDescription: 'Not able to find game with ID:' + this.state.selectedGameId
                     });
                 }
             }).catch((error) => {
-                console.log('unable to acquire selected game: ' + error);
+                this.setState({
+                    isModalOpen: true,
+                    modalTitle: 'Unable to get game by ID for : ' + this.state.selectedGameId,
+                    modalDescription: error
+                });
             });
         } else {
-            this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
+            this.setState({ isModalOpen: true, 
+                            modalTitle: 'Error',
+                            modalDescription: 'Must select a game to open' });
         }
     }
 
@@ -130,7 +136,11 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
         this.props.warehouseManager.gameCreator.createGame().then((newGame) => {
             self.setState({ selectedGameId: newGame.id, redirectPath: 'administerGame' });
         }).catch((error) => {
-            console.log('Error adding a game: ' + error);
+            this.setState({
+                isModalOpen: true,
+                modalTitle: 'Error adding a game',
+                modalDescription: error
+            });
         });
     }
 
@@ -143,16 +153,32 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
                             this.setState({ selectedGameId: null });
                         }
                     }).catch((error) => {
-                        console.log('unable to delete game: ' + error);
+                        this.setState({
+                            isModalOpen: true,
+                            modalTitle: 'Error deleting a game',
+                            modalDescription: error
+                        });
                     });
                 } else {
-                    this.setState({ isModalOpen: true, errorDescription: 'Unable to delete the game' });
+                    this.setState({
+                        isModalOpen: true,
+                        modalTitle: 'Error',
+                        modalDescription: 'Unable to delete the game'
+                    });
                 }
             }).catch((error) => {
-                console.log('unable to get game to delete: ' + error);
+                this.setState({
+                    isModalOpen: true,
+                    modalTitle: 'Unable to get game to delete',
+                    modalDescription: error
+                });
             });
         } else {
-            this.setState({ isModalOpen: true, errorDescription: 'Must select a game to open' });
+            this.setState({
+                isModalOpen: true,
+                modalTitle: 'Error',
+                modalDescription: 'Must select a game to open'
+            });
         }
     }
 
@@ -160,7 +186,11 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
         if (this.state.selectedGameId) {
             this.setState({ redirectPath: 'administerGame' });
         } else {
-            this.setState({ isModalOpen: true, errorDescription: 'Must select a game to administer' });
+            this.setState({
+                isModalOpen: true,
+                modalTitle: 'Error',
+                modalDescription: 'Must select a game to administer'
+            });
         }
     }
 
@@ -169,7 +199,7 @@ class GameManagementComponent extends React.Component<PropValues, StateValues> {
     }
 
     closeModal() {
-        this.setState({ isModalOpen: false });
+        this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
     }
 }
 

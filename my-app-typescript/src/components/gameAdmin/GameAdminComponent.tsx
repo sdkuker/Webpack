@@ -13,7 +13,8 @@ import { observable } from 'mobx';
 interface StateValues {
     redirectPath: String | null;
     isModalOpen: boolean;
-    errorDescription: string | null;
+    modalTitle: string;
+    modalDescription: string;
 }
 
 interface PropValues {
@@ -36,8 +37,12 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
         this.openGame = this.openGame.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-
-        this.state = { redirectPath: null, isModalOpen: false, errorDescription: null };
+        this.state = {
+            redirectPath: null,
+            isModalOpen: false,
+            modalTitle: '',
+            modalDescription: ''
+        };
     }
 
     componentDidMount = () => {
@@ -47,7 +52,9 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
                 self.myGame = selectedGame;
             }
         }).catch((error) => {
-            console.log('error getting game for ID: ' + this.props.gameId + ' with error: ' + error);
+            this.setState({ isModalOpen: true, 
+                            modalTitle: 'error getting game for ID: ' + this.props.gameId , 
+                            modalDescription: error });
         });
     }
 
@@ -86,20 +93,13 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
             }
 
         }
-
-        let modalTitle: string = 'Error';
-        let modalDescription: string = '';
-        if (this.state.errorDescription) {
-            modalTitle = 'Error';
-            modalDescription = this.state.errorDescription;
-        }
         return (
             <div>
                 {theReturn}
                 <div>
                     <ModalComponent
-                        title={modalTitle}
-                        description={modalDescription}
+                        title={this.state.modalTitle}
+                        description={this.state.modalDescription}
                         openInitially={this.state.isModalOpen}
                         onClose={this.closeModal}
                     />
@@ -125,7 +125,7 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
     }
 
     closeModal() {
-        this.setState({ isModalOpen: false });
+        this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
     }
 }
 

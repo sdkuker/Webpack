@@ -1,8 +1,9 @@
 import * as React from 'react';
+import ModalComponent from './ModalComponent';
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import GameMap from './Map';
-import SeasonSelector from './SeasonSelector';
+import SeasonSelector from './SeasonSelectorComponent';
 import MovesForCountryComponent from './MovesForCountryComponent';
 import { Game } from '../types/warehouses/game/Game';
 import { Turn } from '../types/warehouses/turn/Turn';
@@ -18,9 +19,15 @@ interface PropertyValues {
     gameWarehouse: IGameWarehouse;
     gameId: string;
 }
+interface StateValues {
+    selectedTurn: Turn | null;
+    isModalOpen: boolean;
+    modalTitle: string;
+    modalDescription: string;
+}
 
 @observer
-class GameComponent extends React.Component<PropertyValues, {}> {
+class GameComponent extends React.Component<PropertyValues, StateValues> {
 
     @observable
     myGame: Game;
@@ -30,6 +37,13 @@ class GameComponent extends React.Component<PropertyValues, {}> {
     constructor(props: PropertyValues) {
         super(props);
         this.turnSelected = this.turnSelected.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.state = {
+            selectedTurn: null,
+            isModalOpen: false,
+            modalTitle: '',
+            modalDescription: ''
+        };
     }
 
     componentDidMount = () => {
@@ -40,11 +54,17 @@ class GameComponent extends React.Component<PropertyValues, {}> {
                 this.props.turnWarehouse.getOpenTurn(selectedGame.id).then((myOpenTurn) => {
                     self.myTurn = myOpenTurn;
                 }).catch((error) => {
-                    console.log('error getting open turn' + error);
+                    this.setState({ isModalOpen: true, 
+                                    modalTitle: 'Unable to get the open turn', 
+                                    modalDescription: error 
+                                });
                 });
             }
         }).catch((error) => {
-            console.log('error getting game for ID: ' + this.props.gameId + ' with error: ' + error);
+            this.setState({ isModalOpen: true, 
+                            modalTitle: 'Error getting game for ID: ' + this.props.gameId, 
+                            modalDescription: error 
+                        });
         });
     }
 
@@ -83,13 +103,27 @@ class GameComponent extends React.Component<PropertyValues, {}> {
         }
         return (
             <div className="container">
+            <div>
                 {theReturn}
+                </div>
+                <div>
+                    <ModalComponent
+                        title={this.state.modalTitle}
+                        description={this.state.modalDescription}
+                        openInitially={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                    />
+                </div>
             </div>
         );
     }
 
     turnSelected(aTurn: Turn) {
         this.setState({ selectedTurn: aTurn });
+    }
+
+    closeModal() {
+        this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
     }
 }
 
