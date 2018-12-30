@@ -23,53 +23,74 @@ it('warehouse should exist', () => {
 })
 
 it('the array should be created, but it should have nothing in it', () => {
-    let pieces = myPieceWarehouse.getPieces(turnGame1Spring);
-    expect(pieces).not.toBeNull();
-    expect(pieces.length).toEqual(0);
+
+    expect.assertions(2);
+    return myPieceWarehouse.getPieces(turnGame1Spring).then((pieces) => {
+        expect(pieces).not.toBeNull();
+        expect(pieces.length).toEqual(0);
+    })
 })
 
 it('pieces added should be returned', () => {
-    let pieces = myPieceWarehouse.getPieces(turnGame1Spring);
-    expect(pieces).not.toBeNull();
-    expect(pieces.length).toEqual(0);
-    let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
-    if (londonLocation) {
-        myPieceWarehouse.createPiece(game1, turnGame1Spring, londonLocation, 'London', 'England', 'FLEET');
-    };
-    pieces = myPieceWarehouse.getPieces(turnGame1Spring);
-    expect(pieces.length).toEqual(1);
-    let myPiece = pieces[0];
-    expect(myPiece.id).toEqual('1');
-    expect(myPiece.location).toEqual(londonLocation);
-    expect(myPiece.locationName).toEqual('London');
-    expect(myPiece.owningCountryName).toEqual('England');
-    expect(myPiece.turn.id).toEqual('1');
-    expect(myPiece.type).toEqual(PieceTypes.Fleet);
+
+    expect.assertions(10);
+    // @ts-ignore
+    return myPieceWarehouse.getPieces(turnGame1Spring).then((pieces) => {
+        expect(pieces).not.toBeNull();
+        expect(pieces.length).toEqual(0);
+        let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
+        if (londonLocation) {
+            return myPieceWarehouse.createPiece(game1, turnGame1Spring, londonLocation, 'London', 'England', 'FLEET').then((newPiece) => {
+                expect(newPiece).not.toBeNull();
+                return myPieceWarehouse.getPieces(turnGame1Spring).then((newPieces) => {
+                    expect(newPieces.length).toEqual(1);
+                    let myPiece = newPieces[0];
+                    expect(myPiece.id).toEqual('1');
+                    expect(myPiece.location).toEqual(londonLocation);
+                    expect(myPiece.locationName).toEqual('London');
+                    expect(myPiece.owningCountryName).toEqual('England');
+                    expect(myPiece.turn.id).toEqual('1');
+                    expect(myPiece.type).toEqual(PieceTypes.Fleet);
+                })
+            })
+        };
+    })
 })
 
 it('deleting pieces', () => {
-    let springPieces = myPieceWarehouse.getPieces(turnGame1Spring);
-    expect(springPieces).not.toBeNull();
-    expect(springPieces.length).toEqual(1);
 
-    let fallPieces = myPieceWarehouse.getPieces(turnGame1Fall);
-    expect(fallPieces).not.toBeNull();
-    expect(fallPieces.length).toEqual(0);
-
-    let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
-    if (londonLocation) {
-        myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET');
-        myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET');
-    };
-    fallPieces = myPieceWarehouse.getPieces(turnGame1Fall);
-    expect(fallPieces.length).toEqual(2);
-
-    myPieceWarehouse.deletePieces(turnGame1Fall);
-    fallPieces = myPieceWarehouse.getPieces(turnGame1Fall);
-    expect(fallPieces).not.toBeNull();
-    expect(fallPieces.length).toEqual(0);
-    springPieces = myPieceWarehouse.getPieces(turnGame1Spring);
-    expect(springPieces).not.toBeNull();
-    expect(springPieces.length).toEqual(1);
-
+    expect.assertions(12);
+    return myPieceWarehouse.getPieces(turnGame1Spring).then((springPieces) => {
+        expect(springPieces).not.toBeNull();
+        expect(springPieces.length).toEqual(1);
+        // @ts-ignore
+        return myPieceWarehouse.getPieces(turnGame1Fall).then((fallPieces) => {
+            expect(fallPieces).not.toBeNull();
+            expect(fallPieces.length).toEqual(0);
+            let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
+            if (londonLocation) {
+                return myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET').then((newPiece1) => {
+                    expect(newPiece1).not.toBeNull();
+                    // @ts-ignore
+                    return myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET').then((newPiece2) => {
+                        expect(newPiece2).not.toBeNull();
+                        return myPieceWarehouse.getPieces(turnGame1Fall).then((fallPieces2) => {
+                            expect(fallPieces2.length).toEqual(2);
+                            return myPieceWarehouse.deletePieces(turnGame1Fall).then((werePiecesDeleted) => {
+                                expect(werePiecesDeleted).toBeTruthy();
+                                return myPieceWarehouse.getPieces(turnGame1Fall).then((fallPieces3) => {
+                                    expect(fallPieces3).not.toBeNull();
+                                    expect(fallPieces3.length).toEqual(0);
+                                    return myPieceWarehouse.getPieces(turnGame1Spring).then((springPieces2) => {
+                                        expect(springPieces2).not.toBeNull();
+                                        expect(springPieces2.length).toEqual(1);
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            };
+        });
+    });
 })

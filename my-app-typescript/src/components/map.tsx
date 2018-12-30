@@ -1,22 +1,58 @@
 import * as React from 'react';
 import '../map.css';
+import ModalComponent from './ModalComponent';
 import MapBuilder from './MapBuilder';
 import { Turn } from '.././types/warehouses/turn/Turn';
+import { Piece } from '../types/warehouses/piece/Piece';
 import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 
 interface PropValues {
   pieceWarehouse: IPieceWarehouse;
   turn: Turn | null;
 }
+interface StateValues {
+  isModalOpen: boolean;
+  modalTitle: string;
+  modalDescription: string;
+}
 
-export class Map extends React.Component<PropValues, {}> {
+@observer
+export class Map extends React.Component<PropValues, StateValues> {
+
+  @observable
+  pieces = new Array<Piece>();
 
   constructor(props: PropValues) {
     super(props);
+    this.closeModal = this.closeModal.bind(this);
+    this.state = {
+        isModalOpen: false,
+        modalTitle: '',
+        modalDescription: ''
+    };
+}
+
+componentDidMount = () => {
+
+  let self = this;
+  if (this.props.turn) {
+      this.props.pieceWarehouse.getPieces(this.props.turn).then((pieceArray) => {
+          self.pieces = pieceArray;
+      }).catch((error) => {
+          this.setState({ isModalOpen: true, modalTitle: 'Unable to get pieces', modalDescription: error });
+      });
+  }
+}
+
+closeModal() {
+  this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
 }
 
   render() {
     return ( // 610 560  915 840
+      <div>
       <svg viewBox="0 0 610 560">
         <g>
           <title>North_Atlantic_Ocean</title>
@@ -842,8 +878,17 @@ export class Map extends React.Component<PropValues, {}> {
           />
           <text x="350" y="304">War</text>
         </g> 
-        <MapBuilder pieceWarehouse={this.props.pieceWarehouse} turn={this.props.turn}/>
+        <MapBuilder pieces={this.pieces}/>
       </svg>
+      <div>
+        <ModalComponent
+            title={this.state.modalTitle}
+            description={this.state.modalDescription}
+            openInitially={this.state.isModalOpen}
+            onClose={this.closeModal}
+        />
+    </div>
+      </div>
     );
   }
 

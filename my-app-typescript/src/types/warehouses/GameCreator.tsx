@@ -1,5 +1,6 @@
 import { Game } from './game/Game';
 import { Turn } from './turn/Turn';
+import { Piece } from './piece/Piece';
 import { LocationTypes } from './DomainTypes';
 import { IGameCreator } from './IGameCreator';
 import { IGameWarehouse } from './game/IGameWarehouse';
@@ -36,7 +37,7 @@ export class GameCreator implements IGameCreator {
                 let index = turnsForGame.length;
                 while (index--) {
                     let movesForTurnDeleted = this.moveWarehouse.deleteMoves(turnsForGame[index].id,
-                                                                             turnsForGame[index].gameId);
+                        turnsForGame[index].gameId);
                     let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
                     this.turnWarehouse.deleteTurn(turnsForGame[index]).then((wasTurnDeleted) => {
                         everythingDeleted = everythingDeleted && movesForTurnDeleted &&
@@ -65,10 +66,13 @@ export class GameCreator implements IGameCreator {
         let myPromise = new Promise<Game>((resolve, reject) => {
             this.gameWarehouse.createGame().then((newGame) => {
                 this.turnWarehouse.generateNextTurn(newGame.id).then((initialTurn) => {
-                    let initialPieces = this.createInitialPieces(newGame, initialTurn);
-                    let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces);
-                    let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
-                    resolve(newGame);
+                    this.createInitialPieces(newGame, initialTurn).then((initialPieces) => {
+                        let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces);
+                        let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
+                        resolve(newGame);
+                    }).catch((error) => {
+                        reject(error);
+                    });
                 }).catch((error) => {
                     reject(error);
                 });
@@ -82,46 +86,68 @@ export class GameCreator implements IGameCreator {
 
     createInitialPieces = (theNewGame: Game, initialTurn: Turn) => {
 
-        this.createPiece(theNewGame, initialTurn, 'Vienna', 'Austria', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Budapest', 'Austria', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Trieste', 'Austria', 'Fleet');
+        let myPromise = new Promise<Array<Piece>>((resolve, reject) => {
 
-        this.createPiece(theNewGame, initialTurn, 'London', 'England', 'Fleet');
-        this.createPiece(theNewGame, initialTurn, 'Edinburgh', 'England', 'Fleet');
-        this.createPiece(theNewGame, initialTurn, 'Liverpool', 'England', 'Army');
+            let arrayOfPromises = new Array<any>();
 
-        this.createPiece(theNewGame, initialTurn, 'Paris', 'France', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Marseilles', 'France', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Brest', 'France', 'Fleet');
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Vienna', 'Austria', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Budapest', 'Austria', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Trieste', 'Austria', 'Fleet'));
 
-        this.createPiece(theNewGame, initialTurn, 'Berlin', 'Germany', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Munich', 'Germany', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Kiel', 'Germany', 'Fleet');
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'London', 'England', 'Fleet'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Edinburgh', 'England', 'Fleet'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Liverpool', 'England', 'Army'));
 
-        this.createPiece(theNewGame, initialTurn, 'Rome', 'Italy', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Venice', 'Italy', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Naples', 'Italy', 'Fleet');
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Paris', 'France', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Marseilles', 'France', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Brest', 'France', 'Fleet'));
 
-        this.createPiece(theNewGame, initialTurn, 'Moscow', 'Russia', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Sevastopol', 'Russia', 'Fleet');
-        this.createPiece(theNewGame, initialTurn, 'StPetersburg_sc', 'Russia', 'Fleet');
-        this.createPiece(theNewGame, initialTurn, 'Warsaw', 'Russia', 'Army');
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Berlin', 'Germany', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Munich', 'Germany', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Kiel', 'Germany', 'Fleet'));
 
-        this.createPiece(theNewGame, initialTurn, 'Ankara', 'Turkey', 'Fleet');
-        this.createPiece(theNewGame, initialTurn, 'Constantinople', 'Turkey', 'Army');
-        this.createPiece(theNewGame, initialTurn, 'Smyrna', 'Turkey', 'Army');
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Rome', 'Italy', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Venice', 'Italy', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Naples', 'Italy', 'Fleet'));
 
-        return this.pieceWarehouse.getPieces(initialTurn);
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Moscow', 'Russia', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Sevastopol', 'Russia', 'Fleet'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'StPetersburg_sc', 'Russia', 'Fleet'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Warsaw', 'Russia', 'Army'));
+
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Ankara', 'Turkey', 'Fleet'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Constantinople', 'Turkey', 'Army'));
+            arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Smyrna', 'Turkey', 'Army'));
+
+            Promise.all(arrayOfPromises).then((values) => {
+                this.pieceWarehouse.getPieces(initialTurn).then((myPieces) => {
+                    resolve(myPieces);
+                }).catch((error) => {
+                    reject('unable to get pieces after creating them' + error);
+                });
+            }).catch((error) => {
+                reject('unable to create at least 1 piece' + error);
+            });
+        });
+
+        return myPromise;
     }
 
-    createPiece = ( theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string,
-                    pieceType: string) => {
+    createPiece = (theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string,
+        pieceType: string) => {
 
-        const myLocation = this.findLocation(locationName);
+        let myPromise = new Promise<Piece>((resolve, reject) => {
+            const myLocation = this.findLocation(locationName);
+            if (myLocation) {
+                this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation, locationName, countryName, pieceType).then((newPiece) => {
+                    resolve(newPiece);
+                }).catch((error) => {
+                    reject(error);
+                });
+            }
+        });
 
-        if (myLocation) {
-            this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation, locationName, countryName, pieceType);
-        }
+        return myPromise;
     }
 
     findLocation = (locationName: string) => {

@@ -26,7 +26,7 @@ class CountryListComponent extends React.Component<PropValues, StateValues> {
         // tslint:disable-next-line
         let theReturn: any = [];
 
-        // add components for the existing moves
+        // add components for the existing countries
         this.state.countries.forEach((aCountry: Country) => {
             theReturn.push((
                 <CountryListCountryComponent
