@@ -26,11 +26,12 @@ export class PieceWarehouse implements IPieceWarehouse {
         return myPromise;
     }
 
-    createPiece = (forGame: Game, forTurn: Turn, theLocation: Location,
-        theLocationName: string, countryName: string, type: string) => {
+    createPiece = ( forGame: Game, forTurn: Turn, theLocation: Location,
+                    theLocationName: string, countryName: string, type: string) => {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
-            this.dataProvider.createPiece(forGame, forTurn, theLocation, theLocationName, countryName, type).then((newPiece) => {
+            this.dataProvider.createPiece(  forGame, forTurn, theLocation, theLocationName, 
+                                            countryName, type).then((newPiece) => {
                 resolve(newPiece);
             }).catch((error) => {
                 reject('unable to create a piece' + error);

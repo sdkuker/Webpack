@@ -36,8 +36,8 @@ export class GameCreator implements IGameCreator {
             this.turnWarehouse.getTurns(aGame.id).then((turnsForGame) => {
                 let index = turnsForGame.length;
                 while (index--) {
-                    let movesForTurnDeleted = this.moveWarehouse.deleteMoves(turnsForGame[index].id,
-                        turnsForGame[index].gameId);
+                    let movesForTurnDeleted = this.moveWarehouse.deleteMoves(   turnsForGame[index].id,
+                                                                                turnsForGame[index].gameId);
                     let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
                     this.turnWarehouse.deleteTurn(turnsForGame[index]).then((wasTurnDeleted) => {
                         everythingDeleted = everythingDeleted && movesForTurnDeleted &&
@@ -67,7 +67,8 @@ export class GameCreator implements IGameCreator {
             this.gameWarehouse.createGame().then((newGame) => {
                 this.turnWarehouse.generateNextTurn(newGame.id).then((initialTurn) => {
                     this.createInitialPieces(newGame, initialTurn).then((initialPieces) => {
-                        let initialMoves = this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces);
+                        let initialMoves = this.moveWarehouse.createInitialMoves(
+                            initialTurn.id, newGame.id, initialPieces);
                         let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
                         resolve(newGame);
                     }).catch((error) => {
@@ -88,7 +89,7 @@ export class GameCreator implements IGameCreator {
 
         let myPromise = new Promise<Array<Piece>>((resolve, reject) => {
 
-            let arrayOfPromises = new Array<any>();
+            let arrayOfPromises = new Array<Promise<Piece>>();
 
             arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Vienna', 'Austria', 'Army'));
             arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Budapest', 'Austria', 'Army'));
@@ -133,13 +134,14 @@ export class GameCreator implements IGameCreator {
         return myPromise;
     }
 
-    createPiece = (theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string,
-        pieceType: string) => {
+    createPiece = ( theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string,
+                    pieceType: string) => {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
             const myLocation = this.findLocation(locationName);
             if (myLocation) {
-                this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation, locationName, countryName, pieceType).then((newPiece) => {
+                this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation, 
+                                                locationName, countryName, pieceType).then((newPiece) => {
                     resolve(newPiece);
                 }).catch((error) => {
                     reject(error);
