@@ -32,29 +32,23 @@ export class GameCreator implements IGameCreator {
     deleteGame = (aGame: Game) => {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
-            let everythingDeleted = true;
+            const deleteEverythingPromiseArray = Array<Promise<boolean>>();
             this.turnWarehouse.getTurns(aGame.id).then((turnsForGame) => {
                 let index = turnsForGame.length;
                 while (index--) {
-                    let movesForTurnDeleted = this.moveWarehouse.deleteMoves(   turnsForGame[index].id,
-                                                                                turnsForGame[index].gameId);
-                    let piecesForTurnDeleted = this.pieceWarehouse.deletePieces(turnsForGame[index]);
-                    this.turnWarehouse.deleteTurn(turnsForGame[index]).then((wasTurnDeleted) => {
-                        everythingDeleted = everythingDeleted && movesForTurnDeleted &&
-                            piecesForTurnDeleted && wasTurnDeleted;
-                    }).catch((error) => {
-                        reject('unable to delete the turn when deleting the game' + error);
-                    });
-                }
+                    deleteEverythingPromiseArray.push(this.moveWarehouse.deleteMoves(turnsForGame[index].id, turnsForGame[index].gameId));
+                    deleteEverythingPromiseArray.push(this.pieceWarehouse.deletePieces(turnsForGame[index]));
+                    deleteEverythingPromiseArray.push(this.turnWarehouse.deleteTurn(turnsForGame[index]));
+                };
+                this.countryWarehouse.deleteCountries(aGame.id);
+                deleteEverythingPromiseArray.push(this.gameWarehouse.deleteGame(aGame));
+                Promise.all(deleteEverythingPromiseArray).then((arrayOfBooleanResponses) => {
+                    resolve(true);
+                }).catch((error) => {
+                    reject('error deleting something' + error);
+                })
             }).catch((error) => {
                 reject('unable to get turns for a game when trying to delete the game' + error);
-            });
-            let countriesDeleted = this.countryWarehouse.deleteCountries(aGame.id);
-            this.gameWarehouse.deleteGame(aGame).then((wasGameDeletionSuccessful) => {
-                everythingDeleted = everythingDeleted && countriesDeleted && wasGameDeletionSuccessful;
-                resolve(everythingDeleted);
-            }).catch((error) => {
-                reject(error);
             });
         });
 
@@ -67,10 +61,12 @@ export class GameCreator implements IGameCreator {
             this.gameWarehouse.createGame().then((newGame) => {
                 this.turnWarehouse.generateNextTurn(newGame.id).then((initialTurn) => {
                     this.createInitialPieces(newGame, initialTurn).then((initialPieces) => {
-                        let initialMoves = this.moveWarehouse.createInitialMoves(
-                            initialTurn.id, newGame.id, initialPieces);
-                        let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
-                        resolve(newGame);
+                        this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces).then((initialMovesArray) => {
+                            let countriesCreated = this.countryWarehouse.initializeCountries(newGame.id);
+                            resolve(newGame);
+                        }).catch((error) => {
+                            reject(error);
+                        });
                     }).catch((error) => {
                         reject(error);
                     });
@@ -134,18 +130,18 @@ export class GameCreator implements IGameCreator {
         return myPromise;
     }
 
-    createPiece = ( theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string,
-                    pieceType: string) => {
+    createPiece = (theNewGame: Game, initialTurn: Turn, locationName: string, countryName: string,
+        pieceType: string) => {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
             const myLocation = this.findLocation(locationName);
             if (myLocation) {
-                this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation, 
-                                                locationName, countryName, pieceType).then((newPiece) => {
-                    resolve(newPiece);
-                }).catch((error) => {
-                    reject(error);
-                });
+                this.pieceWarehouse.createPiece(theNewGame, initialTurn, myLocation,
+                    locationName, countryName, pieceType).then((newPiece) => {
+                        resolve(newPiece);
+                    }).catch((error) => {
+                        reject(error);
+                    });
             }
         });
 

@@ -13,9 +13,13 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
 
     getMoves = (forTurnId: string, forGameId: string) => {
 
-        this.adjustCacheForTurn(forTurnId, forGameId);
+        let myPromise = new Promise<Array<Move>>((resolve, reject) => {
 
-        return this.moves;
+            this.adjustCacheForTurn(forTurnId, forGameId);
+            resolve(this.moves);
+        });
+
+        return myPromise;
     }
 
     adjustCacheForTurn = (aTurnId: string, aGameId: string) => {
@@ -43,47 +47,70 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
     @action
     deleteMove = (aMove: Move) => {
 
-        let moveDeleted = false;
-        this.adjustCacheForTurn(aMove.turnId, aMove.gameId);
+        let myPromise = new Promise<boolean>((resolve, reject) => {
 
-        let i: number;
-        for (i = 0; i < this.moves.length; i++) {
-            if (this.moves[i].id === aMove.id) {
-                // @ts-ignore
-                // this assumes the indices are the same in both arrays.  They should be...
-                this.allMoves.get(aMove.gameId).get(aMove.turnId).splice(i, 1);
-                this.moves.splice(i, 1);
-                moveDeleted = true;
+            let moveDeleted = false;
+            this.adjustCacheForTurn(aMove.turnId, aMove.gameId);
+
+            let i: number;
+            for (i = 0; i < this.moves.length; i++) {
+                if (this.moves[i].id === aMove.id) {
+                    // @ts-ignore
+                    // this assumes the indices are the same in both arrays.  They should be...
+                    this.allMoves.get(aMove.gameId).get(aMove.turnId).splice(i, 1);
+                    this.moves.splice(i, 1);
+                    moveDeleted = true;
+                }
             }
-        }
+            resolve(moveDeleted);
+        });
 
-        return moveDeleted;
-    }
-    
-    @action
-    persistMove = (aMove: Move, aNonPersistentMoveOrder: string | null) => {
-
-        this.adjustCacheForTurn(aMove.turnId, aMove.gameId);
-
-        if (aMove.order !== aNonPersistentMoveOrder) {
-            if (!aMove.id) {
-                this.nextAvailableMoveKey++;
-                aMove.id = this.nextAvailableMoveKey.toString();
-
-                // it seems tht you have to push the move in both arrarys.  
-                // putting it in this.moves w/o the other doesn't
-                // seem to get it in this.allMoves.  Kinda surprising actually.
-                // @ts-ignore
-                this.allMoves.get(aMove.gameId).get(aMove.turnId).push(aMove);
-                this.moves.push(aMove);
-            }
-        }
+        return myPromise;
     }
 
+    createMove = (moveOrder: string, owningCountryName: string, turnId: string, gameId: string) => {
+
+        let myPromise = new Promise<Move>((resolve, reject) => {
+
+            this.adjustCacheForTurn(turnId, gameId);
+
+            this.nextAvailableMoveKey++;
+            let newMove = new Move(this.nextAvailableMoveKey.toString(), moveOrder, owningCountryName, turnId, gameId);
+            // it seems tht you have to push the move in both arrarys.  
+            // putting it in this.moves w/o the other doesn't
+            // seem to get it in this.allMoves.  Kinda surprising actually.
+            // @ts-ignore
+            this.allMoves.get(newMove.gameId).get(newMove.turnId).push(newMove);
+            this.moves.push(newMove);
+
+            resolve(newMove);
+        });
+
+        return myPromise;
+    }
+
+    updateMove = (aMove: Move) => {
+
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+
+            this.adjustCacheForTurn(aMove.turnId, aMove.gameId);
+            // don't have to do anything here - this is all in memory and the incomming
+            // move was already updated
+            resolve(true);
+        });
+
+        return myPromise;
+    }
+
     @action
-    createNonPersistentMove = ( aCountryName: string, aTurnId: string, aGameId: string, 
+    createNonPersistentMove = ( aCountryName: string, aTurnId: string, aGameId: string,
                                 aNonPersistentMoveOrder: string) => {
 
-        return new Move(aTurnId + this.nextAvailableMoveKey++, aNonPersistentMoveOrder, aCountryName, aTurnId, aGameId);
+        let myPromise = new Promise<Move>((resolve, reject) => {
+            resolve(new Move(aTurnId + this.nextAvailableMoveKey++, aNonPersistentMoveOrder,
+                aCountryName, aTurnId, aGameId));
+        });
+
+        return myPromise;
     }
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ModalComponent from './ModalComponent';
 import { observer } from 'mobx-react';
 import MoveCountrySelector from './MoveCountrySelector';
 import MovesListComponent from './MovesListComponent';
@@ -7,6 +8,8 @@ import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { Turn } from '../types/warehouses/turn/Turn';
 import { TurnStatus } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/game/Game';
+import { Move } from '../types/warehouses/move/Move';
+import { observable } from 'mobx';
 
 interface PropValues {
     moveWarehouse: IMoveWarehouse;
@@ -15,15 +18,39 @@ interface PropValues {
 }
 interface StateValues {
     countryToDisplay: string;
+    isModalOpen: boolean;
+    modalTitle: string;
+    modalDescription: string;
 }
 
 @observer
 class MovesForCountryComponent extends React.Component<PropValues, StateValues> {
+
+    @observable
+    moves = new Array<Move>();
+
     constructor(props: PropValues) {
         super(props);
         this.countrySelected = this.countrySelected.bind(this);
-        this.state = { countryToDisplay: 'England' };
+        this.closeModal = this.closeModal.bind(this);
+        this.state = {
+            countryToDisplay: 'England',
+            isModalOpen: false,
+            modalTitle: '',
+            modalDescription: ''
+        };
     }
+
+    componentDidMount = () => {
+        let self = this;
+        this.props.moveWarehouse.getMoves(this.state.countryToDisplay, this.props.myTurn.id,
+            this.props.myTurn.gameId, false).then((myMovesArray) => {
+                self.moves = myMovesArray;
+            }).catch((error) => {
+                this.setState({ isModalOpen: true, modalTitle: 'Error getting the moves', modalDescription: error });
+            });
+    }
+
     render() {
         // tslint:disable-next-line
         let theMovesComponent: any;
@@ -43,8 +70,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                 (
                     <MovesListComponent
                         key={this.state.countryToDisplay}
-                        moves={this.props.moveWarehouse.getMoves(
-                            this.state.countryToDisplay, this.props.myTurn.id, this.props.myTurn.gameId, false)}
+                        moves={this.moves}
                     />
                 );
         }
@@ -62,6 +88,10 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
 
     countrySelected(countryName: string) {
         this.setState({ countryToDisplay: countryName });
+    }
+
+    closeModal() {
+        this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
     }
 
 }

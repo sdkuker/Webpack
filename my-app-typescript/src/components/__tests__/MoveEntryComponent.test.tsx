@@ -13,13 +13,15 @@ const myTurnId = '1';
 const myGame = new Game(myGameId, 'test');
 const myMove = new Move('1', "my order", "England", myTurnId, myGameId);
 const onMoveEntryValidationdMock = jest.fn(); 
-const persistMoveMock = jest.fn(); 
+const updateMoveMock = jest.fn(); 
+const createMoveMock = jest.fn(); 
 const deleteMoveMock = jest.fn();
 const deleteMovesMock = jest.fn();
 const getMovesMock = jest.fn();
 const createInitialMovesMock = jest.fn();
 const moveWarehouseMock: IMoveWarehouse = 
-    {persistMove : persistMoveMock, deleteMove : deleteMoveMock, deleteMoves: deleteMovesMock, getMoves : getMovesMock, createInitialMoves: createInitialMovesMock};
+    {updateMove : updateMoveMock, deleteMove : deleteMoveMock, deleteMoves: deleteMovesMock,
+     getMoves : getMovesMock, createInitialMoves: createInitialMovesMock, createMove: createMoveMock};
 const onMovePersistedMock = jest.fn();
 
 it('not sure what Im testing yet', () => {
