@@ -20,42 +20,86 @@ export class CountryWarehouse implements ICountryWarehouse {
 
     getCountryByName = (aCountryName: String, forGameId: string) => {
 
-        let theReturn: Country | undefined;
+        let myPromise = new Promise<Country | undefined>((resolve, reject) => {
 
-        this.myDataProvider.getCountries(forGameId).forEach((aCountry: Country) => {
-            if (aCountry.name === aCountryName) {
-                theReturn = aCountry;
-            }
+            let theCountry: Country | undefined;
+
+            this.myDataProvider.getCountries(forGameId).then((countriesArray) => {
+                countriesArray.forEach((aCountry: Country) => {
+                    if (aCountry.name === aCountryName) {
+                        theCountry = aCountry;
+                    }
+                });
+                resolve(theCountry);
+            }).catch((error) => {
+                reject('unable to get the countries to select from ' + error);
+            });
         });
 
-        return theReturn;
+        return myPromise;
     }
 
     getAllCountries = (forGameId: string) => {
 
-        return this.myDataProvider.getCountries(forGameId);
+        let myPromise = new Promise<Array<Country>>((resolve, reject) => {
+
+            this.myDataProvider.getCountries(forGameId).then((arrayOfCountries) => {
+                resolve(arrayOfCountries);
+            }).catch((error) => {
+                reject('unable to get countries' + error);
+            });
+        });
+
+        return myPromise;
     }
 
     getCountryById = (aCountryId: String, forGameId: string) => {
 
-        let theReturn: Country | undefined;
+        let myPromise = new Promise<Country | undefined>((resolve, reject) => {
 
-        this.myDataProvider.getCountries(forGameId).forEach((aCountry: Country) => {
-            if (aCountry.id === aCountryId) {
-                theReturn = aCountry;
-            }
+            let theCountry: Country | undefined;
+            this.myDataProvider.getCountries(forGameId).then((arrayOfCountries) => {
+                arrayOfCountries.forEach((aCountry: Country) => {
+                    if (aCountry.id === aCountryId) {
+                        theCountry = aCountry;
+                    }
+                });
+                resolve(theCountry);
+            }).catch((error) => {
+                reject('unable to get countries' + error);
+            });
         });
 
-        return theReturn;
+        return myPromise;
 
     }
 
     updatePlayerNameForCountry = (forGameId: string, aCountry: Country, newPlayerName: string) => {
-        this.myDataProvider.updatePlayerNameForCountry(forGameId, aCountry, newPlayerName);
+
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+
+            this.myDataProvider.updatePlayerNameForCountry(forGameId, aCountry, newPlayerName).
+                then((updateSuccessful) => {
+                    resolve(updateSuccessful);
+                }).catch((error) => {
+                    reject('unable to update the player name ' + error);
+                });
+        });
+
+        return myPromise;
     }
 
     deleteCountries = (forGameId: string) => {
-        return this.myDataProvider.deleteCountries(forGameId);
+
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            this.myDataProvider.deleteCountries(forGameId).then((deleteSuccessful) => {
+                resolve(deleteSuccessful);
+            }).catch((error) => {
+                reject('unable to delete countries');
+            });
+        });
+
+        return myPromise;
     }
 
 }
