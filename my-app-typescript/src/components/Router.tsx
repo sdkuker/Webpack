@@ -60,6 +60,7 @@ class Router extends React.Component<{}, StateValues> {
                                     turnWarehouse={this.state.warehouseManager.turnWarehouse}
                                     pieceWarehouse={this.state.warehouseManager.pieceWarehouse}
                                     moveWarehouse={this.state.warehouseManager.moveWarehouse}
+                                    capitalWarehouse={this.state.warehouseManager.capitalWarehouse}
                                     gameId={routeProps.match.params.gameId}
                                 /> :
                                 <ErrorComponent />

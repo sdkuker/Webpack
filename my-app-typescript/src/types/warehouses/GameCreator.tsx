@@ -9,6 +9,7 @@ import { ITurnWarehouse } from './turn/ITurnWarehouse';
 import { IPieceWarehouse } from './piece/IPieceWarehouse';
 import { Warehouse as LocationWarehouse } from './location/LocationWarehouse';
 import { ICountryWarehouse } from './country/ICountryWarehouse';
+import { ICapitalWarehouse } from './capital/ICapitalWarehouse';
 
 export class GameCreator implements IGameCreator {
 
@@ -17,16 +18,18 @@ export class GameCreator implements IGameCreator {
     pieceWarehouse: IPieceWarehouse;
     moveWarehouse: IMoveWarehouse;
     countryWarehouse: ICountryWarehouse;
+    capitalWarehouse: ICapitalWarehouse;
 
     constructor(
         myGameWarehouse: IGameWarehouse, myTurnWarehouse: ITurnWarehouse,
         myPieceWarehouse: IPieceWarehouse, myMoveWarehouse: IMoveWarehouse,
-        myCountryWarehouse: ICountryWarehouse) {
+        myCountryWarehouse: ICountryWarehouse, myCapitalWarehouse: ICapitalWarehouse) {
         this.gameWarehouse = myGameWarehouse;
         this.turnWarehouse = myTurnWarehouse;
         this.pieceWarehouse = myPieceWarehouse;
         this.moveWarehouse = myMoveWarehouse;
         this.countryWarehouse = myCountryWarehouse;
+        this.capitalWarehouse = myCapitalWarehouse;
     }
 
     deleteGame = (aGame: Game) => {
@@ -39,6 +42,7 @@ export class GameCreator implements IGameCreator {
                     deleteEverythingPromiseArray.push(this.moveWarehouse.deleteMoves(turnsForGame[index].id,
                         turnsForGame[index].gameId));
                     deleteEverythingPromiseArray.push(this.pieceWarehouse.deletePieces(turnsForGame[index]));
+                    deleteEverythingPromiseArray.push(this.capitalWarehouse.deleteCapitals(turnsForGame[index].id));
                     deleteEverythingPromiseArray.push(this.turnWarehouse.deleteTurn(turnsForGame[index]));
                 }
                 deleteEverythingPromiseArray.push(this.countryWarehouse.deleteCountries(aGame.id));
@@ -49,7 +53,7 @@ export class GameCreator implements IGameCreator {
                     reject('error deleting something' + error);
                 });
             }).catch((error) => {
-                reject('unable to get turns for a game when trying to delete the game' + error);
+                reject('unable to get turns for a game when trying to delete the game - ' + error);
             });
         });
 
@@ -65,7 +69,12 @@ export class GameCreator implements IGameCreator {
                         this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces).
                             then((initialMovesArray) => {
                                 this.countryWarehouse.initializeCountries(newGame.id).then((countriesCreated) => {
-                                    resolve(newGame);
+                                    this.capitalWarehouse.initilizeCapitals(initialTurn.id).
+                                                then((capitalsInitialized) => {
+                                        resolve(newGame);
+                                    }).catch((error) => {
+                                        reject(error);
+                                    });  
                                 }).catch((error) => {
                                     reject(error);
                                 });

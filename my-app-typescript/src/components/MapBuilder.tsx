@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { warehouse as CapitalWarehouse } from '../types/warehouses/CapitalWarehouse';
-import { Capital } from '../types/warehouses/Capital';
+import { Capital } from '../types/warehouses/capital/Capital';
 import { Piece } from '../types/warehouses/piece/Piece';
 
 interface PropValues {
     pieces: Array<Piece>;
+    capitals: Map<string, Capital>;
 }
 
 @observer
@@ -18,8 +18,7 @@ class MapBuilder extends React.Component<PropValues, {}> {
     render() {
         // tslint:disable-next-line
         let theReturn: any = [];
-        let capitals: Map<String, Capital> = CapitalWarehouse.capitals;
-        capitals.forEach((value: Capital, myKey: string) => {
+        this.props.capitals.forEach((value: Capital, myKey: string) => {
             theReturn.push(
                 <circle
                     key={myKey}

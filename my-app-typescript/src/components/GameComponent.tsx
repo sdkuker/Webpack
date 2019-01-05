@@ -2,7 +2,7 @@ import * as React from 'react';
 import ModalComponent from './ModalComponent';
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
-import GameMap from './Map';
+import GameMap from './GameMap';
 import SeasonSelector from './SeasonSelectorComponent';
 import MovesForCountryComponent from './MovesForCountryComponent';
 import { Game } from '../types/warehouses/game/Game';
@@ -11,12 +11,14 @@ import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
 import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { IGameWarehouse } from '../types/warehouses/game/IGameWarehouse';
+import { ICapitalWarehouse } from '../types/warehouses/capital/ICapitalWarehouse';
 
 interface PropertyValues {
     turnWarehouse: ITurnWarehouse;
     pieceWarehouse: IPieceWarehouse;
     moveWarehouse: IMoveWarehouse;
     gameWarehouse: IGameWarehouse;
+    capitalWarehouse: ICapitalWarehouse;
     gameId: string;
 }
 interface StateValues {
@@ -88,6 +90,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                     <div className="col-md-12">
                         <GameMap
                             pieceWarehouse={this.props.pieceWarehouse}
+                            capitalWarehouse={this.props.capitalWarehouse}
                             turn={this.myTurn}
                         />
                     </div>

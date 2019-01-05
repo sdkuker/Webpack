@@ -17,14 +17,18 @@ import { StaticPieceDataProvider } from '../piece/StaticPieceDataProvider';
 import { ICountryWarehouse } from '../country/ICountryWarehouse';
 import { CountryWarehouse } from '../country/CountryWarehouse';
 import { StaticCountryDataProvider } from '../country/StaticCountryDataProvider';
+import { ICapitalWarehouse } from '../capital/ICapitalWarehouse';
+import { CapitalWarehouse } from '../capital/CapitalWarehouse';
+import { StaticCapitalDataProvider } from '../capital/StaticCapitalDataProvider';
 
 let gameWarehouse: IGameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
 let turnWarehouse: ITurnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
 let moveWarehouse: IMoveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
 let pieceWarehouse: IPieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
 let countryWarehouse: ICountryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
+let capitalWarehouse: ICapitalWarehouse = new CapitalWarehouse(new StaticCapitalDataProvider(null, null));
 let gameCreator: IGameCreator = new GameCreator(gameWarehouse, turnWarehouse, pieceWarehouse,
-    moveWarehouse, countryWarehouse);
+    moveWarehouse, countryWarehouse, capitalWarehouse);
 
 it('the game should have been created', () => {
     expect.assertions(2);
@@ -82,6 +86,18 @@ it('the move warehouse should have the moves', () => {
             expect(allEnglishMoves[0].action).toEqual(MoveAction.Holds);
             expect(Number(allEnglishMoves[0].id)).toBeGreaterThanOrEqual(1);
             expect(Number(allEnglishMoves[0].id)).toBeLessThanOrEqual(22);
+        });
+    });
+})
+
+it('the capital warehouse should have the capitals', () => {
+
+    expect.assertions(2);
+
+    return turnWarehouse.getTurns('1').then((turnsArray) => {
+        return capitalWarehouse.getCapitals(turnsArray[0].id).then((allCapitals) => {
+            expect(allCapitals).not.toBeNull();
+            expect(allCapitals.size).toEqual(34);
         });
     });
 })
@@ -159,8 +175,8 @@ it('delete a game', () => {
         return turnWarehouse.getTurns('1').then((turns) => {
             expect(turns.length).toEqual(1);
             let myTurn = turns[0];
-            return moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).then((englishTurns) => {
-                expect(englishTurns.length).toEqual(3);
+            return moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).then((englishMoves) => {
+                expect(englishMoves.length).toEqual(3);
                 return pieceWarehouse.getPieces(myTurn).then((piecesArray) => {
                     expect(piecesArray.length).toEqual(22);
                     return countryWarehouse.getAllCountries('1').then((countryArray) => {

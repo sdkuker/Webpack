@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import './map.css';
+import './gameMap.css';
 import App from './components/App';
 import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap';
