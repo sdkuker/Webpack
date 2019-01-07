@@ -7,20 +7,13 @@ let myTurnWarehouse: TurnWarehouse;
 
 beforeAll(() => {
     const myDataProvider = new StaticTurnDataProvider(null, null);
-    let turn1 = new Turn(null, '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
-    return myDataProvider.createTurn(turn1).then((success) => {
-        let turn2 = new Turn(null, '1', 1, SeasonTypes.Fall, TurnStatus.Complete);
-        return myDataProvider.createTurn(turn2).then((success2) => {
-            let turn3 = new Turn(null, '1', 2, SeasonTypes.Spring, TurnStatus.Complete);
-            return myDataProvider.createTurn(turn3).then((success3) => {
-                let turn4 = new Turn(null, '1', 2, SeasonTypes.Fall, TurnStatus.Open);
-                return myDataProvider.createTurn(turn4).then((success4) => {
-                    let turn5 = new Turn(null, '2', 1, SeasonTypes.Spring, TurnStatus.Complete);
-                    return myDataProvider.createTurn(turn5).then((success5) => {
-                        let turn6 = new Turn(null, '2', 1, SeasonTypes.Fall, TurnStatus.Open);
-                        return myDataProvider.createTurn(turn6).then((success6) => {
-                            let turn7 = new Turn(null, '3', 1, SeasonTypes.Spring, TurnStatus.Complete);
-                            return myDataProvider.createTurn(turn7).then((success7) => {
+    return myDataProvider.createTurn('1', SeasonTypes.Spring, 1, TurnStatus.Complete).then((success) => {
+        return myDataProvider.createTurn('1', SeasonTypes.Fall, 1, TurnStatus.Complete).then((success2) => {
+            return myDataProvider.createTurn('1', SeasonTypes.Spring, 2, TurnStatus.Complete).then((success3) => {
+                return myDataProvider.createTurn('1', SeasonTypes.Fall, 2, TurnStatus.Open).then((success4) => {
+                    return myDataProvider.createTurn('2', SeasonTypes.Spring, 1, TurnStatus.Complete).then((success5) => {
+                        return myDataProvider.createTurn('2', SeasonTypes.Fall, 1, TurnStatus.Open).then((success6) => {
+                            return myDataProvider.createTurn('3', SeasonTypes.Spring, 1, TurnStatus.Complete).then((success7) => {
                                  myTurnWarehouse = new TurnWarehouse(myDataProvider);
                             })
                         })

@@ -2,22 +2,25 @@ import { IGameDataProvider } from './IGameDataProvider';
 import { Game } from './Game';
 import { observable } from 'mobx';
 import db from '../../../firebase';
+import { EnvironmentName } from '../PersistenceTypes';
 
 export class FirebaseGameDataProvider implements IGameDataProvider {
 
     @observable
     games = new Array<Game>();
 
-    constructor(myGames: Array<Game> | null) {
-        if (myGames) {
-            this.games = myGames;
-        }
+    environmentName: EnvironmentName;
+
+    constructor(anEnviornmentName: EnvironmentName) {
+        this.environmentName = anEnviornmentName;
     }
 
     getGames = () => {
 
+        let self = this;
+
         let myPromise = new Promise<Array<Game>>((resolve, reject) => {
-            db.collection('games').get().then((querySnapshot) => {
+            db.collection(self.environmentName).doc('games').collection('allGames').get().then((querySnapshot) => {
                 let myArray = new Array<Game>();
                 querySnapshot.forEach((doc) => {
                     // console.log('${doc.id => ${doc.data()}');
@@ -36,11 +39,14 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
 
     createGame = () => {
 
+        let self = this;
+
         let myPromise = new Promise<Game>((resolve, reject) => {
-            db.collection('games').add({
+            db.collection(self.environmentName).doc('games').collection('allGames').add({
                 name: 'New Game'
             }).then((docRef) => {
                 let newGame = new Game(docRef.id, 'New Game');
+                this.games.push(newGame);
                 resolve(newGame);
             }).catch((error) => {
                 reject('error creating a game: ' + error);
@@ -52,6 +58,8 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
 
     updateGame = (aGame: Game) => {
 
+        let self = this;
+
         let myPromise = new Promise<boolean>((resolve, reject) => {
             this.getGames().then((gameArray) => {
                 let index = 0;
@@ -62,15 +70,18 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
                     }
                 }
                 if (gameToUpdate) {
-                    let gameRef = db.collection('games').doc(gameToUpdate.id);
+                    let gameRef = db.collection(self.environmentName).doc('games').collection('allGames').doc(gameToUpdate.id);
                     gameRef.update({
                         name: aGame.name
                     }).then(() => {
                         // @ts-ignore
+                        gameToUpdate.name = aGame.name;
                         resolve(true);
                     }).catch((error) => {
                         reject('unable to update the game' + error);
                     });
+                } else {
+                    reject('unable to find the game to update');
                 }
             }).catch((error) => {
                 reject('error getting games to update one: ' + error);
@@ -82,9 +93,11 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
 
     deleteGame = (aGame: Game) => {
 
+        let self = this;
+        
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
-            db.collection('games').doc(aGame.id).delete().then(() => {
+            db.collection(self.environmentName).doc('games').collection('allGames').doc(aGame.id).delete().then(() => {
                 this.getGames().then((gameArray) => {
                     resolve(true);
                 }).catch((error) => {

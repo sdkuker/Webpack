@@ -1,42 +1,68 @@
 import { FirebaseGameDataProvider } from '../game/FirebaseGameDataProvider';
 import { Game } from '../game/Game';
+import { EnvironmentName } from '../PersistenceTypes';
 
+const findGame = (gameArray: Array<Game>, id: string): Game | null => {
+
+    let index = 0;
+    let selectedGame: Game;
+    for (index = 0; index < gameArray.length; index++) {
+        if (gameArray[index].id === id) {
+            selectedGame = gameArray[index];
+        }
+    }
+
+    // @ts-ignore
+    return selectedGame;
+}
 it('create, retrieve, update and lastly delete a game', () => {
 
-    let myProvider = new FirebaseGameDataProvider(null);
-    expect.assertions(7);
+    let myProvider = new FirebaseGameDataProvider(EnvironmentName.UnitTest);
+    expect.assertions(15);
     expect(myProvider).not.toBeNull();
     return myProvider.createGame().then((result) => {
         expect(result).not.toBeNull();
         expect(result.id).not.toBeNull();
         expect(result.name).toEqual('New Game');
+        let gameFromGamesArray = findGame(myProvider.games, result.id);
+        if (gameFromGamesArray) {
+            expect(gameFromGamesArray).not.toBeNull();
+            expect(gameFromGamesArray.name).toEqual('New Game');
+        }
         return myProvider.getGames().then((gameArray) => {
-            expect(gameArray).not.toBeNull();
-            let index = 0;
-            let createdGame : Game;
-            for (index = 0; index < gameArray.length; index++) {
-                if (gameArray[index].id === result.id) {
-                    expect(gameArray[index].name).toEqual(result.name);
-                    createdGame = gameArray[index];
-                }
+            gameFromGamesArray = findGame(myProvider.games, result.id);
+            if (gameFromGamesArray) {
+                expect(gameFromGamesArray).not.toBeNull();
+                expect(gameFromGamesArray.name).toEqual('New Game');
+            }
+            gameFromGamesArray = findGame(gameArray, result.id);
+            if (gameFromGamesArray) {
+                expect(gameFromGamesArray).not.toBeNull();
+                expect(gameFromGamesArray.name).toEqual('New Game');
             }
             // @ts-ignore
-            expect(createdGame).not.toBeNull();
+            gameFromGamesArray.name = 'New Game Name';
             // @ts-ignore
-            createdGame.name = 'New Game Name';
-             // @ts-ignore
-            myProvider.updateGame(createdGame).then((wasGameUpdated) => {
+            return myProvider.updateGame(gameFromGamesArray).then((wasGameUpdated) => {
                 expect(wasGameUpdated).toBeTruthy();
-                myProvider.deleteGame(createdGame).then((wasGameDeleted) => {
-                    expect(wasGameDeleted).toBeTruthy();
-                }).catch((error) => {
-                    expect(error).not.toBeNull();
-                })
+                gameFromGamesArray = findGame(myProvider.games, result.id);
+                if (gameFromGamesArray) {
+                    expect(gameFromGamesArray).not.toBeNull();
+                    expect(gameFromGamesArray.name).toEqual('New Game Name');
+                }
+                if (gameFromGamesArray) {
+                    return myProvider.deleteGame(gameFromGamesArray).then((wasGameDeleted) => {
+                        expect(wasGameDeleted).toBeTruthy();
+                        expect(myProvider.games.length).toEqual(0);
+                    }).catch((error) => {
+                        expect(error).toBeNull();
+                    })
+                }
             })
         }).catch((error) => {
-            expect(error).not.toBeNull();
+            expect(error).toBeNull();
         })
     }).catch((error) => {
-        expect(error).not.toBeNull();
+        expect(error).toBeNull();
     })
 })

@@ -117,7 +117,7 @@ export class TurnWarehouse implements ITurnWarehouse {
                     this.dataProvider.updateTurn(currentlyOpenTurn).then((wasUpdateSuccessful) => {
                         if (wasUpdateSuccessful) {
                             const nextTurn = new Turn(null, aGameId, newYear, newSeason, TurnStatus.Open);
-                            this.dataProvider.createTurn(nextTurn).then((newTurn) => {
+                            this.dataProvider.createTurn(aGameId, newSeason, newYear, TurnStatus.Open).then((newTurn) => {
                                 resolve(newTurn);
                             }).catch((error) => {
                                 reject('unable to create new turn' + error);
@@ -131,8 +131,7 @@ export class TurnWarehouse implements ITurnWarehouse {
 
                 } else {
                     // assume there are no turns at all - make the first one
-                    const nextTurn = new Turn(null, aGameId, 1, SeasonTypes.Spring, TurnStatus.Open);
-                    this.dataProvider.createTurn(nextTurn).then((newTurn) => {
+                    this.dataProvider.createTurn(aGameId, SeasonTypes.Spring, 1, TurnStatus.Open ).then((newTurn) => {
                         resolve(newTurn);
                     }).catch((error) => {
                         reject('unable to make the first turn for the game' + error);

@@ -5,6 +5,7 @@ class Config {
     moveWarehouseDataProvider = 'static';
     pieceWarehouseDataProvider = 'static';
     capitalWarehouseDataProvider = 'static';
+    environment = 'TEST';
 }
 
 export const myConfig = new Config();

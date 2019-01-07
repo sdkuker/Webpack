@@ -23,6 +23,7 @@ import { StaticCapitalDataProvider } from './capital/StaticCapitalDataProvider';
 import { GameCreator } from './GameCreator';
 import { IGameCreator } from './IGameCreator';
 import { myConfig } from './Config';
+import { EnvironmentName } from './PersistenceTypes';
 
 export class WarehouseManager  {
 
@@ -36,10 +37,17 @@ export class WarehouseManager  {
 
     constructor() {
 
+        let myEnvironment = EnvironmentName.Prod;
+        if (myConfig.environment === 'TEST') {
+            myEnvironment = EnvironmentName.Test;
+        } else {
+            myEnvironment = EnvironmentName.UnitTest
+        }
+        
         if (myConfig.gameWarehouseDataProvider === 'static') {
             this.gameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
         } else {
-            this.gameWarehouse = new GameWarehouse(new FirebaseGameDataProvider(null));
+            this.gameWarehouse = new GameWarehouse(new FirebaseGameDataProvider(myEnvironment));
         }
 
         if (myConfig.turnWarehouseDataProvider === 'static') {
