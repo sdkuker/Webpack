@@ -70,7 +70,8 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
                     }
                 }
                 if (gameToUpdate) {
-                    let gameRef = db.collection(self.environmentName).doc('games').collection('allGames').doc(gameToUpdate.id);
+                    let gameRef = db.collection(self.environmentName).doc('games').collection('allGames')
+                        .doc(gameToUpdate.id);
                     gameRef.update({
                         name: aGame.name
                     }).then(() => {
@@ -94,7 +95,7 @@ export class FirebaseGameDataProvider implements IGameDataProvider {
     deleteGame = (aGame: Game) => {
 
         let self = this;
-        
+
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
             db.collection(self.environmentName).doc('games').collection('allGames').doc(aGame.id).delete().then(() => {

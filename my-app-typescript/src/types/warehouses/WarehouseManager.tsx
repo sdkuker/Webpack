@@ -41,7 +41,7 @@ export class WarehouseManager  {
         if (myConfig.environment === 'TEST') {
             myEnvironment = EnvironmentName.Test;
         } else {
-            myEnvironment = EnvironmentName.UnitTest
+            myEnvironment = EnvironmentName.UnitTest;
         }
         
         if (myConfig.gameWarehouseDataProvider === 'static') {

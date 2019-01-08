@@ -111,9 +111,9 @@ it('Create initial moves for a turn', () => {
 
     expect.assertions(1);
 
-    const location1 = new Location('1', '1');
+    const location1 = new Location('myPlace', '1', '1');
     const piece1 = new Piece(null, turn1Spring, 'England', location1, 'London', PieceTypes.Army);
-    const location2 = new Location('2', '2');
+    const location2 = new Location('yourPlace', '2', '2');
     const piece2 = new Piece(null, turn1Spring, 'France', location2, 'Paris', PieceTypes.Fleet);
     const pieces = new Array<Piece>();
     pieces.push(piece1);
