@@ -3,7 +3,6 @@ import { Piece } from './Piece';
 import { Turn } from '../turn/Turn';
 import { Game } from '../game/Game';
 import { observable } from 'mobx';
-import { Location } from '../location/Location';
 
 export class StaticPieceDataProvider implements IPieceDataProvider {
 
@@ -46,13 +45,13 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
         }
     }
 
-    createPiece = ( forGame: Game, forTurn: Turn, theLocation: Location, theLocationName: string,
+    createPiece = ( forGame: Game, forTurn: Turn, theLocationName: string,
                     countryName: string, type: string) => {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
             this.nextAvailablePieceKey++;
             const thePiece = new Piece( this.nextAvailablePieceKey.toString(), forTurn, countryName,
-                                        theLocation, theLocationName, type);
+                                        theLocationName, type);
             this.adjustCacheForTurn(forTurn);
             // @ts-ignore
             this.allPieces.get(forGame.id).get(forTurn.id).push(thePiece);

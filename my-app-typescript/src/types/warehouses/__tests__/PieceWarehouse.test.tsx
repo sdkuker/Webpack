@@ -33,20 +33,19 @@ it('the array should be created, but it should have nothing in it', () => {
 
 it('pieces added should be returned', () => {
 
-    expect.assertions(10);
+    expect.assertions(9);
     // @ts-ignore
     return myPieceWarehouse.getPieces(turnGame1Spring).then((pieces) => {
         expect(pieces).not.toBeNull();
         expect(pieces.length).toEqual(0);
         let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
         if (londonLocation) {
-            return myPieceWarehouse.createPiece(game1, turnGame1Spring, londonLocation, 'London', 'England', 'FLEET').then((newPiece) => {
+            return myPieceWarehouse.createPiece(game1, turnGame1Spring, 'London', 'England', 'FLEET').then((newPiece) => {
                 expect(newPiece).not.toBeNull();
                 return myPieceWarehouse.getPieces(turnGame1Spring).then((newPieces) => {
                     expect(newPieces.length).toEqual(1);
                     let myPiece = newPieces[0];
                     expect(myPiece.id).toEqual('1');
-                    expect(myPiece.location).toEqual(londonLocation);
                     expect(myPiece.locationName).toEqual('London');
                     expect(myPiece.owningCountryName).toEqual('England');
                     expect(myPiece.turn.id).toEqual('1');
@@ -69,7 +68,7 @@ it('deleting pieces', () => {
             expect(fallPieces.length).toEqual(0);
             let londonLocation = LocationWarehouse.locations.get('London' + LocationTypes.Piece);
             if (londonLocation) {
-                return myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET').then((newPiece1) => {
+                return myPieceWarehouse.createPiece(game1, turnGame1Fall, 'London', 'England', 'FLEET').then((newPiece1) => {
                     expect(newPiece1).not.toBeNull();
                     // @ts-ignore
                     return myPieceWarehouse.createPiece(game1, turnGame1Fall, londonLocation, 'London', 'England', 'FLEET').then((newPiece2) => {
