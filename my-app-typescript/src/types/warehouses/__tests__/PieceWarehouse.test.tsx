@@ -48,7 +48,7 @@ it('pieces added should be returned', () => {
                     expect(myPiece.id).toEqual('1');
                     expect(myPiece.locationName).toEqual('London');
                     expect(myPiece.owningCountryName).toEqual('England');
-                    expect(myPiece.turn.id).toEqual('1');
+                    expect(myPiece.turnId).toEqual('1');
                     expect(myPiece.type).toEqual(PieceTypes.Fleet);
                 })
             })
