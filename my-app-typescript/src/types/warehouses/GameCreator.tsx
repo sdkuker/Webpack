@@ -148,7 +148,6 @@ export class GameCreator implements IGameCreator {
                     pieceType: string) => {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
-            //const myLocation = this.findLocation(locationName);
                 this.pieceWarehouse.createPiece(theNewGame, initialTurn,
                     locationName, countryName, pieceType).then((newPiece) => {
                         resolve(newPiece);

@@ -4,7 +4,7 @@ import { Turn } from './Turn';
 import { SeasonTypes, TurnStatus } from '../DomainTypes';
 import { EnvironmentName } from '../PersistenceTypes';
 
-export class FirebaseTurnDataProvider {
+export class FirebaseTurnDataProvider implements ITurnDataProvider {
 
     environmentName: EnvironmentName;
 
@@ -83,7 +83,7 @@ export class FirebaseTurnDataProvider {
             db.collection(self.environmentName).doc('turns').collection('allTurns').doc(aTurn.id).delete().then(() => {
                 resolve(true);
             }).catch((error) => {
-                reject('unable to update the turn ' + error);
+                reject('unable to delete the turn ' + error);
             });
         });
 
@@ -106,7 +106,7 @@ export class FirebaseTurnDataProvider {
                     resolve(null);
                 }
             }).catch((error) => {
-                reject('unable to update the turn ' + error);
+                reject('unable to get turn with ID: ' + aTurnId + ' ' + error);
             });
         });
 
