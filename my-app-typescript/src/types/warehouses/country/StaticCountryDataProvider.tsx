@@ -12,32 +12,18 @@ export class StaticCountryDataProvider implements ICountryDataProvider {
         }
     }
 
-    initializeCountries = (forGameId: string) => {
+    addCountry = (countryName: string, playerName: string, forGameId: string) => {
 
-        let myPromise = new Promise<boolean>((resolve, reject) => {
+        let myPromise = new Promise<Country>((resolve, reject) => {
 
-            let wasSuccessfull = true;
+            this.nextAvailableCountryId++
+            let theReturn = new Country(this.nextAvailableCountryId.toString(), countryName, playerName, forGameId);
+            if (! this.allCountries[forGameId]) {
+                this.allCountries[forGameId] = new Array<Country>();
+            }
+            this.allCountries[forGameId].push(theReturn);
 
-            let myArray = new Array<Country>();
-
-            this.nextAvailableCountryId++;
-            myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Austria', 'Beth', forGameId));
-            this.nextAvailableCountryId++;
-            myArray.push(new Country(this.nextAvailableCountryId.toString(), 'England', 'Michelle', forGameId));
-            this.nextAvailableCountryId++;
-            myArray.push(new Country(this.nextAvailableCountryId.toString(), 'France', 'Marie', forGameId));
-            this.nextAvailableCountryId++;
-            myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Germany', 'Steve', forGameId));
-            this.nextAvailableCountryId++;
-            myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Russia', 'Kurtis', forGameId));
-            this.nextAvailableCountryId++;
-            myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Turkey', 'Alex', forGameId));
-            this.nextAvailableCountryId++;
-            myArray.push(new Country(this.nextAvailableCountryId.toString(), 'Italy', 'Hootie', forGameId));
-
-            this.allCountries[forGameId] = myArray;
-
-            resolve(wasSuccessfull);
+            resolve(theReturn);
         });
 
         return myPromise;

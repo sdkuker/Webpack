@@ -15,7 +15,25 @@ export class CountryWarehouse implements ICountryWarehouse {
 
     initializeCountries = (forGameId: string) => {
 
-        return this.myDataProvider.initializeCountries(forGameId);
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+
+            let myPromiseArray = new Array<Promise<Country>>();
+            myPromiseArray.push(this.myDataProvider.addCountry('Austria', 'Beth', forGameId));
+            myPromiseArray.push(this.myDataProvider.addCountry('England', 'Michelle', forGameId));
+            myPromiseArray.push(this.myDataProvider.addCountry('France', 'Marie', forGameId));
+            myPromiseArray.push(this.myDataProvider.addCountry('Germany', 'Steve', forGameId));
+            myPromiseArray.push(this.myDataProvider.addCountry('Russia', 'Kurtis', forGameId));
+            myPromiseArray.push(this.myDataProvider.addCountry('Turkey', 'Alex', forGameId));
+            myPromiseArray.push(this.myDataProvider.addCountry('Italy', 'Hootie', forGameId));
+
+            Promise.all(myPromiseArray).then((arrayOfCountries) => {
+                resolve(true);
+            }).catch((error) => {
+                reject('unable to initialize countries: ' + error);
+            });
+        });
+
+        return myPromise;
     }
 
     getCountryByName = (aCountryName: String, forGameId: string) => {
