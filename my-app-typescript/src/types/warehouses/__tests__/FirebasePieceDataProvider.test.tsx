@@ -80,6 +80,8 @@ it('getting pieces for a turn', () => {
                         arrayOfPiecesToDelete.push(turn2Piece2);
                         return myProvider.deletePieces(arrayOfPiecesToDelete).then((werePiecesDeleted) => {
                             expect(werePiecesDeleted).toBeTruthy();
+                        }).catch((error) => {
+                            expect(error).toBeNull();
                         })
                     }).catch((error) => {
                         expect(error).toBeNull();

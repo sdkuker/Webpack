@@ -5,4 +5,5 @@ export interface ICountryDataProvider {
     updatePlayerNameForCountry(forGameId: string, aCountry: Country, newPlayerName: string) : Promise<boolean>;
     deleteCountries(forGameId: string) : Promise<boolean>;
     addCountry(countryName: string, playerName: string, forGameId: string) : Promise<Country>;
+    getCountry(forGameId: string, countryId: string) : Promise<Country | null>;
 } 

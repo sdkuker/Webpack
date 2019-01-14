@@ -12,11 +12,32 @@ export class StaticCountryDataProvider implements ICountryDataProvider {
         }
     }
 
+    getCountry = (forGameId: string, aCountryId: string) => {
+
+        let self = this;
+
+        let myPromise = new Promise<Country | null >((resolve, reject) => {
+
+            if (self.allCountries[forGameId]) {
+                let selectedCountry: Country | null = null;
+                self.allCountries[forGameId].forEach((aCountry: Country) => {
+                    if (aCountry.id === aCountryId) {
+                        selectedCountry = aCountry;
+                    }
+                });
+                resolve(selectedCountry);
+            }
+            resolve(null);
+        });
+
+        return myPromise;
+    }
+
     addCountry = (countryName: string, playerName: string, forGameId: string) => {
 
         let myPromise = new Promise<Country>((resolve, reject) => {
 
-            this.nextAvailableCountryId++
+            this.nextAvailableCountryId++;
             let theReturn = new Country(this.nextAvailableCountryId.toString(), countryName, playerName, forGameId);
             if (! this.allCountries[forGameId]) {
                 this.allCountries[forGameId] = new Array<Country>();
