@@ -49,7 +49,7 @@ export class StaticCapitalDataProvider implements ICapitalDataProvider {
 
     }
 
-    createCapital = (aTurnId: string, capitalName: string, forCountryName: string) => {
+    createCapital = (aTurnId: string, locationName: string, forCountryName: string) => {
 
         let myPromise = new Promise<Capital>((resolve, reject) => {
 
@@ -57,19 +57,13 @@ export class StaticCapitalDataProvider implements ICapitalDataProvider {
                 this.allCapitals.set(aTurnId, new Map<string, Capital>());
             }
 
-            const capitalKey: string = capitalName + LocationTypes.Capital;
-            const theLocation: Location | undefined = this.allLocations.get(capitalKey);
-
-            if (theLocation) {
-                this.nextAvailableCapitalId++;
-                const theCapital = new Capital(this.nextAvailableCapitalId.toString(), capitalName,
-                    forCountryName, theLocation);
-                // @ts-ignore
-                this.allCapitals.get(aTurnId).set(capitalKey, theCapital);
-                resolve(theCapital);
-            } else {
-                reject('unable to find a location for the capital');
-            }
+            const capitalKey: string = locationName + LocationTypes.Capital;
+            this.nextAvailableCapitalId++;
+            const theCapital = new Capital(this.nextAvailableCapitalId.toString(),
+                forCountryName, locationName);
+            // @ts-ignore
+            this.allCapitals.get(aTurnId).set(capitalKey, theCapital);
+            resolve(theCapital);
         });
 
         return myPromise;

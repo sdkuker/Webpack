@@ -18,10 +18,10 @@ class MapBuilder extends React.Component<PropValues, {}> {
         super(props);
     }
 
-    findLocation = (locationName: string) => {
+    findLocation = (locationName: string, aLocationType: LocationTypes) => {
 
         const myLocations = LocationWarehouse.locations;
-        const locationKey: string = locationName + LocationTypes.Piece;
+        const locationKey: string = locationName + aLocationType;
 
         let locationToReturn = myLocations.get(locationKey);
 
@@ -36,14 +36,14 @@ class MapBuilder extends React.Component<PropValues, {}> {
     render() {
         // tslint:disable-next-line
         let theReturn: any = [];
-        this.props.capitals.forEach((value: Capital, myKey: string) => {
+        this.props.capitals.forEach((aCapital: Capital, myKey: string) => {
             theReturn.push(
                 <circle
                     key={myKey}
                     r="4"
-                    cx={value.location.x}
-                    cy={value.location.y}
-                    className={value.owningCountry}
+                    cx={this.findLocation(aCapital.locationName, LocationTypes.Capital).x}
+                    cy={this.findLocation(aCapital.locationName, LocationTypes.Capital).y}
+                    className={aCapital.owningCountry}
                 />);
         });
 
@@ -55,8 +55,9 @@ class MapBuilder extends React.Component<PropValues, {}> {
                         <g
                             key={anIndex}
                             className={aPiece.owningCountryName}
-                            transform={'translate(' + this.findLocation(aPiece.locationName).x + ', ' + 
-                                this.findLocation(aPiece.locationName).y + ')'}
+                            transform={'translate(' + 
+                                this.findLocation(aPiece.locationName, LocationTypes.Piece).x + ', ' + 
+                                this.findLocation(aPiece.locationName, LocationTypes.Piece).y + ')'}
                         >
                             <polygon key={anIndex + 'a'} points="-2,-3 10,-3 -2,-13" />
                             <polygon key={anIndex + 'b'} points="-12,-1 -6,5 6,5 12,-1" />
@@ -66,8 +67,9 @@ class MapBuilder extends React.Component<PropValues, {}> {
                         <g
                             key={anIndex}
                             className={aPiece.owningCountryName}
-                            transform={'translate(' + this.findLocation(aPiece.locationName).x + ', ' + 
-                                this.findLocation(aPiece.locationName).y + ')'}
+                            transform={'translate(' + 
+                                this.findLocation(aPiece.locationName, LocationTypes.Piece).x + ', ' + 
+                                this.findLocation(aPiece.locationName, LocationTypes.Piece).y + ')'}
                         >
                             <path key={anIndex + 'a'} d="M9,-6 L2,0 M9,6 L0,0" />
                             <path key={anIndex + 'b'} d="M-11,-6 v4 h17 a2,2 0,0 0 0,-4z" />
