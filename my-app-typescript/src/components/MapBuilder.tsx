@@ -43,7 +43,7 @@ class MapBuilder extends React.Component<PropValues, {}> {
                     r="4"
                     cx={this.findLocation(aCapital.locationName, LocationTypes.Capital).x}
                     cy={this.findLocation(aCapital.locationName, LocationTypes.Capital).y}
-                    className={aCapital.owningCountry}
+                    className={aCapital.owningCountryName}
                 />);
         });
 

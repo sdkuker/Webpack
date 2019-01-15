@@ -1,7 +1,6 @@
 import { ICapitalDataProvider } from './ICapitalDataProvider';
 import { Capital } from './Capital';
 import { Warehouse as LocationWarehouse } from '../location/LocationWarehouse';
-import { Location } from '../location/Location';
 import { LocationTypes } from '../DomainTypes';
 
 export class StaticCapitalDataProvider implements ICapitalDataProvider {
@@ -33,13 +32,26 @@ export class StaticCapitalDataProvider implements ICapitalDataProvider {
         return myPromise;
     }
 
-    deleteCapitals = (aTurnId: string) => {
+    deleteCapital = (aCapital: Capital) => {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
-            if (this.allCapitals.get(aTurnId)) {
-                this.allCapitals.set(aTurnId, new Map<string, Capital>());
-                resolve(true);
+            if (this.allCapitals.get(aCapital.turnId)) {
+                let capitalToDelete: Capital | null;
+                // @ts-ignore
+                this.allCapitals.get(aCapital.turnId).forEach((loopCapital: Capital) => {
+                    if (loopCapital.id === aCapital.id) {
+                        capitalToDelete = loopCapital;
+                    }
+                });
+                // @ts-ignore
+                if (capitalToDelete) {
+                    // @ts-ignore
+                    this.allCapitals.get(aCapital.turnId).delete(capitalToDelete.locationName + LocationTypes.Capital);
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
             } else {
                 resolve(false);
             }
@@ -60,7 +72,7 @@ export class StaticCapitalDataProvider implements ICapitalDataProvider {
             const capitalKey: string = locationName + LocationTypes.Capital;
             this.nextAvailableCapitalId++;
             const theCapital = new Capital(this.nextAvailableCapitalId.toString(),
-                forCountryName, locationName);
+                forCountryName, locationName, aTurnId);
             // @ts-ignore
             this.allCapitals.get(aTurnId).set(capitalKey, theCapital);
             resolve(theCapital);

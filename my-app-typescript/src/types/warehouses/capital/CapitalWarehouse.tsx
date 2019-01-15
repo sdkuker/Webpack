@@ -24,14 +24,21 @@ export class CapitalWarehouse implements ICapitalWarehouse {
         return myPromise;
     }
 
-    deleteCapitals = (aTurnId: string) => {
+    deleteCapitals = (forTurnId: string) => {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
-
-            this.myDataProvider.deleteCapitals(aTurnId).then((wereCapitalsDeleted) => {
-                resolve(wereCapitalsDeleted);
+            let arrayofPromises = new Array<Promise<boolean>>();
+            this.myDataProvider.getCapitals(forTurnId).then((mapOfCapitalsToDelete) => {
+                mapOfCapitalsToDelete.forEach((aCapital: Capital, key: string) => {
+                    arrayofPromises.push(this.myDataProvider.deleteCapital(aCapital));
+                });
+                Promise.all(arrayofPromises).then((arrayOfBooleans) => {
+                    resolve(true);
+                }).catch((error) => {
+                    reject('unable to delete all the capitals: ' + error);
+                });
             }).catch((error) => {
-                reject('unable to delete capitals ' + error);
+                reject('unable to get capitals to delete' + error);
             });
         });
 

@@ -45,18 +45,16 @@ export class PieceWarehouse implements IPieceWarehouse {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
             this.dataProvider.getPieces(forTurn).then((arrayOfPieces) => {
-                let allPiecesDeleted = true;
+                let arrayofPromises = new Array<Promise<boolean>>();
                 let index = arrayOfPieces.length;
                 while (index--) {
-                    this.dataProvider.deletePiece(arrayOfPieces[index]).then((wasPieceDeleted) => {
-                        if (!wasPieceDeleted) {
-                            allPiecesDeleted = false;
-                        }
-                    }).catch((error) => {
-                        reject('unable to delete a piece' + error);
-                    });
+                    arrayofPromises.push(this.dataProvider.deletePiece(arrayOfPieces[index]));
                 }
-                resolve(allPiecesDeleted);
+                Promise.all(arrayofPromises).then((arrayOfBooleans) => {
+                    resolve(true);
+                }).catch((error) => {
+                    reject('unable to delete all the pieces: ' + error);
+                });
             }).catch((error) => {
                 reject('unable to get pieces to delete' + error);
             });
