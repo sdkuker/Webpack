@@ -1,5 +1,4 @@
 import { FirebaseCountryDataProvider } from '../country/FirebaseCountryDataProvider';
-import { Country } from '../country/Country';
 import { EnvironmentName } from '../PersistenceTypes';
 
 it('create and retrieve a country', () => {

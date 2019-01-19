@@ -53,7 +53,7 @@ it('getting pieces for a capital', () => {
     const capital3OwningCountryName = 'Turkey';
     const capital3LocationName = 'Constantiniple';
 
-    expect.assertions(10);
+    expect.assertions(11);
 
     let myProvider = new FirebaseCapitalDataProvider(EnvironmentName.UnitTest);
     expect(myProvider).not.toBeNull();
@@ -64,13 +64,15 @@ it('getting pieces for a capital', () => {
             expect(newCapital2).not.toBeNull();
             return myProvider.createCapital(turn2Id, capital3LocationName, capital3OwningCountryName).then((newCapital3) => {
                 expect(newCapital3).not.toBeNull();
-                return myProvider.getCapitals(turn1Id).then((arrayOfCapitals) => {
-                    expect(arrayOfCapitals).not.toBeNull();
-                    expect(arrayOfCapitals.length).toEqual(1);
-                    expect(arrayOfCapitals[0].id).toEqual(newCapital1.id);
-                    return myProvider.getCapitals(turn2Id).then((arrayOfCapitals2) => {
-                        expect(arrayOfCapitals2).not.toBeNull();
-                        expect(arrayOfCapitals2.length).toEqual(2);
+                return myProvider.getCapitals(turn1Id).then((mapOfCapitals) => {
+                    expect(mapOfCapitals).not.toBeNull();
+                    expect(mapOfCapitals.size).toEqual(1);
+                    expect(mapOfCapitals.get(newCapital1.locationName)).not.toBeNull();
+                    // @ts-ignore
+                    expect(mapOfCapitals.get(newCapital1.locationName).id).toEqual(newCapital1.id);
+                    return myProvider.getCapitals(turn2Id).then((mapOfCapitals2) => {
+                        expect(mapOfCapitals2).not.toBeNull();
+                        expect(mapOfCapitals2.size).toEqual(2);
                         const arrayOfCapitalsToDelete = new Array<Capital>();
                         arrayOfCapitalsToDelete.push(newCapital1);
                         arrayOfCapitalsToDelete.push(newCapital2);

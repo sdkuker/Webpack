@@ -3,7 +3,7 @@ import { ICapitalDataProvider } from './ICapitalDataProvider';
 import { Capital } from './Capital';
 import { EnvironmentName } from '../PersistenceTypes';
 
-export class FirebaseCapitalDataProvider {
+export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
 
     environmentName: EnvironmentName;
 
@@ -94,13 +94,14 @@ export class FirebaseCapitalDataProvider {
 
         let self = this;
 
-        let myPromise = new Promise<Array<Capital>>((resolve, reject) => {
+        let myPromise = new Promise<Map<string, Capital>>((resolve, reject) => {
             db.collection(self.environmentName).doc('capitals').collection('allCapitals').where('turnId', '==', forTurnId).get().then((querySnapshot) => {
-                let myArray = new Array<Capital>();
+
+                let myMap = new Map<string, Capital>();
                 querySnapshot.forEach((doc) => {
-                    myArray.push(new Capital(doc.id, doc.data().owningCountryName, doc.data().locationName, doc.data().turnId));
+                    myMap.set(doc.data().locationName,  new Capital(doc.id, doc.data().owningCountryName, doc.data().locationName, doc.data().turnId));
                 });
-                resolve(myArray);
+                resolve(myMap);
             }).catch((error) => {
                 reject('error getting capitals: ' + error);
             });
