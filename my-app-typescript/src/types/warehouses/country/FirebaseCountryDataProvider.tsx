@@ -3,7 +3,7 @@ import { ICountryDataProvider } from './ICountryDataProvider';
 import { Country } from './Country';
 import { EnvironmentName } from '../PersistenceTypes';
 
-export class FirebaseCountryDataProvider {
+export class FirebaseCountryDataProvider implements ICountryDataProvider {
 
     environmentName: EnvironmentName;
 

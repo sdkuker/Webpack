@@ -3,9 +3,10 @@ import { IMoveDataProvider } from './IMoveDataProvider';
 import { Move } from './Move';
 import { EnvironmentName } from '../PersistenceTypes';
 
-export class FirebaseMoveDataProvider {
+export class FirebaseMoveDataProvider implements IMoveDataProvider {
 
     environmentName: EnvironmentName;
+    nextAvailableMoveKey: number = 0;
 
     constructor(anEnviornmentName: EnvironmentName) {
         this.environmentName = anEnviornmentName;
@@ -125,6 +126,17 @@ export class FirebaseMoveDataProvider {
             }).catch((error) => {
                 reject('error updating a move: ' + error);
             });
+        });
+
+        return myPromise;
+    }
+
+    createNonPersistentMove = (aCountryName: string, aTurnId: string, aGameId: string,
+        aNonPersistentMoveOrder: string) => {
+
+        let myPromise = new Promise<Move>((resolve, reject) => {
+            resolve(new Move(aTurnId + this.nextAvailableMoveKey++, aNonPersistentMoveOrder,
+                aCountryName, aTurnId, aGameId));
         });
 
         return myPromise;

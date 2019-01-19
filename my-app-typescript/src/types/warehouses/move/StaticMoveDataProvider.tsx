@@ -102,7 +102,6 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
         return myPromise;
     }
 
-    @action
     createNonPersistentMove = ( aCountryName: string, aTurnId: string, aGameId: string,
                                 aNonPersistentMoveOrder: string) => {
 
