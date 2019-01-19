@@ -39,11 +39,12 @@ export class FirebaseCountryDataProvider implements ICountryDataProvider {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('countries').collection('allCountries').doc(aCountry.id).delete().then(() => {
-                resolve(true);
-            }).catch((error) => {
-                reject('unable to delete the country ' + error);
-            });
+            db.collection(self.environmentName).doc('countries').collection('allCountries')
+                .doc(aCountry.id).delete().then(() => {
+                    resolve(true);
+                }).catch((error) => {
+                    reject('unable to delete the country ' + error);
+                });
         });
 
         return myPromise;
@@ -64,33 +65,34 @@ export class FirebaseCountryDataProvider implements ICountryDataProvider {
                     resolve(true);
                 }).catch((error) => {
                     reject('unable to delete some or all of the countries: ' + error);
-                })
+                });
             }).catch((error) => {
                 reject('unable to get the countries for the game to delete: ' + error);
-            })
+            });
         });
 
         return myPromise;
     }
 
-    getCountry = (aGameId: string,aCountryId: string) => {
+    getCountry = (aGameId: string, aCountryId: string) => {
 
         let self = this;
 
         let myPromise = new Promise<Country | null>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('countries').collection('allCountries').doc(aCountryId).get().then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    // @ts-ignore
-                    resolve(new Country(aCountryId, documentSnapshot.data().name, documentSnapshot.data().playerName,
+            db.collection(self.environmentName).doc('countries').collection('allCountries')
+                .doc(aCountryId).get().then((documentSnapshot) => {
+                    if (documentSnapshot.exists) {
                         // @ts-ignore
-                        documentSnapshot.data().gameId));
-                } else {
-                    resolve(null);
-                }
-            }).catch((error) => {
-                reject('unable to get a country for ID:  ' + aCountryId + ' ' + error);
-            });
+                        resolve(new Country(aCountryId, documentSnapshot.data().name,
+                            // @ts-ignore
+                            documentSnapshot.data().playerName, documentSnapshot.data().gameId));
+                    } else {
+                        resolve(null);
+                    }
+                }).catch((error) => {
+                    reject('unable to get a country for ID:  ' + aCountryId + ' ' + error);
+                });
         });
 
         return myPromise;
@@ -101,15 +103,16 @@ export class FirebaseCountryDataProvider implements ICountryDataProvider {
         let self = this;
 
         let myPromise = new Promise<Array<Country>>((resolve, reject) => {
-            db.collection(self.environmentName).doc('countries').collection('allCountries').where('gameId', '==', forGameId).get().then((querySnapshot) => {
-                let myArray = new Array<Country>();
-                querySnapshot.forEach((doc) => {
-                    myArray.push(new Country(doc.id, doc.data().name, doc.data().playerName, doc.data().gameId));
+            db.collection(self.environmentName).doc('countries').collection('allCountries')
+                .where('gameId', '==', forGameId).get().then((querySnapshot) => {
+                    let myArray = new Array<Country>();
+                    querySnapshot.forEach((doc) => {
+                        myArray.push(new Country(doc.id, doc.data().name, doc.data().playerName, doc.data().gameId));
+                    });
+                    resolve(myArray);
+                }).catch((error) => {
+                    reject('error getting countries: ' + error);
                 });
-                resolve(myArray);
-            }).catch((error) => {
-                reject('error getting countries: ' + error);
-            });
         });
 
         return myPromise;
@@ -131,7 +134,7 @@ export class FirebaseCountryDataProvider implements ICountryDataProvider {
                 if (countryToUpdate) {
                     let countryRef = db.collection(self.environmentName).doc('countries').collection('allCountries')
                         .doc(countryToUpdate.id);
-                        countryRef.update({
+                    countryRef.update({
                         playerName: newPlayerName
                     }).then(() => {
                         // @ts-ignore

@@ -34,23 +34,27 @@ export class FirebaseMoveDataProvider implements IMoveDataProvider {
         return myPromise;
     }
 
-
     getMove = (aMoveId: string) => {
 
         let self = this;
 
         let myPromise = new Promise<Move | null>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('moves').collection('allMoves').doc(aMoveId).get().then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    // @ts-ignore
-                    resolve(new Move(aMoveId, documentSnapshot.data().order, documentSnapshot.data().owningCountryName, documentSnapshot.data().turnId, documentSnapshot.data().gameId));
-                } else {
-                    resolve(null);
-                }
-            }).catch((error) => {
-                reject('unable to get a move for ID:  ' + aMoveId + ' ' + error);
-            });
+            db.collection(self.environmentName).doc('moves').collection('allMoves')
+                .doc(aMoveId).get().then((documentSnapshot) => {
+                    if (documentSnapshot.exists) {
+                        // @ts-ignore
+                        resolve(new Move(aMoveId, documentSnapshot.data().order,
+                            // @ts-ignore
+                            documentSnapshot.data().owningCountryName, documentSnapshot.data().turnId,
+                            // @ts-ignore
+                            documentSnapshot.data().gameId));
+                    } else {
+                        resolve(null);
+                    }
+                }).catch((error) => {
+                    reject('unable to get a move for ID:  ' + aMoveId + ' ' + error);
+                });
         });
 
         return myPromise;
@@ -96,15 +100,17 @@ export class FirebaseMoveDataProvider implements IMoveDataProvider {
         let self = this;
 
         let myPromise = new Promise<Array<Move>>((resolve, reject) => {
-            db.collection(self.environmentName).doc('moves').collection('allMoves').where('turnId', '==', aTurnId).get().then((querySnapshot) => {
-                let myArray = new Array<Move>();
-                querySnapshot.forEach((doc) => {
-                    myArray.push(new Move(doc.id, doc.data().order, doc.data().owningCountryName, doc.data().turnId, doc.data().gameId));
+            db.collection(self.environmentName).doc('moves').collection('allMoves')
+                .where('turnId', '==', aTurnId).get().then((querySnapshot) => {
+                    let myArray = new Array<Move>();
+                    querySnapshot.forEach((doc) => {
+                        myArray.push(new Move(doc.id, doc.data().order, doc.data().owningCountryName, 
+                        doc.data().turnId, doc.data().gameId));
+                    });
+                    resolve(myArray);
+                }).catch((error) => {
+                    reject('error getting moves: ' + error);
                 });
-                resolve(myArray);
-            }).catch((error) => {
-                reject('error getting moves: ' + error);
-            });
         });
 
         return myPromise;

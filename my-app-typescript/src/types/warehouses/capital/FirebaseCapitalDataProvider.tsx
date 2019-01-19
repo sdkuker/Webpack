@@ -38,18 +38,19 @@ export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
 
         let myPromise = new Promise<Capital | null>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('capitals').collection('allCapitals').doc(aCapitalId).get().then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    // @ts-ignore
-                    resolve(new Capital(aCapitalId, documentSnapshot.data().owningCountryName, documentSnapshot.data().locationName,
+            db.collection(self.environmentName).doc('capitals').collection('allCapitals')
+                .doc(aCapitalId).get().then((documentSnapshot) => {
+                    if (documentSnapshot.exists) {
                         // @ts-ignore
-                        documentSnapshot.data().turnId));
-                } else {
-                    resolve(null);
-                }
-            }).catch((error) => {
-                reject('unable to get a capital for ID:  ' + aCapitalId + ' ' + error);
-            });
+                        resolve(new Capital(aCapitalId, documentSnapshot.data().owningCountryName,
+                            // @ts-ignore
+                            documentSnapshot.data().locationName, documentSnapshot.data().turnId));
+                    } else {
+                        resolve(null);
+                    }
+                }).catch((error) => {
+                    reject('unable to get a capital for ID:  ' + aCapitalId + ' ' + error);
+                });
         });
 
         return myPromise;
@@ -61,11 +62,12 @@ export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('capitals').collection('allCapitals').doc(aCapital.id).delete().then(() => {
-                resolve(true);
-            }).catch((error) => {
-                reject('unable to delete the capital ' + error);
-            });
+            db.collection(self.environmentName).doc('capitals').collection('allCapitals')
+                .doc(aCapital.id).delete().then(() => {
+                    resolve(true);
+                }).catch((error) => {
+                    reject('unable to delete the capital ' + error);
+                });
         });
 
         return myPromise;
@@ -95,16 +97,18 @@ export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
         let self = this;
 
         let myPromise = new Promise<Map<string, Capital>>((resolve, reject) => {
-            db.collection(self.environmentName).doc('capitals').collection('allCapitals').where('turnId', '==', forTurnId).get().then((querySnapshot) => {
+            db.collection(self.environmentName).doc('capitals').collection('allCapitals')
+                .where('turnId', '==', forTurnId).get().then((querySnapshot) => {
 
-                let myMap = new Map<string, Capital>();
-                querySnapshot.forEach((doc) => {
-                    myMap.set(doc.data().locationName,  new Capital(doc.id, doc.data().owningCountryName, doc.data().locationName, doc.data().turnId));
+                    let myMap = new Map<string, Capital>();
+                    querySnapshot.forEach((doc) => {
+                        myMap.set(doc.data().locationName, new Capital(doc.id, doc.data().owningCountryName,
+                            doc.data().locationName, doc.data().turnId));
+                    });
+                    resolve(myMap);
+                }).catch((error) => {
+                    reject('error getting capitals: ' + error);
                 });
-                resolve(myMap);
-            }).catch((error) => {
-                reject('error getting capitals: ' + error);
-            });
         });
 
         return myPromise;

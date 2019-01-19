@@ -39,15 +39,17 @@ export class FirebaseTurnDataProvider implements ITurnDataProvider {
         let self = this;
 
         let myPromise = new Promise<Array<Turn>>((resolve, reject) => {
-            db.collection(self.environmentName).doc('turns').collection('allTurns').where('gameId', '==', aGameId).get().then((querySnapshot) => {
-                let myArray = new Array<Turn>();
-                querySnapshot.forEach((doc) => {
-                    myArray.push(new Turn(doc.id, doc.data().gameId, doc.data().year, doc.data().season, doc.data().status));
+            db.collection(self.environmentName).doc('turns').collection('allTurns')
+                .where('gameId', '==', aGameId).get().then((querySnapshot) => {
+                    let myArray = new Array<Turn>();
+                    querySnapshot.forEach((doc) => {
+                        myArray.push(new Turn(doc.id, doc.data().gameId, doc.data().year, 
+                        doc.data().season, doc.data().status));
+                    });
+                    resolve(myArray);
+                }).catch((error) => {
+                    reject('error getting turns: ' + error);
                 });
-                resolve(myArray);
-            }).catch((error) => {
-                reject('error getting turns: ' + error);
-            });
         });
 
         return myPromise;
@@ -96,18 +98,19 @@ export class FirebaseTurnDataProvider implements ITurnDataProvider {
 
         let myPromise = new Promise<Turn | null>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('turns').collection('allTurns').doc(aTurnId).get().then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    // @ts-ignore
-                    resolve(new Turn(aTurnId, documentSnapshot.data().gameId, documentSnapshot.data().year,
+            db.collection(self.environmentName).doc('turns').collection('allTurns')
+                .doc(aTurnId).get().then((documentSnapshot) => {
+                    if (documentSnapshot.exists) {
                         // @ts-ignore
-                        documentSnapshot.data().season, documentSnapshot.data().status));
-                } else {
-                    resolve(null);
-                }
-            }).catch((error) => {
-                reject('unable to get turn with ID: ' + aTurnId + ' ' + error);
-            });
+                        resolve(new Turn(aTurnId, documentSnapshot.data().gameId, documentSnapshot.data().year,
+                            // @ts-ignore
+                            documentSnapshot.data().season, documentSnapshot.data().status));
+                    } else {
+                        resolve(null);
+                    }
+                }).catch((error) => {
+                    reject('unable to get turn with ID: ' + aTurnId + ' ' + error);
+                });
         });
 
         return myPromise;

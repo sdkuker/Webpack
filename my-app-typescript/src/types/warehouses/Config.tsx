@@ -1,10 +1,10 @@
 class Config {
-    gameWarehouseDataProvider = 'static';
-    turnWarehouseDataProvider = 'static';
-    countryWarehouseDataProvider = 'static';
-    moveWarehouseDataProvider = 'static';
-    pieceWarehouseDataProvider = 'static';
-    capitalWarehouseDataProvider = 'static';
+    gameWarehouseDataProvider = 'firebase';
+    turnWarehouseDataProvider = 'firebase';
+    countryWarehouseDataProvider = 'firebase';
+    moveWarehouseDataProvider = 'firebase';
+    pieceWarehouseDataProvider = 'firebase';
+    capitalWarehouseDataProvider = 'firebase';
     environment = 'TEST';
 }
 

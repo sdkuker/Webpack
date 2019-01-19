@@ -16,7 +16,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
     createPiece = (forGame: Game, forTurn: Turn, theLocationName: string,
         countryName: string, type: string) => {
 
-        let self = this;
+        let self = this; 
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
 
@@ -43,18 +43,21 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
 
         let myPromise = new Promise<Piece | null>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('pieces').collection('allPieces').doc(aPieceId).get().then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    // @ts-ignore
-                    resolve(new Piece(aPieceId, documentSnapshot.data().gameId, documentSnapshot.data().turnId,
+            db.collection(self.environmentName).doc('pieces').collection('allPieces')
+                .doc(aPieceId).get().then((documentSnapshot) => {
+                    if (documentSnapshot.exists) {
                         // @ts-ignore
-                        documentSnapshot.data().owningCountryName, documentSnapshot.data().locationName, documentSnapshot.data().type));
-                } else {
-                    resolve(null);
-                }
-            }).catch((error) => {
-                reject('unable to get a piece for ID:  ' + aPieceId + ' ' + error);
-            });
+                        resolve(new Piece(aPieceId, documentSnapshot.data().gameId, documentSnapshot.data().turnId,
+                            // @ts-ignore
+                            documentSnapshot.data().owningCountryName, documentSnapshot.data().locationName,
+                            // @ts-ignore
+                            documentSnapshot.data().type));
+                    } else {
+                        resolve(null);
+                    }
+                }).catch((error) => {
+                    reject('unable to get a piece for ID:  ' + aPieceId + ' ' + error);
+                });
         });
 
         return myPromise;
@@ -66,11 +69,12 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc('pieces').collection('allPieces').doc(aPiece.id).delete().then(() => {
-                resolve(true);
-            }).catch((error) => {
-                reject('unable to delete the piece ' + error);
-            });
+            db.collection(self.environmentName).doc('pieces').collection('allPieces')
+                .doc(aPiece.id).delete().then(() => {
+                    resolve(true);
+                }).catch((error) => {
+                    reject('unable to delete the piece ' + error);
+                });
         });
 
         return myPromise;
@@ -100,15 +104,17 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
         let self = this;
 
         let myPromise = new Promise<Array<Piece>>((resolve, reject) => {
-            db.collection(self.environmentName).doc('pieces').collection('allPieces').where('turnId', '==', forTurn.id).get().then((querySnapshot) => {
-                let myArray = new Array<Piece>();
-                querySnapshot.forEach((doc) => {
-                    myArray.push(new Piece(doc.id, doc.data().gameId, doc.data().turnId, doc.data().owningCountryName, doc.data().locationName, doc.data().type));
+            db.collection(self.environmentName).doc('pieces').collection('allPieces')
+                .where('turnId', '==', forTurn.id).get().then((querySnapshot) => {
+                    let myArray = new Array<Piece>();
+                    querySnapshot.forEach((doc) => {
+                        myArray.push(new Piece(doc.id, doc.data().gameId, doc.data().turnId,
+                            doc.data().owningCountryName, doc.data().locationName, doc.data().type));
+                    });
+                    resolve(myArray);
+                }).catch((error) => {
+                    reject('error getting pieces: ' + error);
                 });
-                resolve(myArray);
-            }).catch((error) => {
-                reject('error getting pieces: ' + error);
-            });
         });
 
         return myPromise;

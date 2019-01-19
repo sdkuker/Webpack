@@ -6,26 +6,31 @@ import { FirebaseGameDataProvider } from './game/FirebaseGameDataProvider';
 import { ITurnWarehouse } from './turn/ITurnWarehouse';
 import { TurnWarehouse } from './turn/TurnWarehouse';
 import { StaticTurnDataProvider } from './turn/StaticTurnDataProvider';
+import { FirebaseTurnDataProvider } from './turn/FirebaseTurnDataProvider';
 import { ICountryWarehouse } from './country/ICountryWarehouse';
 import { CountryWarehouse } from './country/CountryWarehouse';
 import { StaticCountryDataProvider } from './country/StaticCountryDataProvider';
+import { FirebaseCountryDataProvider } from './country/FirebaseCountryDataProvider';
 import { IMoveWarehouse } from './move/IMoveWarehouse';
 import { MoveWarehouse } from './move/MoveWarehouse';
 import { StaticMoveDataProvider } from './move/StaticMoveDataProvider';
+import { FirebaseMoveDataProvider } from './move/FirebaseMoveDataProvider';
 import { IPieceWarehouse } from './piece/IPieceWarehouse';
 import { PieceWarehouse } from './piece/PieceWarehouse';
 import { StaticPieceDataProvider } from './piece/StaticPieceDataProvider';
+import { FirebasePieceDataProvider } from './piece/FirebasePieceDataProvider';
 
 import { ICapitalWarehouse } from './capital/ICapitalWarehouse';
 import { CapitalWarehouse } from './capital/CapitalWarehouse';
 import { StaticCapitalDataProvider } from './capital/StaticCapitalDataProvider';
+import { FirebaseCapitalDataProvider } from './capital/FirebaseCapitalDataProvider';
 
 import { GameCreator } from './GameCreator';
 import { IGameCreator } from './IGameCreator';
 import { myConfig } from './Config';
 import { EnvironmentName } from './PersistenceTypes';
 
-export class WarehouseManager  {
+export class WarehouseManager {
 
     gameWarehouse: IGameWarehouse;
     turnWarehouse: ITurnWarehouse;
@@ -38,12 +43,16 @@ export class WarehouseManager  {
     constructor() {
 
         let myEnvironment = EnvironmentName.Prod;
-        if (myConfig.environment === 'TEST') {
-            myEnvironment = EnvironmentName.Test;
+        if (myConfig.environment === 'PROD') {
+            myEnvironment = EnvironmentName.Prod;
         } else {
-            myEnvironment = EnvironmentName.UnitTest;
+            if (myConfig.environment === 'TEST') {
+                myEnvironment = EnvironmentName.Test;
+            } else {
+                myEnvironment = EnvironmentName.UnitTest;
+            }
         }
-        
+
         if (myConfig.gameWarehouseDataProvider === 'static') {
             this.gameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
         } else {
@@ -53,35 +62,35 @@ export class WarehouseManager  {
         if (myConfig.turnWarehouseDataProvider === 'static') {
             this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
         } else {
-            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
+            this.turnWarehouse = new TurnWarehouse(new FirebaseTurnDataProvider(myEnvironment));
         }
 
         if (myConfig.countryWarehouseDataProvider === 'static') {
             this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
         } else {
-            this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
+            this.countryWarehouse = new CountryWarehouse(new FirebaseCountryDataProvider(myEnvironment), null);
         }
 
         if (myConfig.moveWarehouseDataProvider === 'static') {
             this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
         } else {
-            this.moveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
+            this.moveWarehouse = new MoveWarehouse(new FirebaseMoveDataProvider(myEnvironment));
         }
 
         if (myConfig.pieceWarehouseDataProvider === 'static') {
             this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
         } else {
-            this.pieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
+            this.pieceWarehouse = new PieceWarehouse(new FirebasePieceDataProvider(myEnvironment));
         }
 
         if (myConfig.capitalWarehouseDataProvider === 'static') {
             this.capitalWarehouse = new CapitalWarehouse(new StaticCapitalDataProvider(null, null));
         } else {
-            this.capitalWarehouse = new CapitalWarehouse(new StaticCapitalDataProvider(null, null));
+            this.capitalWarehouse = new CapitalWarehouse(new FirebaseCapitalDataProvider(myEnvironment));
         }
 
-        this.gameCreator = new GameCreator( this.gameWarehouse, this.turnWarehouse, 
-                                            this.pieceWarehouse, this.moveWarehouse,
-                                            this.countryWarehouse, this.capitalWarehouse);
+        this.gameCreator = new GameCreator(this.gameWarehouse, this.turnWarehouse,
+            this.pieceWarehouse, this.moveWarehouse,
+            this.countryWarehouse, this.capitalWarehouse);
     }
 }

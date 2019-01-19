@@ -1,6 +1,5 @@
 import { FirebaseCapitalDataProvider } from '../capital/FirebaseCapitalDataProvider';
 import { Capital } from '../capital/Capital';
-import { PieceTypes, SeasonTypes, TurnStatus } from '.././DomainTypes';
 import { EnvironmentName } from '../PersistenceTypes';
 
 it('create and retrieve a capital', () => {
