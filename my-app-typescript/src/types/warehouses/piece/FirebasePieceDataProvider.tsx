@@ -4,6 +4,7 @@ import { Piece } from './Piece';
 import { Game } from '../game/Game';
 import { Turn } from '../turn/Turn';
 import { EnvironmentName } from '../PersistenceTypes';
+import { PieceTypes } from '../DomainTypes';
 
 export class FirebasePieceDataProvider implements IPieceDataProvider {
 
@@ -14,7 +15,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
     }
 
     createPiece = (forGame: Game, forTurn: Turn, theLocationName: string,
-        countryName: string, type: string) => {
+        countryName: string, type: PieceTypes) => {
 
         let self = this; 
 

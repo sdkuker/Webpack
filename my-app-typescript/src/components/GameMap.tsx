@@ -397,7 +397,7 @@ closeModal() {
           <text x="272" y="292">Ber</text>
         </g>
         <g>
-        <title>Bohmeia</title>
+        <title>Bohemia</title>
           <polygon
               className="l" 
               points="281,356 276,346 268,343 264,329 266,325 278,326 288,321 

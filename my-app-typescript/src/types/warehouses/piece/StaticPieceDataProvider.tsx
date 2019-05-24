@@ -3,6 +3,7 @@ import { Piece } from './Piece';
 import { Turn } from '../turn/Turn';
 import { Game } from '../game/Game';
 import { observable } from 'mobx';
+import { PieceTypes } from '../DomainTypes';
 
 export class StaticPieceDataProvider implements IPieceDataProvider {
 
@@ -46,7 +47,7 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
     }
 
     createPiece = ( forGame: Game, forTurn: Turn, theLocationName: string,
-                    countryName: string, type: string) => {
+                    countryName: string, type: PieceTypes) => {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
             this.nextAvailablePieceKey++;

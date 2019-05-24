@@ -15,6 +15,7 @@ export class FirebaseMoveDataProvider implements IMoveDataProvider {
     createMove = (moveOrder: string, anOwningCountryName: string, aTurnId: string, aGameId: string) => {
 
         let self = this;
+        let tempMove = new Move(null, moveOrder, anOwningCountryName, aTurnId, aGameId);
 
         let myPromise = new Promise<Move>((resolve, reject) => {
 
@@ -22,7 +23,17 @@ export class FirebaseMoveDataProvider implements IMoveDataProvider {
                 order: moveOrder,
                 owningCountryName: anOwningCountryName,
                 turnId: aTurnId,
-                gameId: aGameId
+                gameId: aGameId,
+                pieceType: tempMove.pieceType,
+                currentLocationName: tempMove.currentLocationName,
+                action: tempMove.action,
+                endingLocationName: (tempMove.endingLocationName !== undefined) ? tempMove.endingLocationName : null,
+                secondaryPieceType: (tempMove.secondaryPieceType !== undefined) ? tempMove.secondaryPieceType : null,
+                secondaryCurrentLocationName: (tempMove.secondaryCurrentLocationName !== undefined) ? 
+                    tempMove.secondaryCurrentLocationName : null,
+                secondaryAction: (tempMove.secondaryAction !== undefined) ? tempMove.secondaryAction : null,
+                secondaryEndingLocationName: (tempMove.secondaryEndingLocationName) ? 
+                    tempMove.secondaryEndingLocationName : null
             }).then((docRef) => {
                 let newMove = new Move(docRef.id, moveOrder, anOwningCountryName, aTurnId, aGameId);
                 resolve(newMove);
@@ -126,7 +137,17 @@ export class FirebaseMoveDataProvider implements IMoveDataProvider {
                 order: aMove.order,
                 owningCountryName: aMove.owningCountryName,
                 turnId: aMove.turnId,
-                gameId: aMove.gameId
+                gameId: aMove.gameId,
+                pieceType: aMove.pieceType,
+                currentLocationName: aMove.currentLocationName,
+                action: aMove.action,
+                endingLocationName: (aMove.endingLocationName !== undefined) ? aMove.endingLocationName : null,
+                secondaryPieceType: (aMove.secondaryPieceType !== undefined) ? aMove.secondaryPieceType : null,
+                secondaryCurrentLocationName: (aMove.secondaryCurrentLocationName !== undefined) ? 
+                    aMove.secondaryCurrentLocationName : null,
+                secondaryAction: (aMove.secondaryAction !== undefined) ? aMove.secondaryAction : null,
+                secondaryEndingLocationName: (aMove.secondaryEndingLocationName !== undefined) ? 
+                    aMove.secondaryEndingLocationName : null
             }).then(() => {
                 resolve(true);
             }).catch((error) => {

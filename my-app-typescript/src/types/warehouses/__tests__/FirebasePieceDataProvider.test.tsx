@@ -21,7 +21,7 @@ it('create and retrieve a piece', () => {
         expect(newPiece).not.toBeNull();
         expect(newPiece.id).not.toBeNull();
         expect(newPiece.gameId).toEqual(game1Id);
-        expect(newPiece.locationName).toEqual('Savannah');
+        expect(newPiece.nameOfLocationAtBeginningOfTurn).toEqual('Savannah');
         expect(newPiece.owningCountryName).toEqual('USA');
         expect(newPiece.type).toEqual(PieceTypes.Army);
         // @ts-ignore
@@ -30,7 +30,7 @@ it('create and retrieve a piece', () => {
             if (retrivedNewPiece) {
                 expect(retrivedNewPiece.id).toEqual(newPiece.id);
                 expect(retrivedNewPiece.gameId).toEqual(newPiece.gameId);
-                expect(retrivedNewPiece.locationName).toEqual(newPiece.locationName);
+                expect(retrivedNewPiece.nameOfLocationAtBeginningOfTurn).toEqual(newPiece.nameOfLocationAtBeginningOfTurn);
                 expect(retrivedNewPiece.owningCountryName).toEqual(newPiece.owningCountryName);
                 expect(retrivedNewPiece.type).toEqual(newPiece.type);
                 return myProvider.deletePiece(retrivedNewPiece).then((wasPieceDeleted) => {

@@ -128,7 +128,7 @@ export class MoveWarehouse implements IMoveWarehouse {
             const createMovesPromiseArray = Array<Promise<Move>>();
 
             pieces.forEach((aPiece: Piece, anIndex: number) => {
-                let moveOrder = aPiece.type + ' ' + aPiece.locationName + ' Holds';
+                let moveOrder = aPiece.type + ' ' + aPiece.nameOfLocationAtBeginningOfTurn + ' Holds';
                 createMovesPromiseArray.push(this.createMove(moveOrder, aPiece.owningCountryName, aTurnId, aGameId));
             });
 
