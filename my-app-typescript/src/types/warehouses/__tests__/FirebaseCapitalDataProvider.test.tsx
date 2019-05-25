@@ -9,7 +9,8 @@ it('create and retrieve a capital', () => {
     const capital1OwningCountryName = 'Austria';
     const capital1LocationName = 'Paris';
 
-    expect.assertions(12);
+    // hi
+    expect.assertions(14);
 
     let myProvider = new FirebaseCapitalDataProvider(EnvironmentName.UnitTest);
     expect(myProvider).not.toBeNull();
@@ -20,6 +21,7 @@ it('create and retrieve a capital', () => {
         expect(newCapital.owningCountryName).toEqual(capital1OwningCountryName);
         expect(newCapital.locationName).toEqual(capital1LocationName);
         expect(newCapital.turnId).toEqual(turn1Id);
+        expect(newCapital.gameId).toEqual(gameId);
         // @ts-ignore
         return myProvider.getCapital(newCapital.id).then((retrivedNewCapital) => {
             expect(retrivedNewCapital).not.toBeNull();
@@ -28,6 +30,7 @@ it('create and retrieve a capital', () => {
                 expect(retrivedNewCapital.owningCountryName).toEqual(newCapital.owningCountryName);
                 expect(retrivedNewCapital.locationName).toEqual(newCapital.locationName);
                 expect(retrivedNewCapital.turnId).toEqual(newCapital.turnId);
+                expect(retrivedNewCapital.gameId).toEqual(newCapital.gameId);
                 return myProvider.deleteCapital(retrivedNewCapital).then((wasCapitalDeleted) => {
                     expect(wasCapitalDeleted).toBeTruthy();
                 }).catch((error) => {

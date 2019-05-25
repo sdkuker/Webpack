@@ -4,7 +4,7 @@ import { EnvironmentName } from '../PersistenceTypes';
 
 it('create and retrieve a move', () => {
 
-    const moveOrder1 = 'move something from here to there';
+    const moveOrder1 = 'ARMY London movesTo Wales';
     const owningCountry1 = 'Austria';
     const turnId1 = 't1';
     const gameId1 = 'g1';
@@ -20,6 +20,7 @@ it('create and retrieve a move', () => {
         expect(newMove.owningCountryName).toEqual(owningCountry1);
         expect(newMove.turnId).toEqual(turnId1);
         expect(newMove.gameId).toEqual(gameId1);
+        // hi
         // @ts-ignore
         return myProvider.getMove(newMove.id).then((retrivedNewMove) => {
             expect(retrivedNewMove).not.toBeNull();

@@ -15,7 +15,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
     }
 
     createPiece = (forGame: Game, forTurn: Turn, nameOfLocationAtBeginningOfTurn: string,
-        countryName: string, type: PieceTypes) => {
+        countryName: string, type: PieceTypes) => { 
 
         let self = this; 
 
@@ -55,7 +55,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                             // @ts-ignore
                             documentSnapshot.data().owningCountryName, documentSnapshot.data().nameOfLocationAtBeginningOfTurn,
                             // @ts-ignore
-                            documentSnapshot.data().nameOfLocationAtEndOfTurn, ocumentSnapshot.data().mustRetreatAtEndOfTurn, 
+                            documentSnapshot.data().nameOfLocationAtEndOfTurn, documentSnapshot.data().mustRetreatAtEndOfTurn, 
                             // @ts-ignore
                             documentSnapshot.data().type));
                     } else {

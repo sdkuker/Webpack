@@ -45,7 +45,9 @@ export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
                         // @ts-ignore
                         resolve(new Capital(aCapitalId, documentSnapshot.data().owningCountryName,
                             // @ts-ignore
-                            documentSnapshot.data().locationName, documentSnapshot.data().turnId));
+                            documentSnapshot.data().locationName,  documentSnapshot.data().gameId, 
+                            // @ts-ignore
+                            documentSnapshot.data().turnId));
                     } else {
                         resolve(null);
                     }

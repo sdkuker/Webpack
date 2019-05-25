@@ -17,12 +17,12 @@ it('create and retrieve a piece', () => {
     let myProvider = new FirebasePieceDataProvider(EnvironmentName.UnitTest);
     expect(myProvider).not.toBeNull();
 
-    return myProvider.createPiece(game1, game1Turn1, 'Savannah', 'USA', PieceTypes.Army).then((newPiece) => {
+    return myProvider.createPiece(game1, game1Turn1, 'London', 'England', PieceTypes.Army).then((newPiece) => {
         expect(newPiece).not.toBeNull();
         expect(newPiece.id).not.toBeNull();
         expect(newPiece.gameId).toEqual(game1Id);
-        expect(newPiece.nameOfLocationAtBeginningOfTurn).toEqual('Savannah');
-        expect(newPiece.owningCountryName).toEqual('USA');
+        expect(newPiece.nameOfLocationAtBeginningOfTurn).toEqual('London');
+        expect(newPiece.owningCountryName).toEqual('England');
         expect(newPiece.type).toEqual(PieceTypes.Army);
         // @ts-ignore
         return myProvider.getPiece(newPiece.id).then((retrivedNewPiece) => {
@@ -61,7 +61,7 @@ it('getting pieces for a turn', () => {
     let myProvider = new FirebasePieceDataProvider(EnvironmentName.UnitTest);
     expect(myProvider).not.toBeNull();
 
-    return myProvider.createPiece(game1, game1Turn1, 'Savannah', 'USA', PieceTypes.Army).then((turn1Piece) => {
+    return myProvider.createPiece(game1, game1Turn1, 'London', 'England', PieceTypes.Army).then((turn1Piece) => {
         expect(turn1Piece).not.toBeNull();
         return myProvider.createPiece(game1, game1Turn2, 'Tybee', 'Georgia', PieceTypes.Fleet).then((turn2Piece1) => {
             expect(turn2Piece1).not.toBeNull();
