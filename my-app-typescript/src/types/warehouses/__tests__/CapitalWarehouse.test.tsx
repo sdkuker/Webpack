@@ -23,7 +23,7 @@ it('should get capitals for a game thats initialized', () => {
 
     expect.assertions(8);
 
-    return myCapitalWarehouse.initilizeCapitals('2').then((wasInitializationSuccessful) => {
+    return myCapitalWarehouse.initilizeCapitals('1', '2').then((wasInitializationSuccessful) => {
         expect(wasInitializationSuccessful).toBeTruthy();
         return myCapitalWarehouse.getCapitals('2').then((myCapitals) => {
             expect(myCapitals).not.toBeNull();

@@ -4,6 +4,7 @@ import { EnvironmentName } from '../PersistenceTypes';
 
 it('create and retrieve a capital', () => {
 
+    const gameId  = '2';
     const turn1Id = '1';
     const capital1OwningCountryName = 'Austria';
     const capital1LocationName = 'Paris';
@@ -13,7 +14,7 @@ it('create and retrieve a capital', () => {
     let myProvider = new FirebaseCapitalDataProvider(EnvironmentName.UnitTest);
     expect(myProvider).not.toBeNull();
 
-    return myProvider.createCapital(turn1Id, capital1LocationName, capital1OwningCountryName).then((newCapital) => {
+    return myProvider.createCapital(gameId, turn1Id, capital1LocationName, capital1OwningCountryName).then((newCapital) => {
         expect(newCapital).not.toBeNull();
         expect(newCapital.id).not.toBeNull();
         expect(newCapital.owningCountryName).toEqual(capital1OwningCountryName);
@@ -43,6 +44,7 @@ it('create and retrieve a capital', () => {
 
 it('getting pieces for a capital', () => {
 
+    const gameId = '45';
     const turn1Id = '1';
     const turn2Id = '2';
     const capital1OwningCountryName = 'Austria';
@@ -57,11 +59,11 @@ it('getting pieces for a capital', () => {
     let myProvider = new FirebaseCapitalDataProvider(EnvironmentName.UnitTest);
     expect(myProvider).not.toBeNull();
 
-    return myProvider.createCapital(turn1Id, capital1LocationName, capital1OwningCountryName).then((newCapital1) => {
+    return myProvider.createCapital(gameId, turn1Id, capital1LocationName, capital1OwningCountryName).then((newCapital1) => {
         expect(newCapital1).not.toBeNull();
-        return myProvider.createCapital(turn2Id, capital2LocationName, capital2OwningCountryName).then((newCapital2) => {
+        return myProvider.createCapital(gameId, turn2Id, capital2LocationName, capital2OwningCountryName).then((newCapital2) => {
             expect(newCapital2).not.toBeNull();
-            return myProvider.createCapital(turn2Id, capital3LocationName, capital3OwningCountryName).then((newCapital3) => {
+            return myProvider.createCapital(gameId, turn2Id, capital3LocationName, capital3OwningCountryName).then((newCapital3) => {
                 expect(newCapital3).not.toBeNull();
                 return myProvider.getCapitals(turn1Id).then((mapOfCapitals) => {
                     expect(mapOfCapitals).not.toBeNull();

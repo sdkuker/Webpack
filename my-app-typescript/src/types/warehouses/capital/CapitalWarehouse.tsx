@@ -45,53 +45,53 @@ export class CapitalWarehouse implements ICapitalWarehouse {
         return myPromise;
     }
 
-    initilizeCapitals = (aTurnId: string) => {
+    initilizeCapitals = (aGameId: string, aTurnId: string) => {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
             let allCapitalPromises = new Array<Promise<Capital>>();
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Vienna', 'Austria'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Budapest', 'Austria'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Trieste', 'Austria'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Vienna', 'Austria'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Budapest', 'Austria'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Trieste', 'Austria'));
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'London', 'England'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Edinburgh', 'England'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Liverpool', 'England'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'London', 'England'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Edinburgh', 'England'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Liverpool', 'England'));
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Paris', 'France'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Marseilles', 'France'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Brest', 'France'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Paris', 'France'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Marseilles', 'France'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Brest', 'France'));
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Berlin', 'Germany'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Munich', 'Germany'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Kiel', 'Germany'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Berlin', 'Germany'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Munich', 'Germany'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Kiel', 'Germany'));
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Rome', 'Italy'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Venice', 'Italy'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Naples', 'Italy'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Rome', 'Italy'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Venice', 'Italy'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Naples', 'Italy'));
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Moscow', 'Russia'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Sevastopol', 'Russia'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'StPetersburg', 'Russia'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Warsaw', 'Russia'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Moscow', 'Russia'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Sevastopol', 'Russia'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'StPetersburg', 'Russia'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Warsaw', 'Russia'));
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Ankara', 'Turkey'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Constantinople', 'Turkey'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Smyrna', 'Turkey'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Ankara', 'Turkey'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Constantinople', 'Turkey'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Smyrna', 'Turkey'));
 
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Portugal', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Spain', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Norway', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Sweden', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Denmark', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Rumania', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Serbia', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Bulgaria', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Greece', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Tunis', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Holland', 'unowned'));
-            allCapitalPromises.push(this.myDataProvider.createCapital(aTurnId, 'Belgium', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Portugal', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Spain', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Norway', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Sweden', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Denmark', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Rumania', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Serbia', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Bulgaria', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Greece', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Tunis', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Holland', 'unowned'));
+            allCapitalPromises.push(this.myDataProvider.createCapital(aGameId, aTurnId, 'Belgium', 'unowned'));
 
             Promise.all(allCapitalPromises).then((arrayOfBooleans) => {
                 resolve(true);

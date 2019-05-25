@@ -46,13 +46,13 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
         }
     }
 
-    createPiece = ( forGame: Game, forTurn: Turn, theLocationName: string,
-                    countryName: string, type: PieceTypes) => {
+    createPiece = (forGame: Game, forTurn: Turn, theNameOfLocationAtBeginningOfTurn: string,
+        countryName: string, type: PieceTypes) => {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
             this.nextAvailablePieceKey++;
-            const thePiece = new Piece( this.nextAvailablePieceKey.toString(), forGame.id, forTurn.id, countryName,
-                                        theLocationName, type);
+            const thePiece = new Piece(this.nextAvailablePieceKey.toString(), forGame.id, forTurn.id, countryName,
+                theNameOfLocationAtBeginningOfTurn, null, false, type);
             this.adjustCacheForTurn(forGame.id, forTurn.id);
             // @ts-ignore
             this.allPieces.get(forGame.id).get(forTurn.id).push(thePiece);

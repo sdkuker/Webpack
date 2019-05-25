@@ -61,7 +61,7 @@ export class StaticCapitalDataProvider implements ICapitalDataProvider {
 
     }
 
-    createCapital = (aTurnId: string, locationName: string, forCountryName: string) => {
+    createCapital = (aGameId: string, aTurnId: string, locationName: string, forCountryName: string) => {
 
         let myPromise = new Promise<Capital>((resolve, reject) => {
 
@@ -72,7 +72,7 @@ export class StaticCapitalDataProvider implements ICapitalDataProvider {
             const capitalKey: string = locationName + LocationTypes.Capital;
             this.nextAvailableCapitalId++;
             const theCapital = new Capital(this.nextAvailableCapitalId.toString(),
-                forCountryName, locationName, aTurnId);
+                forCountryName, locationName, aGameId, aTurnId);
             // @ts-ignore
             this.allCapitals.get(aTurnId).set(capitalKey, theCapital);
             resolve(theCapital);

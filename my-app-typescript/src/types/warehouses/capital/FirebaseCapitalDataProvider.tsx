@@ -11,7 +11,7 @@ export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
         this.environmentName = anEnviornmentName;
     }
 
-    createCapital = (aTurnId: string, capitalName: string, forCountryName: string) => {
+    createCapital = (aGameId: string, aTurnId: string, capitalName: string, forCountryName: string) => {
 
         let self = this;
 
@@ -20,9 +20,10 @@ export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
             db.collection(self.environmentName).doc('capitals').collection('allCapitals').add({
                 owningCountryName: forCountryName,
                 locationName: capitalName,
+                gameId: aGameId,
                 turnId: aTurnId
             }).then((docRef) => {
-                let newCapital = new Capital(docRef.id, forCountryName, capitalName, aTurnId);
+                let newCapital = new Capital(docRef.id, forCountryName, capitalName, aGameId, aTurnId);
                 resolve(newCapital);
             }).catch((error) => {
                 reject('error creating a capital: ' + error);
@@ -103,7 +104,7 @@ export class FirebaseCapitalDataProvider implements ICapitalDataProvider {
                     let myMap = new Map<string, Capital>();
                     querySnapshot.forEach((doc) => {
                         myMap.set(doc.data().locationName, new Capital(doc.id, doc.data().owningCountryName,
-                            doc.data().locationName, doc.data().turnId));
+                            doc.data().locationName, doc.data().gameId, doc.data().turnId));
                     });
                     resolve(myMap);
                 }).catch((error) => {

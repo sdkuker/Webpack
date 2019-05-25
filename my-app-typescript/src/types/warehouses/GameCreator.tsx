@@ -69,7 +69,7 @@ export class GameCreator implements IGameCreator {
                         this.moveWarehouse.createInitialMoves(initialTurn.id, newGame.id, initialPieces).
                             then((initialMovesArray) => {
                                 this.countryWarehouse.initializeCountries(newGame.id).then((countriesCreated) => {
-                                    this.capitalWarehouse.initilizeCapitals(initialTurn.id).
+                                    this.capitalWarehouse.initilizeCapitals(newGame.id, initialTurn.id).
                                                 then((capitalsInitialized) => {
                                         resolve(newGame);
                                     }).catch((error) => {

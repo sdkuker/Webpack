@@ -14,7 +14,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
         this.environmentName = anEnviornmentName;
     }
 
-    createPiece = (forGame: Game, forTurn: Turn, theLocationName: string,
+    createPiece = (forGame: Game, forTurn: Turn, nameOfLocationAtBeginningOfTurn: string,
         countryName: string, type: PieceTypes) => {
 
         let self = this; 
@@ -25,10 +25,13 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                 gameId: forGame.id,
                 turnId: forTurn.id,
                 owningCountryName: countryName,
-                locationName: theLocationName,
+                nameOfLocationAtBeginningOfTurn: nameOfLocationAtBeginningOfTurn,
+                nameOfLocationAtEndOfTurn: null,
+                mustRetreatAtEndOfTurn: false,
                 type: type
             }).then((docRef) => {
-                let newPiece = new Piece(docRef.id, forGame.id, forTurn.id, countryName, theLocationName, type);
+                let newPiece = new Piece(docRef.id, forGame.id, forTurn.id, countryName, 
+                    nameOfLocationAtBeginningOfTurn, null, false, type);
                 resolve(newPiece);
             }).catch((error) => {
                 reject('error creating a piece: ' + error);
@@ -50,7 +53,9 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                         // @ts-ignore
                         resolve(new Piece(aPieceId, documentSnapshot.data().gameId, documentSnapshot.data().turnId,
                             // @ts-ignore
-                            documentSnapshot.data().owningCountryName, documentSnapshot.data().locationName,
+                            documentSnapshot.data().owningCountryName, documentSnapshot.data().nameOfLocationAtBeginningOfTurn,
+                            // @ts-ignore
+                            documentSnapshot.data().nameOfLocationAtEndOfTurn, ocumentSnapshot.data().mustRetreatAtEndOfTurn, 
                             // @ts-ignore
                             documentSnapshot.data().type));
                     } else {
@@ -110,7 +115,9 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                     let myArray = new Array<Piece>();
                     querySnapshot.forEach((doc) => {
                         myArray.push(new Piece(doc.id, doc.data().gameId, doc.data().turnId,
-                            doc.data().owningCountryName, doc.data().locationName, doc.data().type));
+                            doc.data().owningCountryName, doc.data().nameOfLocationAtBeginningOfTurn, 
+                            doc.data().nameOfLocationAtEndOfTurn, doc.data().mustRetreatAtEndOfTurn, 
+                            doc.data().type));
                     });
                     resolve(myArray);
                 }).catch((error) => {
