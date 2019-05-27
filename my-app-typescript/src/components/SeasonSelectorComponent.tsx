@@ -117,31 +117,25 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
         }
 
         return (
-            <form className="form-inline row">
-                <div>
-                    <div className="col-md-2">
-                        <div className="form-group">
-                            <label htmlFor="yearSelector"><b>Year:</b></label>
-                            <select className="form-control" id="yearSelector" onChange={e => this.yearSelected(e)}>
-                                {yearOptions}
-                            </select>
-                        </div>
+            <form>
+                <div className="form-row">
+                    <div className="form-group col-md-2">
+                        <label htmlFor="yearSelector"><b>Year:</b></label>
+                        <select className="form-control" id="yearSelector" onChange={e => this.yearSelected(e)}>
+                            {yearOptions}
+                        </select>
                     </div>
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <label htmlFor="seasonSelector"><b>Season:</b> </label>
-                            <select className="form-control" id="seasonSelector" onChange={e => this.seasonSelected(e)}>
-                                {seasonOptions}
-                            </select>
-                        </div>
+                    <div className="form-group col-md-2">
+                        <label htmlFor="seasonSelector"><b>Season:</b> </label>
+                        <select className="form-control" id="seasonSelector" onChange={e => this.seasonSelected(e)}>
+                            {seasonOptions}
+                        </select>
                     </div>
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <label htmlFor="phaseSelector"><b>Phase:</b> </label>
-                            <select className="form-control" id="phaseSelector" onChange={e => this.phaseSelected(e)}>
-                                {phaseOptions}
-                            </select>
-                        </div>
+                    <div className="form-group col-md-2">
+                        <label htmlFor="phaseSelector"><b>Phase:</b> </label>
+                        <select className="form-control" id="phaseSelector" onChange={e => this.phaseSelected(e)}>
+                            {phaseOptions}
+                        </select>
                     </div>
                     <div>
                         <ModalComponent
