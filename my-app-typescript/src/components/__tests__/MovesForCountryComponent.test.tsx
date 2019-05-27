@@ -1,6 +1,6 @@
 import { Turn } from '../../types/warehouses/turn/Turn';
 import { Game } from '../../types/warehouses/game/Game';
-import { SeasonTypes, TurnStatus } from '../../types/warehouses/DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase } from '../../types/warehouses/DomainTypes';
 import * as React from 'react';
 import * as Adapter from 'enzyme-adapter-react-16';
 import * as enzyme from 'enzyme';
@@ -15,7 +15,7 @@ const myMoveDataProvider = new StaticMoveDataProvider();
 const myMoveWarehouse = new MoveWarehouse(myMoveDataProvider);
 
 it('open turn has MovesEntryListComponent', () => {
-    const openTurn = new Turn('1', myGame.id, 1, SeasonTypes.Spring, TurnStatus.Open);
+    const openTurn = new Turn('1', myGame.id, 1, SeasonTypes.Spring, TurnStatus.Open, TurnPhase.Diplomatic);
     const wrapper1 = enzyme.shallow(<MovesForCountryComponent moveWarehouse={myMoveWarehouse} myGame={myGame} myTurn={openTurn} />);
     expect(wrapper1.find('table'))
 })

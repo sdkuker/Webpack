@@ -53,9 +53,13 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                         // @ts-ignore
                         resolve(new Piece(aPieceId, documentSnapshot.data().gameId, documentSnapshot.data().turnId,
                             // @ts-ignore
-                            documentSnapshot.data().owningCountryName, documentSnapshot.data().nameOfLocationAtBeginningOfTurn,
+                            documentSnapshot.data().owningCountryName, 
                             // @ts-ignore
-                            documentSnapshot.data().nameOfLocationAtEndOfTurn, documentSnapshot.data().mustRetreatAtEndOfTurn, 
+                            documentSnapshot.data().nameOfLocationAtBeginningOfTurn,
+                            // @ts-ignore
+                            documentSnapshot.data().nameOfLocationAtEndOfTurn, 
+                            // @ts-ignore
+                            documentSnapshot.data().mustRetreatAtEndOfTurn, 
                             // @ts-ignore
                             documentSnapshot.data().type));
                     } else {

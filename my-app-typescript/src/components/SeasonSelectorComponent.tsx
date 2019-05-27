@@ -2,7 +2,7 @@ import * as React from 'react';
 import ModalComponent from './ModalComponent';
 import { observer } from 'mobx-react';
 import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
-import { SeasonTypes } from '../types/warehouses/DomainTypes';
+import { SeasonTypes, TurnPhase } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/game/Game';
 import { Turn } from '../types/warehouses/turn/Turn';
 import { observable } from 'mobx';
@@ -97,6 +97,25 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
             }
         }
 
+        // tslint:disable-next-line
+        let phaseOptions: any = [];
+        for (let aType in TurnPhase) {
+            if (TurnPhase.hasOwnProperty(aType)) {
+                if (this.state.selectedTurn.phase === TurnPhase[aType]) {
+                    // tslint:disable-next-line
+                    phaseOptions.push(<option selected key={aType}>{aType}</option>);
+                } else {
+                    if (aType === 'Diplomatic' || aType === 'OrderWriting' || aType === 'OrderResolution') {
+                        phaseOptions.push(<option key={aType}>{aType}</option>);
+                    } else {
+                        if (this.state.selectedTurn.season === SeasonTypes.Fall) {
+                            phaseOptions.push(<option key={aType}>{aType}</option>);
+                        }
+                    }
+                }
+            }
+        }
+
         return (
             <form className="form-inline row">
                 <div>
@@ -113,6 +132,14 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
                             <label htmlFor="seasonSelector"><b>Season:</b> </label>
                             <select className="form-control" id="seasonSelector" onChange={e => this.seasonSelected(e)}>
                                 {seasonOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <div className="form-group">
+                            <label htmlFor="phaseSelector"><b>Phase:</b> </label>
+                            <select className="form-control" id="phaseSelector" onChange={e => this.phaseSelected(e)}>
+                                {phaseOptions}
                             </select>
                         </div>
                     </div>
@@ -141,9 +168,11 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
                     this.props.onTurnSelected(mySelectedTurn);
                 }
             }).catch((error) => {
-                this.setState({ isModalOpen: true, 
-                                modalTitle: 'Unable to get a turn to set the year', 
-                                modalDescription: error });
+                this.setState({
+                    isModalOpen: true,
+                    modalTitle: 'Unable to get a turn to set the year',
+                    modalDescription: error
+                });
             });
 
     }
@@ -165,11 +194,39 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
                     this.props.onTurnSelected(mySelectedTurn);
                 }
             }).catch((error) => {
-                this.setState({ isModalOpen: true, 
-                    modalTitle: 'error getting a turn when a season was selected', 
-                    modalDescription: error });
+                this.setState({
+                    isModalOpen: true,
+                    modalTitle: 'error getting a turn when a season was selected',
+                    modalDescription: error
+                });
             });
+    }
 
+    phaseSelected(event: React.FormEvent<HTMLSelectElement>) {
+        const myValue: string = event.currentTarget.value;
+        let myPhase: TurnPhase;
+        myPhase = TurnPhase.Diplomatic;
+        if (myValue === 'OrderWriting') {
+            myPhase = TurnPhase.OrderWriting;
+        } else {
+            if (myValue === 'OrderResolution') {
+                myPhase = TurnPhase.OrderResolution;
+            } else {
+                if (myValue === 'RetreatAndDisbanding') {
+                    myPhase = TurnPhase.RetreatAndDisbanding;
+                } else {
+                    if (myValue === 'GainingAndLosingUnits') {
+                        myPhase = TurnPhase.GainingAndLosingUnits;
+                    }
+                }
+            }
+
+        }
+
+        this.state.selectedTurn.phase = myPhase;
+        // figure out exactly what to do when these phases change...
+        // at a minimum, persist to the db but also trigger some lambda functions
+        // probably to do order resolution etc.
     }
 
     closeModal() {

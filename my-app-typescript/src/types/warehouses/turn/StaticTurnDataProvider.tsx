@@ -1,6 +1,6 @@
 import { ITurnDataProvider } from './ITurnDataProvider';
 import { Turn } from './Turn';
-import { SeasonTypes, TurnStatus } from '../DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase } from '../DomainTypes';
 
 export class StaticTurnDataProvider implements ITurnDataProvider {
 
@@ -28,12 +28,12 @@ export class StaticTurnDataProvider implements ITurnDataProvider {
         return myPromise;
     }
 
-    createTurn = (aGameId: string, aSeason: SeasonTypes, aYear: number, aStatus: TurnStatus) => {
+    createTurn = (aGameId: string, aSeason: SeasonTypes, aYear: number, aStatus: TurnStatus, aPhase: TurnPhase) => {
 
         let myPromise = new Promise<Turn>((resolve, reject) => {
 
             this.nextAvailableTurnId++;
-            let newTurn = new Turn(this.nextAvailableTurnId.toString(), aGameId, aYear, aSeason, aStatus);
+            let newTurn = new Turn(this.nextAvailableTurnId.toString(), aGameId, aYear, aSeason, aStatus, aPhase);
 
             if (!this.allTurns[aGameId]) {
                 this.allTurns[aGameId] = Array<Turn>();

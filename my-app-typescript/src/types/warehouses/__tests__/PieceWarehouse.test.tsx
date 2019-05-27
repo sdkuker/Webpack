@@ -1,14 +1,14 @@
 import { Turn } from '.././turn/Turn';
 import { Game } from '../game/Game';
-import { SeasonTypes, TurnStatus, PieceTypes } from '.././DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase, PieceTypes } from '.././DomainTypes';
 import { StaticPieceDataProvider } from '../piece/StaticPieceDataProvider';
 import { PieceWarehouse } from '../piece/PieceWarehouse';
 import { Warehouse as LocationWarehouse } from '../location/LocationWarehouse';
 import { LocationTypes } from '../DomainTypes';
 
 let game1 = new Game('1', 'myGame');
-let turnGame1Spring = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Open);
-let turnGame1Fall = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
+let turnGame1Spring = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Open, TurnPhase.Diplomatic);
+let turnGame1Fall = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open, TurnPhase.Diplomatic);
 
 let myPieceWarehouse: PieceWarehouse;
 

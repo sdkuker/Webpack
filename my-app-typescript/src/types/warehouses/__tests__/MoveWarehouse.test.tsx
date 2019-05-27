@@ -1,7 +1,7 @@
 import { Move } from '../move/Move';
 import { Turn } from '.././turn/Turn';
 import { Location } from '../location/Location';
-import { PieceTypes, MoveAction, SeasonTypes, TurnStatus } from '.././DomainTypes';
+import { PieceTypes, TurnPhase, SeasonTypes, TurnStatus } from '.././DomainTypes';
 import { MoveWarehouse } from '../move/MoveWarehouse';
 import { StaticMoveDataProvider } from '../move/StaticMoveDataProvider';
 import { Piece } from '../piece/Piece';
@@ -9,8 +9,8 @@ import { Piece } from '../piece/Piece';
 let myGameId = '1';
 let turn1SpringId = '1';
 let turn1FallId = '2';
-let turn1Spring = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
-let turn1Fall = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
+let turn1Spring = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete, TurnPhase.Diplomatic);
+let turn1Fall = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open, TurnPhase.Diplomatic);
 let myMoveWarehouse: MoveWarehouse;
 let myDataProvider: StaticMoveDataProvider;
 

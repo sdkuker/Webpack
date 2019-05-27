@@ -2,7 +2,7 @@ import { FirebasePieceDataProvider } from '../piece/FirebasePieceDataProvider';
 import { Piece } from '../piece/Piece';
 import { Game } from '../game/Game';
 import { Turn } from '../turn/Turn';
-import { PieceTypes, SeasonTypes, TurnStatus } from '.././DomainTypes';
+import { PieceTypes, SeasonTypes, TurnStatus, TurnPhase } from '.././DomainTypes';
 import { EnvironmentName } from '../PersistenceTypes';
 
 it('create and retrieve a piece', () => {
@@ -10,7 +10,7 @@ it('create and retrieve a piece', () => {
     const game1Id = '1';
     const game1 = new Game(game1Id, 'test 1');
     const game1Turn1Id = '1-1';
-    const game1Turn1 = new Turn(game1Turn1Id, game1Id, 1, SeasonTypes.Spring, TurnStatus.Open);
+    const game1Turn1 = new Turn(game1Turn1Id, game1Id, 1, SeasonTypes.Spring, TurnStatus.Open, TurnPhase.GainingAndLosingUnits);
 
     expect.assertions(14);
 
@@ -52,9 +52,9 @@ it('getting pieces for a turn', () => {
     const game1Id = '1';
     const game1 = new Game(game1Id, 'test 1');
     const game1Turn1Id = '1-1';
-    const game1Turn1 = new Turn(game1Turn1Id, game1Id, 1, SeasonTypes.Spring, TurnStatus.Open);
+    const game1Turn1 = new Turn(game1Turn1Id, game1Id, 1, SeasonTypes.Spring, TurnStatus.Open, TurnPhase.GainingAndLosingUnits);
     const game1Turn2Id = '1-2';
-    const game1Turn2 = new Turn(game1Turn2Id, game1Id, 1, SeasonTypes.Spring, TurnStatus.Open);
+    const game1Turn2 = new Turn(game1Turn2Id, game1Id, 1, SeasonTypes.Spring, TurnStatus.Open, TurnPhase.GainingAndLosingUnits);
 
     expect.assertions(10);
 

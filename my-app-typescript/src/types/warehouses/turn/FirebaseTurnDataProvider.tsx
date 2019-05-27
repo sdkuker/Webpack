@@ -1,7 +1,7 @@
 import db from '../../../firebase';
 import { ITurnDataProvider } from './ITurnDataProvider';
 import { Turn } from './Turn';
-import { SeasonTypes, TurnStatus } from '../DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase } from '../DomainTypes';
 import { EnvironmentName } from '../PersistenceTypes';
 
 export class FirebaseTurnDataProvider implements ITurnDataProvider {
@@ -12,7 +12,7 @@ export class FirebaseTurnDataProvider implements ITurnDataProvider {
         this.environmentName = anEnviornmentName;
     }
 
-    createTurn = (aGameId: string, aSeason: SeasonTypes, aYear: number, aStatus: TurnStatus) => {
+    createTurn = (aGameId: string, aSeason: SeasonTypes, aYear: number, aStatus: TurnStatus, aPhase: TurnPhase) => {
 
         let self = this;
 
@@ -22,9 +22,10 @@ export class FirebaseTurnDataProvider implements ITurnDataProvider {
                 gameId: aGameId,
                 season: aSeason,
                 year: aYear,
-                status: aStatus
+                status: aStatus,
+                phase: aPhase
             }).then((docRef) => {
-                let newTurn = new Turn(docRef.id, aGameId, aYear, aSeason, aStatus);
+                let newTurn = new Turn(docRef.id, aGameId, aYear, aSeason, aStatus, aPhase);
                 resolve(newTurn);
             }).catch((error) => {
                 reject('error creating a turn: ' + error);
@@ -44,7 +45,7 @@ export class FirebaseTurnDataProvider implements ITurnDataProvider {
                     let myArray = new Array<Turn>();
                     querySnapshot.forEach((doc) => {
                         myArray.push(new Turn(doc.id, doc.data().gameId, doc.data().year, 
-                        doc.data().season, doc.data().status));
+                        doc.data().season, doc.data().status, doc.data().phase));
                     });
                     resolve(myArray);
                 }).catch((error) => {
@@ -65,7 +66,8 @@ export class FirebaseTurnDataProvider implements ITurnDataProvider {
                 gameId: aTurn.gameId,
                 season: aTurn.season,
                 year: aTurn.year,
-                status: aTurn.status
+                status: aTurn.status,
+                phase: aTurn.phase
             }).then(() => {
                 resolve(true);
             }).catch((error) => {
@@ -104,7 +106,9 @@ export class FirebaseTurnDataProvider implements ITurnDataProvider {
                         // @ts-ignore
                         resolve(new Turn(aTurnId, documentSnapshot.data().gameId, documentSnapshot.data().year,
                             // @ts-ignore
-                            documentSnapshot.data().season, documentSnapshot.data().status));
+                            documentSnapshot.data().season, documentSnapshot.data().status, 
+                             // @ts-ignore
+                            documentSnapshot.data().phase));
                     } else {
                         resolve(null);
                     }

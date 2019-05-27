@@ -1,5 +1,5 @@
 import { Turn } from '.././turn/Turn';
-import { SeasonTypes, TurnStatus } from '.././DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase } from '.././DomainTypes';
 import { TurnWarehouse } from '../turn/TurnWarehouse';
 import { StaticTurnDataProvider } from '../turn/StaticTurnDataProvider';
 
@@ -7,13 +7,13 @@ let myTurnWarehouse: TurnWarehouse;
 
 beforeAll(() => {
     const myDataProvider = new StaticTurnDataProvider(null, null);
-    return myDataProvider.createTurn('1', SeasonTypes.Spring, 1, TurnStatus.Complete).then((success) => {
-        return myDataProvider.createTurn('1', SeasonTypes.Fall, 1, TurnStatus.Complete).then((success2) => {
-            return myDataProvider.createTurn('1', SeasonTypes.Spring, 2, TurnStatus.Complete).then((success3) => {
-                return myDataProvider.createTurn('1', SeasonTypes.Fall, 2, TurnStatus.Open).then((success4) => {
-                    return myDataProvider.createTurn('2', SeasonTypes.Spring, 1, TurnStatus.Complete).then((success5) => {
-                        return myDataProvider.createTurn('2', SeasonTypes.Fall, 1, TurnStatus.Open).then((success6) => {
-                            return myDataProvider.createTurn('3', SeasonTypes.Spring, 1, TurnStatus.Complete).then((success7) => {
+    return myDataProvider.createTurn('1', SeasonTypes.Spring, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success) => {
+        return myDataProvider.createTurn('1', SeasonTypes.Fall, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success2) => {
+            return myDataProvider.createTurn('1', SeasonTypes.Spring, 2, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success3) => {
+                return myDataProvider.createTurn('1', SeasonTypes.Fall, 2, TurnStatus.Open, TurnPhase.Diplomatic).then((success4) => {
+                    return myDataProvider.createTurn('2', SeasonTypes.Spring, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success5) => {
+                        return myDataProvider.createTurn('2', SeasonTypes.Fall, 1, TurnStatus.Open, TurnPhase.Diplomatic).then((success6) => {
+                            return myDataProvider.createTurn('3', SeasonTypes.Spring, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success7) => {
                                  myTurnWarehouse = new TurnWarehouse(myDataProvider);
                             })
                         })

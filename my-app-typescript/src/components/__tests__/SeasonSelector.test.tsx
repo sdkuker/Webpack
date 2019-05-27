@@ -1,7 +1,7 @@
 import { Turn } from '../../types/warehouses/turn/Turn';
 import { Game } from '../../types/warehouses/game/Game';
 import { ITurnWarehouse } from '../../types/warehouses/turn/ITurnWarehouse';
-import { SeasonTypes, TurnStatus } from '../../types/warehouses/DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase } from '../../types/warehouses/DomainTypes';
 import * as React from 'react';
 import * as Adapter from 'enzyme-adapter-react-16';
 import * as enzyme from 'enzyme';
@@ -11,8 +11,8 @@ enzyme.configure({adapter: new Adapter()});
 const myGame = new Game('1', 'test');
 
 it('Get Open Season', async () => {
-    const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
-    const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
+    const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits);
+    const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open, TurnPhase.Diplomatic);
 
     const onTurnsSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
@@ -50,8 +50,8 @@ it('Get Open Season', async () => {
 })
 
 it('Get Complete Season', async () => {
-    const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete);
-    const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open);
+    const completeTurn = new Turn('1', '1', 1, SeasonTypes.Spring, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits);
+    const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open, TurnPhase.Diplomatic);
     const arrayOfTurns = [completeTurn];
 
     const onTurnsSelectedMock = jest.fn(); 

@@ -1,6 +1,6 @@
 import { FirebaseTurnDataProvider } from '../turn/FirebaseTurnDataProvider';
 import { Turn } from '../turn/Turn';
-import { SeasonTypes, TurnStatus } from '../DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase } from '../DomainTypes';
 import { EnvironmentName } from '../PersistenceTypes';
 
 it('create, retrieve, update and lastly delete turns', () => {
@@ -12,14 +12,14 @@ it('create, retrieve, update and lastly delete turns', () => {
     const game2Id = '2';
     expect(myProvider).not.toBeNull();
 
-    return myProvider.createTurn(game1Id, SeasonTypes.Spring, 1, TurnStatus.Open).then((newTurn) => {
+    return myProvider.createTurn(game1Id, SeasonTypes.Spring, 1, TurnStatus.Open, TurnPhase.Diplomatic).then((newTurn) => {
         expect(newTurn).not.toBeNull();
         expect(newTurn.id).not.toBeNull();
         expect(newTurn.gameId).toEqual(game1Id);
         expect(newTurn.season).toEqual(SeasonTypes.Spring);
         expect(newTurn.status).toEqual(TurnStatus.Open);
         expect(newTurn.year).toEqual(1);
-        return myProvider.createTurn(game2Id, SeasonTypes.Fall, 2, TurnStatus.Complete).then((newTurn2) => {
+        return myProvider.createTurn(game2Id, SeasonTypes.Fall, 2, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((newTurn2) => {
             expect(newTurn2).not.toBeNull();
             expect(newTurn2.id).not.toBeNull();
             expect(newTurn2.gameId).toEqual(game2Id);
@@ -35,7 +35,7 @@ it('create, retrieve, update and lastly delete turns', () => {
                     expect(newTurnGet.status).toEqual(newTurn.status);
                     expect(newTurnGet.year).toEqual(newTurn.year);
                 }
-                let updatedNewTurn = new Turn(newTurn.id, newTurn.gameId, 5, newTurn.season, newTurn.status);
+                let updatedNewTurn = new Turn(newTurn.id, newTurn.gameId, 5, newTurn.season, newTurn.status, newTurn.phase);
                 return myProvider.updateTurn(updatedNewTurn).then((wasUpdateSuccessful) => {
                     expect(wasUpdateSuccessful).toBeTruthy();
                     return myProvider.getTurn(newTurn.id).then((turnOrNull) => {

@@ -1,5 +1,5 @@
 import { Turn } from './Turn';
-import { SeasonTypes, TurnStatus } from '../DomainTypes';
+import { SeasonTypes, TurnStatus, TurnPhase } from '../DomainTypes';
 import { ITurnWarehouse } from './ITurnWarehouse';
 import { ITurnDataProvider } from './ITurnDataProvider';
 
@@ -116,8 +116,8 @@ export class TurnWarehouse implements ITurnWarehouse {
                     currentlyOpenTurn.status = TurnStatus.Complete;
                     this.dataProvider.updateTurn(currentlyOpenTurn).then((wasUpdateSuccessful) => {
                         if (wasUpdateSuccessful) {
-                            const nextTurn = new Turn(null, aGameId, newYear, newSeason, TurnStatus.Open);
-                            this.dataProvider.createTurn(aGameId, newSeason, newYear, TurnStatus.Open).
+                            this.dataProvider.createTurn(aGameId, newSeason, newYear, TurnStatus.Open,
+                                TurnPhase.Diplomatic).
                                 then((newTurn) => {
                                     resolve(newTurn);
                                 }).catch((error) => {
@@ -132,11 +132,12 @@ export class TurnWarehouse implements ITurnWarehouse {
 
                 } else {
                     // assume there are no turns at all - make the first one
-                    this.dataProvider.createTurn(aGameId, SeasonTypes.Spring, 1, TurnStatus.Open).then((newTurn) => {
-                        resolve(newTurn);
-                    }).catch((error) => {
-                        reject('unable to make the first turn for the game' + error);
-                    });
+                    this.dataProvider.createTurn(aGameId, SeasonTypes.Spring, 1, TurnStatus.Open, TurnPhase.Diplomatic)
+                        .then((newTurn) => {
+                            resolve(newTurn);
+                        }).catch((error) => {
+                            reject('unable to make the first turn for the game' + error);
+                        });
                 }
             });
         });
