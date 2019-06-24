@@ -8,7 +8,7 @@ export class Piece {
     pieceLocation: PieceLocation;
 
     constructor(anId: string | null, aGameId: string,  anOwningCountryName: string, 
-                aType: PieceTypes, aPieceLocation : PieceLocation) {
+                aType: PieceTypes, aPieceLocation: PieceLocation) {
         if (anId) {
             this.id = anId;
         }

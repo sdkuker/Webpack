@@ -76,7 +76,7 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
             let pieceDeleted = false;
-            //this.adjustCacheForTurn(aPiece.gameId, aPiece.turnId);
+            // this.adjustCacheForTurn(aPiece.gameId, aPiece.turnId);
             this.adjustCacheForTurn(aPiece.gameId, aPiece.pieceLocation.turnId);
 
             let i: number;
@@ -84,7 +84,7 @@ export class StaticPieceDataProvider implements IPieceDataProvider {
                 if (this.pieces[i].id === aPiece.id) {
                     // @ts-ignore
                     // this assumes the indices are the same in both arrays.  They should be...
-                    //this.allPieces.get(aPiece.gameId).get(aPiece.turnId).splice(i, 1);
+                    // this.allPieces.get(aPiece.gameId).get(aPiece.turnId).splice(i, 1);
                     this.allPieces.get(aPiece.gameId).get(aPiece.pieceLocation.turnId).splice(i, 1);
                     this.pieces.splice(i, 1);
                     pieceDeleted = true;

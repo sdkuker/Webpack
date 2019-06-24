@@ -35,7 +35,8 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                 owningCountryName: countryName,
                 type: type
             }).then((pieceDocRef) => {
-                db.collection(self.environmentName).doc(self.locationDocumentName).collection(self.locationCollectionName).add({
+                db.collection(self.environmentName).doc(self.locationDocumentName)
+                .collection(self.locationCollectionName).add({
                     pieceId: pieceDocRef.id,
                     turnId: forTurn.id,
                     gameId: forGame.id,
@@ -50,7 +51,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                     resolve(newPiece);
                 }).catch((error1) => {
                     reject('error creating a piece location' + error1);
-                })
+                });
             }).catch((error) => {
                 reject('error creating a piece: ' + error);
             });
@@ -77,7 +78,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                                 documentSnapshot.data().type, aLocation));
                         }).catch((error1) => {
                             reject('unable to get a location for piece: ' + aPieceId + ' phase: ' + forPhase);
-                        })
+                        });
                     } else {
                         resolve(null);
                     }
@@ -101,7 +102,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                         resolve(true);
                     }).catch((error1) => {
                         reject('unable to delete locations for piece: ' + aPiece.id + '  ' + error1);
-                    })
+                    });
                 }).catch((error) => {
                     reject('unable to delete piece: ' + aPiece.id + '  ' + error);
                 });
@@ -166,13 +167,16 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
 
         let myPromise = new Promise<PieceLocation | null>((resolve, reject) => {
 
-            let locationsRef = db.collection(self.environmentName).doc(self.locationDocumentName).collection(self.locationCollectionName);
+            let locationsRef = db.collection(self.environmentName).doc(self.locationDocumentName)
+                .collection(self.locationCollectionName);
             var query = locationsRef.where('pieceId', '==', aPieceId).where('phase', '==', forPhase);
             query.get().then((querySnapshot) => {
                 if (querySnapshot.size > 0) {
                     querySnapshot.forEach((doc) => {
                         // should be zero or 1 docs
-                        resolve(new PieceLocation(doc.id, doc.data().pieceId, doc.data().turnId, doc.data().gameId, doc.data().phase, doc.data().nameOfLocationAtBeginningOfPhase, doc.data().nameOfLocationAtEndOfPhase, doc.data().mustRetreatAtEndOfTurn));
+                        resolve(new PieceLocation(doc.id, doc.data().pieceId, doc.data().turnId, 
+                            doc.data().gameId, doc.data().phase, doc.data().nameOfLocationAtBeginningOfPhase, 
+                            doc.data().nameOfLocationAtEndOfPhase, doc.data().mustRetreatAtEndOfTurn));
                     });
                 } else {
                     resolve(null);
@@ -191,7 +195,8 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
-            let locationsRef = db.collection(self.environmentName).doc(self.locationDocumentName).collection(self.locationCollectionName);
+            let locationsRef = db.collection(self.environmentName).doc(self.locationDocumentName)
+                .collection(self.locationCollectionName);
             var query = locationsRef.where('pieceId', '==', aPieceId);
             query.get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -199,7 +204,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                         // nothing here, the deletion worked
                     }).catch((error1) => {
                         reject('unable to delete location id: ' + doc.id + ' for piece: ' + aPieceId);
-                    })
+                    });
                 });
                 resolve(true);
             }).catch((error) => {
@@ -209,6 +214,4 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
 
         return myPromise;
     }
-
-
 }
