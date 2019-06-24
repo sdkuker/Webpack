@@ -1,27 +1,20 @@
 import { PieceTypes } from '../DomainTypes';
-
+import { PieceLocation } from '../piece/PieceLocation';
 export class Piece {
     id: string;
     owningCountryName: string;
     type: PieceTypes;
-    nameOfLocationAtBeginningOfTurn: string;
-    nameOfLocationAtEndOfTurn: string | null;
-    mustRetreatAtEndOfTurn: boolean;
-    turnId: string;
     gameId: string;
+    pieceLocation: PieceLocation;
 
-    constructor(anId: string | null, aGameId: string, aTurnId: string, anOwningCountryName: string, 
-                aNameOfLocationAtBeginningOfTurn: string, aNameOfLocationAtEndOfTurn: string | null, 
-                retreatAtEndOfTurn: boolean, aType: PieceTypes) {
+    constructor(anId: string | null, aGameId: string,  anOwningCountryName: string, 
+                aType: PieceTypes, aPieceLocation : PieceLocation) {
         if (anId) {
             this.id = anId;
         }
         this.gameId = aGameId;
-        this.turnId = aTurnId;
         this.owningCountryName = anOwningCountryName;
-        this.nameOfLocationAtBeginningOfTurn = aNameOfLocationAtBeginningOfTurn;
-        this.nameOfLocationAtEndOfTurn = aNameOfLocationAtEndOfTurn;
-        this.mustRetreatAtEndOfTurn = retreatAtEndOfTurn;
         this.type = aType;
+        this.pieceLocation = aPieceLocation;
     }
 }

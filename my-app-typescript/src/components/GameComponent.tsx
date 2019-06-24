@@ -7,6 +7,7 @@ import SeasonSelector from './SeasonSelectorComponent';
 import MovesForCountryComponent from './MovesForCountryComponent';
 import { Game } from '../types/warehouses/game/Game';
 import { Turn } from '../types/warehouses/turn/Turn';
+import { TurnPhase } from '../types/warehouses/DomainTypes';
 import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
 import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
@@ -23,6 +24,7 @@ interface PropertyValues {
 }
 interface StateValues {
     selectedTurn: Turn | null;
+    selectedTurnPhase: TurnPhase | null;
     isModalOpen: boolean;
     modalTitle: string;
     modalDescription: string;
@@ -35,13 +37,17 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
     myGame: Game;
     @observable
     myTurn: Turn;
+    @observable
+    myTurnPhase: TurnPhase;
 
     constructor(props: PropertyValues) {
         super(props);
         this.turnSelected = this.turnSelected.bind(this);
+        this.turnPhaseSelected = this.turnPhaseSelected.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.state = {
             selectedTurn: null,
+            selectedTurnPhase: null,
             isModalOpen: false,
             modalTitle: '',
             modalDescription: ''
@@ -55,6 +61,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 self.myGame = selectedGame;
                 this.props.turnWarehouse.getOpenTurn(selectedGame.id).then((myOpenTurn) => {
                     self.myTurn = myOpenTurn;
+                    self.myTurnPhase = TurnPhase.Diplomatic;
                 }).catch((error) => {
                     this.setState({ isModalOpen: true, 
                                     modalTitle: 'Unable to get the open turn', 
@@ -80,6 +87,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
             theReturn.push(
                 <SeasonSelector
                     onTurnSelected={this.turnSelected}
+                    onTurnPhaseSelected={this.turnPhaseSelected}
                     myGame={this.myGame}
                     initialTurn={this.myTurn}
                     myTurnWarehouse={this.props.turnWarehouse}
@@ -92,6 +100,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                             pieceWarehouse={this.props.pieceWarehouse}
                             capitalWarehouse={this.props.capitalWarehouse}
                             turn={this.myTurn}
+                            turnPhase={this.myTurnPhase}
                         />
                     </div>
                 </div>
@@ -123,6 +132,10 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
 
     turnSelected(aTurn: Turn) {
         this.setState({ selectedTurn: aTurn });
+    }
+
+    turnPhaseSelected(aTurnPhase: TurnPhase) {
+        this.setState({ selectedTurnPhase: aTurnPhase });
     }
 
     closeModal() {

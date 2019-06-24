@@ -5,6 +5,7 @@ import { PieceTypes, TurnPhase, SeasonTypes, TurnStatus } from '.././DomainTypes
 import { MoveWarehouse } from '../move/MoveWarehouse';
 import { StaticMoveDataProvider } from '../move/StaticMoveDataProvider';
 import { Piece } from '../piece/Piece';
+import { PieceLocation } from '../piece/PieceLocation';
 
 let myGameId = '1';
 let turn1SpringId = '1';
@@ -111,10 +112,10 @@ it('Create initial moves for a turn', () => {
 
     expect.assertions(1);
 
-    const location1 = new Location('myPlace', '1', '1');
-    const piece1 = new Piece(null, '1', '1', 'England', 'London', null, false, PieceTypes.Army);
-    const location2 = new Location('yourPlace', '2', '2');
-    const piece2 = new Piece(null, '1', '1', 'France', 'Paris', null, false, PieceTypes.Fleet);
+    const location1 = new PieceLocation('l1', 'p1', '1', '1', TurnPhase.Diplomatic, 'London', null, false);
+    const piece1 = new Piece('p1', '1', 'France', PieceTypes.Army, location1);
+    const location2 = new PieceLocation('l2', 'p2', '1', '1', TurnPhase.Diplomatic, 'Paris', null, false);
+    const piece2 = new Piece('p2', '1', 'France', PieceTypes.Fleet, location2);
     const pieces = new Array<Piece>();
     pieces.push(piece1);
     pieces.push(piece2);

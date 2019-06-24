@@ -1,4 +1,4 @@
-import { MoveAction } from '../DomainTypes';
+import { MoveAction, TurnPhase } from '../DomainTypes';
 import { IGameCreator } from '../IGameCreator';
 import { GameCreator } from '../GameCreator';
 import { SeasonTypes, TurnStatus } from '../DomainTypes';
@@ -64,7 +64,7 @@ it('the piece warehouse should have the pieces', () => {
     return turnWarehouse.getTurns('1').then((turnsArray) => {
         expect(turnsArray).not.toBeNull();
         expect(turnsArray.length).toEqual(1);
-        return pieceWarehouse.getPieces(turnsArray[0]).then((allPieces) => {
+        return pieceWarehouse.getPieces(turnsArray[0], TurnPhase.Diplomatic).then((allPieces) => {
             expect(allPieces).not.toBeNull();
             expect(allPieces.length).toEqual(22);
             expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(1);
@@ -141,7 +141,7 @@ it('the second game should have turns and pieces', () => {
         expect(allTurns[0].year).toEqual(1);
         expect(allTurns[0].season).toEqual(SeasonTypes.Spring);
 
-        return pieceWarehouse.getPieces(allTurns[0]).then((allPieces) => {
+        return pieceWarehouse.getPieces(allTurns[0], TurnPhase.Diplomatic).then((allPieces) => {
             expect(allPieces).not.toBeNull();
             expect(allPieces.length).toEqual(22);
             expect(Number(allPieces[0].id)).toBeGreaterThanOrEqual(23);
@@ -177,7 +177,7 @@ it('delete a game', () => {
             let myTurn = turns[0];
             return moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).then((englishMoves) => {
                 expect(englishMoves.length).toEqual(3);
-                return pieceWarehouse.getPieces(myTurn).then((piecesArray) => {
+                return pieceWarehouse.getPieces(myTurn, TurnPhase.Diplomatic).then((piecesArray) => {
                     expect(piecesArray.length).toEqual(22);
                     return countryWarehouse.getAllCountries('1').then((countryArray) => {
                         expect(countryArray.length).toEqual(7);
@@ -190,7 +190,7 @@ it('delete a game', () => {
                                     expect(turnArray.length).toEqual(0);
                                     return moveWarehouse.getMoves('England', myTurn.id, myTurn.gameId, null).then((englishTurns2) => {
                                         expect(englishTurns2.length).toEqual(0);
-                                        return pieceWarehouse.getPieces(myTurn).then((myPieces2) => {
+                                        return pieceWarehouse.getPieces(myTurn, TurnPhase.Diplomatic).then((myPieces2) => {
                                             expect(myPieces2.length).toEqual(0);
                                             return countryWarehouse.getAllCountries('1').then((countryArray2) => {
                                                 expect(countryArray2.length).toEqual(0);

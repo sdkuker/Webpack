@@ -9,11 +9,13 @@ import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ICapitalWarehouse } from '../types/warehouses/capital/ICapitalWarehouse';
+import { TurnPhase } from '../types/warehouses/DomainTypes';
 
 interface PropValues {
   pieceWarehouse: IPieceWarehouse;
   capitalWarehouse: ICapitalWarehouse;
   turn: Turn | null;
+  turnPhase: TurnPhase | null;
 }
 interface StateValues {
   isModalOpen: boolean;
@@ -42,8 +44,8 @@ export class GameMap extends React.Component<PropValues, StateValues> {
 componentDidMount = () => {
 
   let self = this;
-  if (this.props.turn) {
-      this.props.pieceWarehouse.getPieces(this.props.turn).then((pieceArray) => {
+  if (this.props.turn && this.props.turnPhase) {
+      this.props.pieceWarehouse.getPieces(this.props.turn, this.props.turnPhase).then((pieceArray) => {
           self.pieces = pieceArray;
           // @ts-ignore
           this.props.capitalWarehouse.getCapitals(this.props.turn.id).then((capitalMap) => {

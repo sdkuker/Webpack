@@ -21,16 +21,16 @@ it('create and retrieve a piece', () => {
         expect(newPiece).not.toBeNull();
         expect(newPiece.id).not.toBeNull();
         expect(newPiece.gameId).toEqual(game1Id);
-        expect(newPiece.nameOfLocationAtBeginningOfTurn).toEqual('London');
+        expect(newPiece.pieceLocation.nameOfLocationAtBeginningOfPhase).toEqual('London');
         expect(newPiece.owningCountryName).toEqual('England');
         expect(newPiece.type).toEqual(PieceTypes.Army);
         // @ts-ignore
-        return myProvider.getPiece(newPiece.id).then((retrivedNewPiece) => {
+        return myProvider.getPiece(newPiece.id, TurnPhase.Diplomatic).then((retrivedNewPiece) => {
             expect(retrivedNewPiece).not.toBeNull();
             if (retrivedNewPiece) {
                 expect(retrivedNewPiece.id).toEqual(newPiece.id);
                 expect(retrivedNewPiece.gameId).toEqual(newPiece.gameId);
-                expect(retrivedNewPiece.nameOfLocationAtBeginningOfTurn).toEqual(newPiece.nameOfLocationAtBeginningOfTurn);
+                expect(retrivedNewPiece.pieceLocation.nameOfLocationAtBeginningOfPhase).toEqual(newPiece.pieceLocation.nameOfLocationAtBeginningOfPhase);
                 expect(retrivedNewPiece.owningCountryName).toEqual(newPiece.owningCountryName);
                 expect(retrivedNewPiece.type).toEqual(newPiece.type);
                 return myProvider.deletePiece(retrivedNewPiece).then((wasPieceDeleted) => {
@@ -39,8 +39,9 @@ it('create and retrieve a piece', () => {
                     expect(error).toBeNull();
                 })
             }
-        }).catch((error) => {
-            expect(error).toBeNull();
+            // @ts-ignore
+        }).catch((error1) => {
+            expect(error1).toBeNull();
         });
     }).catch((error) => {
         expect(error).toBeNull();
@@ -67,11 +68,11 @@ it('getting pieces for a turn', () => {
             expect(turn2Piece1).not.toBeNull();
             return myProvider.createPiece(game1, game1Turn2, 'Stillwater', 'MN', PieceTypes.Fleet).then((turn2Piece2) => {
                 expect(turn2Piece2).not.toBeNull();
-                return myProvider.getPieces(game1Turn1).then((arrayOfPieces) => {
+                return myProvider.getPieces(game1Turn1, TurnPhase.Diplomatic).then((arrayOfPieces) => {
                     expect(arrayOfPieces).not.toBeNull();
                     expect(arrayOfPieces.length).toEqual(1);
                     expect(arrayOfPieces[0].id).toEqual(turn1Piece.id);
-                    return myProvider.getPieces(game1Turn2).then((turn2ArrayOfPieces) => {
+                    return myProvider.getPieces(game1Turn2, TurnPhase.Diplomatic).then((turn2ArrayOfPieces) => {
                         expect(turn2ArrayOfPieces).not.toBeNull();
                         expect(turn2ArrayOfPieces.length).toEqual(2);
                         const arrayOfPiecesToDelete = new Array<Piece>();

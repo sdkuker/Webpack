@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ModalComponent from './ModalComponent';
-import { observer } from 'mobx-react';
+import { observer, propTypes } from 'mobx-react';
 import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
 import { SeasonTypes, TurnPhase } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/game/Game';
@@ -9,6 +9,7 @@ import { observable } from 'mobx';
 
 interface PropValues {
     onTurnSelected: Function;
+    onTurnPhaseSelected: Function;
     myGame: Game;
     initialTurn: Turn | null;
     myTurnWarehouse: ITurnWarehouse;
@@ -16,6 +17,7 @@ interface PropValues {
 
 interface StateValues {
     selectedTurn: Turn;
+    selectedTurnPhase: TurnPhase;
     isModalOpen: boolean;
     modalTitle: string;
     modalDescription: string;
@@ -35,7 +37,8 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
                 selectedTurn: props.initialTurn,
                 isModalOpen: false,
                 modalTitle: '',
-                modalDescription: ''
+                modalDescription: '',
+                selectedTurnPhase: TurnPhase.Diplomatic
             };
         } else {
             this.state = {
@@ -43,7 +46,8 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
                 selectedTurn: null,
                 isModalOpen: false,
                 modalTitle: '',
-                modalDescription: ''
+                modalDescription: '',
+                selectedTurnPhase: TurnPhase.Diplomatic
             };
         }
     }

@@ -3,7 +3,7 @@ import { Game } from '../game/Game';
 import { Piece } from '../piece/Piece';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { IPieceDataProvider } from './IPieceDataProvider';
-import { Location } from '../location/Location';
+import { TurnPhase } from '../DomainTypes';
 
 export class PieceWarehouse implements IPieceWarehouse {
 
@@ -13,13 +13,13 @@ export class PieceWarehouse implements IPieceWarehouse {
         this.dataProvider = myDataProvider;
     }
 
-    getPieces = (forTurn: Turn) => {
+    getPieces = (forTurn: Turn, forPhase: TurnPhase) => {
 
         let myPromise = new Promise<Array<Piece>>((resolve, reject) => {
-            this.dataProvider.getPieces(forTurn).then((arrayOfPieces) => {
+            this.dataProvider.getPieces(forTurn, forPhase).then((arrayOfPieces) => {
                 resolve(arrayOfPieces);
             }).catch((error) => {
-                reject('unable to get pieces for turn: ' + forTurn.id + error);
+                reject('unable to get pieces for turn: ' + forTurn.id + ' and phase: ' + forPhase + error);
             });
         });
 
@@ -44,7 +44,7 @@ export class PieceWarehouse implements IPieceWarehouse {
     deletePieces = (forTurn: Turn) => {
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
-            this.dataProvider.getPieces(forTurn).then((arrayOfPieces) => {
+            this.dataProvider.getPieces(forTurn, null).then((arrayOfPieces) => {
                 let arrayofPromises = new Array<Promise<boolean>>();
                 let index = arrayOfPieces.length;
                 while (index--) {

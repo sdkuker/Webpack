@@ -15,6 +15,7 @@ it('Get Open Season', async () => {
     const openTurn = new Turn('2', '1', 1, SeasonTypes.Fall, TurnStatus.Open, TurnPhase.Diplomatic);
 
     const onTurnsSelectedMock = jest.fn(); 
+    const onTurnPhaseSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
     const getOpenTurnMock = jest.fn();
     const generateNextTurnMock = jest.fn();
@@ -28,6 +29,7 @@ it('Get Open Season', async () => {
 
     const wrapper1 = await enzyme.mount(<SeasonSelectorComponent 
                                         onTurnSelected={onTurnsSelectedMock} 
+                                        onTurnPhaseSelected={onTurnPhaseSelectedMock}
                                         myGame={myGame} 
                                         initialTurn={openTurn}
                                         myTurnWarehouse={turnWarehouse}
@@ -55,6 +57,7 @@ it('Get Complete Season', async () => {
     const arrayOfTurns = [completeTurn];
 
     const onTurnsSelectedMock = jest.fn(); 
+    const onTurnPhaseSelectedMock = jest.fn(); 
     const getTurnMock = jest.fn();
     const getTurnsMock = jest.fn( () => Promise.resolve(arrayOfTurns));
     const getOpenTurnMock = jest.fn();
@@ -68,6 +71,7 @@ it('Get Complete Season', async () => {
 
     const wrapper1 = await enzyme.mount(<SeasonSelectorComponent 
                                         onTurnSelected={onTurnsSelectedMock} 
+                                        onTurnPhaseSelected={onTurnPhaseSelectedMock}
                                         myGame={myGame} 
                                         initialTurn={completeTurn}
                                         myTurnWarehouse={turnWarehouse}

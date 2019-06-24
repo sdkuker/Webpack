@@ -1,7 +1,7 @@
 import { Game } from './game/Game';
 import { Turn } from './turn/Turn';
 import { Piece } from './piece/Piece';
-import { LocationTypes } from './DomainTypes';
+import { LocationTypes, TurnPhase } from './DomainTypes';
 import { IGameCreator } from './IGameCreator';
 import { IGameWarehouse } from './game/IGameWarehouse';
 import { IMoveWarehouse } from './move/IMoveWarehouse';
@@ -131,7 +131,7 @@ export class GameCreator implements IGameCreator {
             arrayOfPromises.push(this.createPiece(theNewGame, initialTurn, 'Smyrna', 'Turkey', 'Army'));
 
             Promise.all(arrayOfPromises).then((values) => {
-                this.pieceWarehouse.getPieces(initialTurn).then((myPieces) => {
+                this.pieceWarehouse.getPieces(initialTurn, TurnPhase.Diplomatic).then((myPieces) => {
                     resolve(myPieces);
                 }).catch((error) => {
                     reject('unable to get pieces after creating them' + error);
