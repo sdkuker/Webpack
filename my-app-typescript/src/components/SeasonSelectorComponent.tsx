@@ -16,8 +16,6 @@ interface PropValues {
 }
 
 interface StateValues {
-    selectedTurn: Turn;
-    selectedTurnPhase: TurnPhase;
     isModalOpen: boolean;
     modalTitle: string;
     modalDescription: string;
@@ -28,17 +26,21 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
 
     @observable
     turns = new Array<Turn>();
+    @observable
+    myTurn: Turn;
+    @observable
+    myTurnPhase: TurnPhase;
 
     constructor(props: PropValues) {
         super(props);
         this.closeModal = this.closeModal.bind(this);
         if (props.initialTurn) {
+            this.myTurn = props.initialTurn;
+            this.myTurnPhase = TurnPhase.Diplomatic;
             this.state = {
-                selectedTurn: props.initialTurn,
                 isModalOpen: false,
                 modalTitle: '',
-                modalDescription: '',
-                selectedTurnPhase: TurnPhase.Diplomatic
+                modalDescription: ''
             };
         } else {
             this.state = {
@@ -70,14 +72,14 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
             this.turns.forEach((aTurn: Turn) => {
                 if (aTurn.season === SeasonTypes.Spring) {
                     // only add the year once
-                    if (this.state.selectedTurn.year === aTurn.year) {
+                    if (this.myTurn.year === aTurn.year) {
                         // tslint:disable-next-line
                         yearOptions.push(<option selected>{aTurn.year}</option>);
                     } else {
                         yearOptions.push(<option>{aTurn.year}</option>);
                     }
                 }
-                if (aTurn.year === this.state.selectedTurn.year) {
+                if (aTurn.year === this.myTurn.year) {
                     if (aTurn.season === SeasonTypes.Spring) {
                         hasSpringTurn = true;
                     } else {
@@ -90,7 +92,7 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
         let seasonOptions: any = [];
         for (let aType in SeasonTypes) {
             if (SeasonTypes.hasOwnProperty(aType)) {
-                if (this.state.selectedTurn.season === SeasonTypes[aType]) {
+                if (this.myTurn.season === SeasonTypes[aType]) {
                     // tslint:disable-next-line
                     seasonOptions.push(<option selected key={aType}>{aType}</option>);
                 } else {
@@ -105,16 +107,12 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
         let phaseOptions: any = [];
         for (let aType in TurnPhase) {
             if (TurnPhase.hasOwnProperty(aType)) {
-                if (this.state.selectedTurn.phase === TurnPhase[aType]) {
+                if (this.myTurnPhase === TurnPhase[aType]) {
                     // tslint:disable-next-line
                     phaseOptions.push(<option selected key={aType}>{aType}</option>);
                 } else {
                     if (aType === 'Diplomatic' || aType === 'OrderWriting' || aType === 'OrderResolution') {
                         phaseOptions.push(<option key={aType}>{aType}</option>);
-                    } else {
-                        if (this.state.selectedTurn.season === SeasonTypes.Fall) {
-                            phaseOptions.push(<option key={aType}>{aType}</option>);
-                        }
                     }
                 }
             }
@@ -160,9 +158,9 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
         this.props.myTurnWarehouse.getTurn(
             this.props.myGame.id,
             parseInt(myValue, 10),
-            this.state.selectedTurn.season).then((mySelectedTurn) => {
+            this.myTurn.season).then((mySelectedTurn) => {
                 if (mySelectedTurn) {
-                    this.setState({ selectedTurn: mySelectedTurn });
+                    this.myTurn = mySelectedTurn;
                     this.props.onTurnSelected(mySelectedTurn);
                 }
             }).catch((error) => {
@@ -185,10 +183,10 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
         }
         this.props.myTurnWarehouse.getTurn(
             this.props.myGame.id,
-            this.state.selectedTurn.year,
+            this.myTurn.year,
             mySeason).then((mySelectedTurn) => {
                 if (mySelectedTurn) {
-                    this.setState({ selectedTurn: mySelectedTurn });
+                    this.myTurn = mySelectedTurn;
                     this.props.onTurnSelected(mySelectedTurn);
                 }
             }).catch((error) => {
@@ -202,26 +200,22 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
 
     phaseSelected(event: React.FormEvent<HTMLSelectElement>) {
         const myValue: string = event.currentTarget.value;
-        let myPhase: TurnPhase;
-        myPhase = TurnPhase.Diplomatic;
         if (myValue === 'OrderWriting') {
-            myPhase = TurnPhase.OrderWriting;
+            this.myTurnPhase = TurnPhase.OrderWriting;
         } else {
             if (myValue === 'OrderResolution') {
-                myPhase = TurnPhase.OrderResolution;
+                this.myTurnPhase = TurnPhase.OrderResolution;
             } else {
                 if (myValue === 'RetreatAndDisbanding') {
-                    myPhase = TurnPhase.RetreatAndDisbanding;
+                    this.myTurnPhase = TurnPhase.RetreatAndDisbanding;
                 } else {
                     if (myValue === 'GainingAndLosingUnits') {
-                        myPhase = TurnPhase.GainingAndLosingUnits;
+                        this.myTurnPhase = TurnPhase.GainingAndLosingUnits;
                     }
                 }
             }
 
         }
-
-        this.state.selectedTurn.phase = myPhase;
         // figure out exactly what to do when these phases change...
         // at a minimum, persist to the db but also trigger some lambda functions
         // probably to do order resolution etc.

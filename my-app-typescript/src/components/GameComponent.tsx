@@ -23,8 +23,6 @@ interface PropertyValues {
     gameId: string;
 }
 interface StateValues {
-    selectedTurn: Turn | null;
-    selectedTurnPhase: TurnPhase | null;
     isModalOpen: boolean;
     modalTitle: string;
     modalDescription: string;
@@ -46,8 +44,6 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
         this.turnPhaseSelected = this.turnPhaseSelected.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.state = {
-            selectedTurn: null,
-            selectedTurnPhase: null,
             isModalOpen: false,
             modalTitle: '',
             modalDescription: ''
@@ -131,11 +127,13 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
     }
 
     turnSelected(aTurn: Turn) {
-        this.setState({ selectedTurn: aTurn });
+        // this.setState({ selectedTurn: aTurn });
+        this.myTurn = aTurn;
     }
 
     turnPhaseSelected(aTurnPhase: TurnPhase) {
-        this.setState({ selectedTurnPhase: aTurnPhase });
+        // this.setState({ selectedTurnPhase: aTurnPhase });
+        this.myTurnPhase = aTurnPhase;
     }
 
     closeModal() {
