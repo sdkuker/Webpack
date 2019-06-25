@@ -60,8 +60,8 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
             if (selectedGame) {
                 self.myGame = selectedGame;
                 this.props.turnWarehouse.getOpenTurn(selectedGame.id).then((myOpenTurn) => {
-                    self.myTurn = myOpenTurn;
                     self.myTurnPhase = TurnPhase.Diplomatic;
+                    self.myTurn = myOpenTurn;
                 }).catch((error) => {
                     this.setState({ isModalOpen: true, 
                                     modalTitle: 'Unable to get the open turn', 
