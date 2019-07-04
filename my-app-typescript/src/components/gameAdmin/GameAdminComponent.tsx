@@ -79,6 +79,8 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
                 theReturn.push(
                     <GameAdminGameDetailsComponent
                         whenOpenGameClicked={this.openGame}
+                        whenNextTurnClicked={this.generateNextTurn}
+                        whenNextPhaseClicked={this.generateNextPhase}
                         onGameNameChange={this.nameChanged}
                         game={this.myGame}
                         turnWarehouse={this.props.turnWarehouse}
@@ -118,6 +120,10 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
 
     generateNextTurn() {
         console.log('next turn button clicked');
+    }
+
+    generateNextPhase() {
+        console.log('next phase button clicked');
     }
 
     openModal() {
