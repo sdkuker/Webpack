@@ -37,6 +37,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         this.enableGenerateNextTurnButton = this.enableGenerateNextTurnButton.bind(this);
         this.enableGenerateNextPhaseButton = this.enableGenerateNextPhaseButton.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.generateNextPhaseTooltipText = this.generateNextPhaseTooltipText.bind(this);
         this.state = {
             gameName: this.props.game.name,
             isModalOpen: false,
@@ -58,6 +59,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         // tslint:disable-next-line
         let generateButtons: any = [];
         let self = this;
+        let nextPhaseTooltipText = this.generateNextPhaseTooltipText(this.openTurn);
 
         if (self.enableGenerateNextTurnButton(this.openTurn)) {
             generateButtons.push((
@@ -76,7 +78,12 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         if (self.enableGenerateNextPhaseButton(this.openTurn)) {
             generateButtons.push((
                 <div className="brn-group mr-2" role="group">
-                <button className="btn btn-outline-dark" >Generate Next Phase</button>
+                    <button 
+                        className="btn btn-outline-dark" 
+                        data-toggle="tooltip" 
+                        title={nextPhaseTooltipText}
+                    >Generate Next Phase
+                    </button>
                 </div>
             ));
         } else {
@@ -196,6 +203,37 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         } else {
             return false;
         }
+    }
+
+    generateNextPhaseTooltipText(aTurn: Turn) {
+        let theText = 'next phase is: ';
+
+        if (aTurn) {
+            if (TurnPhase.Diplomatic === aTurn.phase) {
+                theText = theText.concat(TurnPhase.OrderWriting);
+            } else {
+                if (TurnPhase.OrderWriting === aTurn.phase) {
+                    theText = theText.concat(TurnPhase.OrderResolution);
+                } else {
+                    if (TurnPhase.OrderResolution === aTurn.phase) {
+                        theText = theText.concat(TurnPhase.RetreatAndDisbanding);
+                    } else {
+                        if (TurnPhase.RetreatAndDisbanding === aTurn.phase) {
+                            if (SeasonTypes.Spring === aTurn.season) {
+                                theText = theText.concat('starting the fall turn');
+                            } else {
+                                theText = theText.concat(TurnPhase.GainingAndLosingUnits);
+                            }
+                        } else {
+                            if (TurnPhase.GainingAndLosingUnits === aTurn.phase) {
+                                theText = theText.concat('starting the spring turn');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return theText;
     }
 }
 
