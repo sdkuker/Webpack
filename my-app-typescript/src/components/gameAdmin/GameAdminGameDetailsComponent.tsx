@@ -10,7 +10,6 @@ import { SeasonTypes, TurnPhase } from '../../types/warehouses/DomainTypes';
 interface PropValues {
     onGameNameChange: Function;
     whenOpenGameClicked: Function;
-    whenNextTurnClicked: Function;
     whenNextPhaseClicked: Function;
     game: Game;
     turnWarehouse: ITurnWarehouse;
@@ -32,9 +31,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         this.gameNameOnBlurHandler = this.gameNameOnBlurHandler.bind(this);
         this.gameNameOnChangeHandler = this.gameNameOnChangeHandler.bind(this);
         this.openGameClicked = this.openGameClicked.bind(this);
-        this.generateNextTurnClicked = this.generateNextTurnClicked.bind(this);
         this.generateNextPhaseClicked = this.generateNextPhaseClicked.bind(this);
-        this.enableGenerateNextTurnButton = this.enableGenerateNextTurnButton.bind(this);
         this.enableGenerateNextPhaseButton = this.enableGenerateNextPhaseButton.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.generateNextPhaseTooltipText = this.generateNextPhaseTooltipText.bind(this);
@@ -61,25 +58,12 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         let self = this;
         let nextPhaseTooltipText = this.generateNextPhaseTooltipText(this.openTurn);
 
-        if (self.enableGenerateNextTurnButton(this.openTurn)) {
-            generateButtons.push((
-                <div className="brn-group mr-2" role="group">
-                <button className="btn btn-outline-dark" >Generate Next Turn</button>
-                </div>
-            ));
-        } else {
-            generateButtons.push((
-                <div className="brn-group mr-2" role="group">
-                <button className="btn btn-outline-dark" disabled >Generate Next Turn</button>
-                </div>
-            ));
-        }
-
         if (self.enableGenerateNextPhaseButton(this.openTurn)) {
             generateButtons.push((
                 <div className="brn-group mr-2" role="group">
                     <button 
                         className="btn btn-outline-dark" 
+                        onClick={this.generateNextPhaseClicked}
                         data-toggle="tooltip" 
                         title={nextPhaseTooltipText}
                     >Generate Next Phase
@@ -152,37 +136,12 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         this.props.whenOpenGameClicked();
     }
 
-    generateNextTurnClicked(event: React.MouseEvent<HTMLButtonElement>) {
-        this.props.whenNextTurnClicked();
-    }
-
     generateNextPhaseClicked(event: React.MouseEvent<HTMLButtonElement>) {
         this.props.whenNextPhaseClicked();
     }
 
     closeModal() {
         this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
-    }
-
-    enableGenerateNextTurnButton(aTurn: Turn) {
-        if (aTurn) {
-            if (SeasonTypes.Spring === aTurn.season) {
-                if (TurnPhase.RetreatAndDisbanding === aTurn.phase) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                if (TurnPhase.GainingAndLosingUnits === aTurn.phase) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } else {
-            return false;
-        }
-
     }
 
     enableGenerateNextPhaseButton(aTurn: Turn) {

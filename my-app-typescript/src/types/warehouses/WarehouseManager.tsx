@@ -19,6 +19,8 @@ import { IPieceWarehouse } from './piece/IPieceWarehouse';
 import { PieceWarehouse } from './piece/PieceWarehouse';
 import { StaticPieceDataProvider } from './piece/StaticPieceDataProvider';
 import { FirebasePieceDataProvider } from './piece/FirebasePieceDataProvider';
+import { AwsWarehouse } from './aws/AwsWarehouse';
+import { IAwsWarehouse } from './aws/IAwsWarehouse';
 
 import { ICapitalWarehouse } from './capital/ICapitalWarehouse';
 import { CapitalWarehouse } from './capital/CapitalWarehouse';
@@ -39,6 +41,7 @@ export class WarehouseManager {
     pieceWarehouse: IPieceWarehouse;
     capitalWarehouse: ICapitalWarehouse;
     gameCreator: IGameCreator;
+    awsWarehouse: IAwsWarehouse;
 
     constructor() {
 
@@ -87,6 +90,12 @@ export class WarehouseManager {
             this.capitalWarehouse = new CapitalWarehouse(new StaticCapitalDataProvider(null, null));
         } else {
             this.capitalWarehouse = new CapitalWarehouse(new FirebaseCapitalDataProvider(myEnvironment));
+        }
+
+        if (myConfig.awsEnvironment === 'REMOTE') {
+            this.awsWarehouse = new AwsWarehouse(myConfig.awsRemoteConnectionURL);
+        } else {
+            this.awsWarehouse = new AwsWarehouse(myConfig.awsLocalConnectionURL);
         }
 
         this.gameCreator = new GameCreator(this.gameWarehouse, this.turnWarehouse,

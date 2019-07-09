@@ -3,6 +3,7 @@ import ModalComponent from '../ModalComponent';
 import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 import { Game } from '../../types/warehouses/game/Game';
+import { IAwsWarehouse } from '../../types/warehouses/aws/IAwsWarehouse';
 import { IGameWarehouse } from '../../types/warehouses/game/IGameWarehouse';
 import { ITurnWarehouse } from '../../types/warehouses/turn/ITurnWarehouse';
 import { ICountryWarehouse } from '../../types/warehouses/country/ICountryWarehouse';
@@ -22,6 +23,7 @@ interface PropValues {
     gameWarehouse: IGameWarehouse;
     turnWarehouse: ITurnWarehouse;
     countryWarehouse: ICountryWarehouse;
+    awsWarehouse: IAwsWarehouse;
 }
 
 @observer
@@ -33,10 +35,10 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
         this.nameChanged = this.nameChanged.bind(this);
-        this.generateNextTurn = this.generateNextTurn.bind(this);
         this.openGame = this.openGame.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.generateNextPhase = this.generateNextPhase.bind(this);
         this.state = {
             redirectPath: null,
             isModalOpen: false,
@@ -79,7 +81,6 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
                 theReturn.push(
                     <GameAdminGameDetailsComponent
                         whenOpenGameClicked={this.openGame}
-                        whenNextTurnClicked={this.generateNextTurn}
                         whenNextPhaseClicked={this.generateNextPhase}
                         onGameNameChange={this.nameChanged}
                         game={this.myGame}
@@ -118,12 +119,8 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
         this.setState({ redirectPath: 'openGame' });
     }
 
-    generateNextTurn() {
-        console.log('next turn button clicked');
-    }
-
     generateNextPhase() {
-        console.log('next phase button clicked');
+        this.props.awsWarehouse.generateNextPhase(this.props.gameId);
     }
 
     openModal() {
