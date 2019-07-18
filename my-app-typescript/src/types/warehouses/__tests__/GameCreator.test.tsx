@@ -20,9 +20,11 @@ import { StaticCountryDataProvider } from '../country/StaticCountryDataProvider'
 import { ICapitalWarehouse } from '../capital/ICapitalWarehouse';
 import { CapitalWarehouse } from '../capital/CapitalWarehouse';
 import { StaticCapitalDataProvider } from '../capital/StaticCapitalDataProvider';
+import { StaticAwsWarehouse } from '../aws/StaticAwsWarehouse';
 
+let myAwsWarehouse = new StaticAwsWarehouse();
 let gameWarehouse: IGameWarehouse = new GameWarehouse(new StaticGameDataProvider(null));
-let turnWarehouse: ITurnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
+let turnWarehouse: ITurnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null), myAwsWarehouse);
 let moveWarehouse: IMoveWarehouse = new MoveWarehouse(new StaticMoveDataProvider());
 let pieceWarehouse: IPieceWarehouse = new PieceWarehouse(new StaticPieceDataProvider());
 let countryWarehouse: ICountryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);

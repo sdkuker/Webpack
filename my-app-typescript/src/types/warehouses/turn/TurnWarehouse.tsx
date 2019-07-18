@@ -1,14 +1,21 @@
 import { Turn } from './Turn';
 import { SeasonTypes, TurnStatus, TurnPhase } from '../DomainTypes';
 import { ITurnWarehouse } from './ITurnWarehouse';
+import { IAwsWarehouse } from '../aws/IAwsWarehouse';
 import { ITurnDataProvider } from './ITurnDataProvider';
+import { observable } from 'mobx';
 
 export class TurnWarehouse implements ITurnWarehouse {
 
     dataProvider: ITurnDataProvider;
+    awsWarehouse: IAwsWarehouse;
 
-    constructor(aDataProvider: ITurnDataProvider) {
+    @observable
+    openTurn: Turn;
+
+    constructor(aDataProvider: ITurnDataProvider, anAwsWarehouse: IAwsWarehouse) {
         this.dataProvider = aDataProvider;
+        this.awsWarehouse = anAwsWarehouse;
     }
 
     getTurns = (aGameId: string) => {
@@ -57,9 +64,10 @@ export class TurnWarehouse implements ITurnWarehouse {
                     // @ts-ignore
                     theReturn = highestTurn;
                 }
-                resolve(theReturn);
+                this.openTurn = theReturn;
+                resolve(this.openTurn);
             }).catch((error) => {
-                reject('unable to get turns to determin the open turn: ' + aGameId + error);
+                reject('unable to get turns to determine the open turn: ' + aGameId + error);
             });
         });
 
@@ -92,6 +100,23 @@ export class TurnWarehouse implements ITurnWarehouse {
                 resolve(wasTurnDeleted);
             }).catch((error) => {
                 reject('error deleting a turn' + error);
+            });
+        });
+
+        return myPromise;
+    }
+
+    generateNextPhase = (aGameId: string) => {
+
+        let myPromise = new Promise<boolean>((resolve, reject) => {
+            this.awsWarehouse.generateNextPhase(aGameId).then((wasPhaseGenerated) => {
+                this.getOpenTurn(aGameId).then((theOpenTurn) => {
+                    resolve(wasPhaseGenerated);
+                }).catch((error1) => {
+                    reject('unable to get open turn after generating new phase: ' +  error1);
+                });
+            }).catch((error) => {
+                reject('error generating the next phase for game: ' + aGameId + error);
             });
         });
 

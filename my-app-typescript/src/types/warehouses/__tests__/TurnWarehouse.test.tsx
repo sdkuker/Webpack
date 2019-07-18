@@ -2,11 +2,13 @@ import { Turn } from '.././turn/Turn';
 import { SeasonTypes, TurnStatus, TurnPhase } from '.././DomainTypes';
 import { TurnWarehouse } from '../turn/TurnWarehouse';
 import { StaticTurnDataProvider } from '../turn/StaticTurnDataProvider';
+import { StaticAwsWarehouse } from '../aws/StaticAwsWarehouse';
 
 let myTurnWarehouse: TurnWarehouse;
 
 beforeAll(() => {
     const myDataProvider = new StaticTurnDataProvider(null, null);
+    const myAwsWarehouse = new StaticAwsWarehouse();
     return myDataProvider.createTurn('1', SeasonTypes.Spring, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success) => {
         return myDataProvider.createTurn('1', SeasonTypes.Fall, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success2) => {
             return myDataProvider.createTurn('1', SeasonTypes.Spring, 2, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success3) => {
@@ -14,7 +16,7 @@ beforeAll(() => {
                     return myDataProvider.createTurn('2', SeasonTypes.Spring, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success5) => {
                         return myDataProvider.createTurn('2', SeasonTypes.Fall, 1, TurnStatus.Open, TurnPhase.Diplomatic).then((success6) => {
                             return myDataProvider.createTurn('3', SeasonTypes.Spring, 1, TurnStatus.Complete, TurnPhase.GainingAndLosingUnits).then((success7) => {
-                                 myTurnWarehouse = new TurnWarehouse(myDataProvider);
+                                 myTurnWarehouse = new TurnWarehouse(myDataProvider, myAwsWarehouse);
                             })
                         })
                     })

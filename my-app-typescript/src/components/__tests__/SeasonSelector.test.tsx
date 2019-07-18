@@ -19,13 +19,16 @@ it('Get Open Season', async () => {
     const getTurnMock = jest.fn();
     const getOpenTurnMock = jest.fn();
     const generateNextTurnMock = jest.fn();
+    const generateNextPhaseMock = jest.fn();
     const deleteTurnMock = jest.fn();
     const getTurnsMock = jest.fn( () => Promise.resolve([completeTurn,openTurn]));
 
     const turnWarehouse: ITurnWarehouse = { getTurns: getTurnsMock, getTurn: getTurnMock, 
                                             getOpenTurn: getOpenTurnMock, 
                                             generateNextTurn: generateNextTurnMock,
-                                            deleteTurn: deleteTurnMock};
+                                            generateNextPhase: generateNextPhaseMock,
+                                            deleteTurn: deleteTurnMock,
+                                            openTurn: openTurn};
 
     const wrapper1 = await enzyme.mount(<SeasonSelectorComponent 
                                         onTurnSelected={onTurnsSelectedMock} 
@@ -62,12 +65,15 @@ it('Get Complete Season', async () => {
     const getTurnsMock = jest.fn( () => Promise.resolve(arrayOfTurns));
     const getOpenTurnMock = jest.fn();
     const generateNextTurnMock = jest.fn();
+    const generateNextPhaseMock = jest.fn();
     const deleteTurnMock = jest.fn();
 
     const turnWarehouse: ITurnWarehouse = { getTurns: getTurnsMock, getTurn: getTurnMock, 
                                             getOpenTurn: getOpenTurnMock, 
                                             generateNextTurn: generateNextTurnMock,
-                                            deleteTurn: deleteTurnMock};
+                                            generateNextPhase: generateNextPhaseMock,
+                                            deleteTurn: deleteTurnMock,
+                                            openTurn: openTurn};
 
     const wrapper1 = await enzyme.mount(<SeasonSelectorComponent 
                                         onTurnSelected={onTurnsSelectedMock} 

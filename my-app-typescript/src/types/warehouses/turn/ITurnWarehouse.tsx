@@ -6,5 +6,7 @@ export interface ITurnWarehouse {
     getTurn (aGameId : string, aYear : number, aSeason : SeasonTypes) : Promise<Turn | null>;
     getOpenTurn (aGameId : string) : Promise<Turn>;
     generateNextTurn (aGameId: string) : Promise<Turn>;
+    generateNextPhase (aGameId: string) : Promise<boolean>;
     deleteTurn(aTurn: Turn): Promise<boolean>;
+    openTurn: Turn;
 } 

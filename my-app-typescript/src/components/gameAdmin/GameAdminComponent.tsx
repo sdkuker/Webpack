@@ -3,7 +3,6 @@ import ModalComponent from '../ModalComponent';
 import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 import { Game } from '../../types/warehouses/game/Game';
-import { IAwsWarehouse } from '../../types/warehouses/aws/IAwsWarehouse';
 import { IGameWarehouse } from '../../types/warehouses/game/IGameWarehouse';
 import { ITurnWarehouse } from '../../types/warehouses/turn/ITurnWarehouse';
 import { ICountryWarehouse } from '../../types/warehouses/country/ICountryWarehouse';
@@ -16,6 +15,7 @@ interface StateValues {
     isModalOpen: boolean;
     modalTitle: string;
     modalDescription: string;
+    isProcessingNextPhase: boolean;
 }
 
 interface PropValues {
@@ -23,7 +23,6 @@ interface PropValues {
     gameWarehouse: IGameWarehouse;
     turnWarehouse: ITurnWarehouse;
     countryWarehouse: ICountryWarehouse;
-    awsWarehouse: IAwsWarehouse;
 }
 
 @observer
@@ -43,7 +42,8 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
             redirectPath: null,
             isModalOpen: false,
             modalTitle: '',
-            modalDescription: ''
+            modalDescription: '',
+            isProcessingNextPhase: false
         };
     }
 
@@ -54,9 +54,11 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
                 self.myGame = selectedGame;
             }
         }).catch((error) => {
-            this.setState({ isModalOpen: true, 
-                            modalTitle: 'error getting game for ID: ' + this.props.gameId , 
-                            modalDescription: error });
+            this.setState({
+                isModalOpen: true,
+                modalTitle: 'error getting game for ID: ' + this.props.gameId,
+                modalDescription: error
+            });
         });
     }
 
@@ -85,6 +87,7 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
                         onGameNameChange={this.nameChanged}
                         game={this.myGame}
                         turnWarehouse={this.props.turnWarehouse}
+                        isProcessingNextPhase={this.state.isProcessingNextPhase}
                     />
                 );
                 theReturn.push(
@@ -120,7 +123,15 @@ class GameAdminComponent extends React.Component<PropValues, StateValues> {
     }
 
     generateNextPhase() {
-        this.props.awsWarehouse.generateNextPhase(this.props.gameId);
+        this.setState((state, props) => {
+            return { isProcessingNextPhase: true };
+        });
+
+        this.props.turnWarehouse.generateNextPhase(this.props.gameId).then((isDone) => {
+            this.setState((state, props) => {
+                return { isProcessingNextPhase: false };
+            });
+        });
     }
 
     openModal() {

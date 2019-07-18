@@ -13,6 +13,7 @@ interface PropValues {
     whenNextPhaseClicked: Function;
     game: Game;
     turnWarehouse: ITurnWarehouse;
+    isProcessingNextPhase: boolean;
 }
 
 interface StateValues {
@@ -24,8 +25,6 @@ interface StateValues {
 @observer
 class GameAdminGameDetailsComponent extends React.Component<PropValues, StateValues> {
 
-    @observable
-    openTurn: Turn;
     constructor(props: PropValues) {
         super(props);
         this.gameNameOnBlurHandler = this.gameNameOnBlurHandler.bind(this);
@@ -46,7 +45,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
     componentDidMount = () => {
         let self = this;
         this.props.turnWarehouse.getOpenTurn(this.props.game.id).then((anOpenTurn) => {
-            self.openTurn = anOpenTurn;
+           // self.openTurn = anOpenTurn;
         }).catch((error) => {
             this.setState({ isModalOpen: true, modalTitle: 'Error getting the open turn', modalDescription: error });
         });
@@ -56,9 +55,15 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
         // tslint:disable-next-line
         let generateButtons: any = [];
         let self = this;
-        let nextPhaseTooltipText = this.generateNextPhaseTooltipText(this.openTurn);
+        let nextPhaseTooltipText = this.generateNextPhaseTooltipText(this.props.turnWarehouse.openTurn);
 
-        if (self.enableGenerateNextPhaseButton(this.openTurn)) {
+        // tslint:disable-next-line
+        let spinner: any = [];
+        if (self.props.isProcessingNextPhase) {
+            spinner.push(<div className="spinner-border text-primary"/>);
+        }
+
+        if (self.enableGenerateNextPhaseButton(this.props.turnWarehouse.openTurn)) {
             generateButtons.push((
                 <div className="brn-group mr-2" role="group">
                     <button 
@@ -94,11 +99,11 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                 <h2>Current Turn</h2>
                 <p className="row">
                     <b className="col-md-1">Year: </b>
-                    {this.openTurn ? this.openTurn.year : 'no open turn'}
+                    {this.props.turnWarehouse.openTurn ? this.props.turnWarehouse.openTurn.year : 'no open turn'}
                     <b className="col-md-1">Season: </b>
-                    {this.openTurn ? this.openTurn.season : 'no open turn'}
+                    {this.props.turnWarehouse.openTurn ? this.props.turnWarehouse.openTurn.season : 'no open turn'}
                     <b className="col-md-1">Phase: </b>
-                    {this.openTurn ? this.openTurn.phase : 'no open turn'}
+                    {this.props.turnWarehouse.openTurn ? this.props.turnWarehouse.openTurn.phase : 'no open turn'}
                 </p>
                 <div className="btn-toolbar" role="toolbar">
                     <div className="brn-group mr-2" role="group">
@@ -109,6 +114,7 @@ class GameAdminGameDetailsComponent extends React.Component<PropValues, StateVal
                         </button>
                     </div>
                     {generateButtons}
+                    {spinner}
                 </div>
                 <div>
                     <ModalComponent

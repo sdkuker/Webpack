@@ -18,7 +18,6 @@ export class AwsWarehouse implements IAwsWarehouse {
             axios.get(myCompleteURL, {timeout: 100000}).then((response) => {
                 resolve(true);
             }).catch((error) => {
-                console.error(error);
                 reject('unable to make a successful all to aws URL: ' + this.awsURL);
             });
         });

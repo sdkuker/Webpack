@@ -21,6 +21,7 @@ import { StaticPieceDataProvider } from './piece/StaticPieceDataProvider';
 import { FirebasePieceDataProvider } from './piece/FirebasePieceDataProvider';
 import { AwsWarehouse } from './aws/AwsWarehouse';
 import { IAwsWarehouse } from './aws/IAwsWarehouse';
+import { StaticAwsWarehouse } from './aws/StaticAwsWarehouse';
 
 import { ICapitalWarehouse } from './capital/ICapitalWarehouse';
 import { CapitalWarehouse } from './capital/CapitalWarehouse';
@@ -62,12 +63,6 @@ export class WarehouseManager {
             this.gameWarehouse = new GameWarehouse(new FirebaseGameDataProvider(myEnvironment));
         }
 
-        if (myConfig.turnWarehouseDataProvider === 'static') {
-            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null));
-        } else {
-            this.turnWarehouse = new TurnWarehouse(new FirebaseTurnDataProvider(myEnvironment));
-        }
-
         if (myConfig.countryWarehouseDataProvider === 'static') {
             this.countryWarehouse = new CountryWarehouse(new StaticCountryDataProvider(null, null), null);
         } else {
@@ -96,6 +91,12 @@ export class WarehouseManager {
             this.awsWarehouse = new AwsWarehouse(myConfig.awsRemoteConnectionURL);
         } else {
             this.awsWarehouse = new AwsWarehouse(myConfig.awsLocalConnectionURL);
+        }
+
+        if (myConfig.turnWarehouseDataProvider === 'static') {
+            this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null), this.awsWarehouse);
+        } else {
+            this.turnWarehouse = new TurnWarehouse(new FirebaseTurnDataProvider(myEnvironment), this.awsWarehouse);
         }
 
         this.gameCreator = new GameCreator(this.gameWarehouse, this.turnWarehouse,
