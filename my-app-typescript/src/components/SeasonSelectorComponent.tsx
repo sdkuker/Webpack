@@ -36,7 +36,7 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
         this.closeModal = this.closeModal.bind(this);
         if (props.initialTurn) {
             this.myTurn = props.initialTurn;
-            this.myTurnPhase = TurnPhase.Diplomatic;
+            this.myTurnPhase = props.initialTurn.phase;
             this.state = {
                 isModalOpen: false,
                 modalTitle: '',
@@ -105,14 +105,23 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
 
         // tslint:disable-next-line
         let phaseOptions: any = [];
-        for (let aType in TurnPhase) {
-            if (TurnPhase.hasOwnProperty(aType)) {
-                if (this.myTurnPhase === TurnPhase[aType]) {
-                    // tslint:disable-next-line
-                    phaseOptions.push(<option selected key={aType}>{aType}</option>);
+        if (this.myTurn.phase === TurnPhase.Diplomatic) {
+            phaseOptions.push(<option selected key={'Diplomatic'}>Diplomatic</option>);
+        } else {
+            phaseOptions.push(<option key={'Diplomatic'}>Diplomatic</option>);
+            if (this.myTurn.phase === TurnPhase.OrderWriting) {
+                phaseOptions.push(<option selected key={'OrderWriting'}>Order Writing</option>);
+            } else {
+                phaseOptions.push(<option key={'OrderWriting'}>Diplomatic</option>);
+                if (this.myTurn.phase === TurnPhase.OrderResolution) {
+                    phaseOptions.push(<option selected key={'OrderResolution'}>Order Resolution</option>);
                 } else {
-                    if (aType === 'Diplomatic' || aType === 'OrderWriting' || aType === 'OrderResolution') {
-                        phaseOptions.push(<option key={aType}>{aType}</option>);
+                    phaseOptions.push(<option key={'OrderResolution'}>Diplomatic</option>);
+                    if (this.myTurn.phase === TurnPhase.RetreatAndDisbanding) {
+                        phaseOptions.push(<option selected key={'RetreatAndDisbanding'}>Retreat and Disband</option>);
+                    } else {
+                        phaseOptions.push(<option key={'RetreatAndDisbanding'}>Diplomatic</option>);
+                        phaseOptions.push(<option selected key={'GainingAndLosingUnits'}>Gain and Lose Units</option>);
                     }
                 }
             }
@@ -200,17 +209,21 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
 
     phaseSelected(event: React.FormEvent<HTMLSelectElement>) {
         const myValue: string = event.currentTarget.value;
-        if (myValue === 'OrderWriting') {
+        if (myValue === 'Order Writing') {
             this.myTurnPhase = TurnPhase.OrderWriting;
         } else {
-            if (myValue === 'OrderResolution') {
+            if (myValue === 'Order Resolution') {
                 this.myTurnPhase = TurnPhase.OrderResolution;
             } else {
-                if (myValue === 'RetreatAndDisbanding') {
+                if (myValue === 'Retreat and Disband') {
                     this.myTurnPhase = TurnPhase.RetreatAndDisbanding;
                 } else {
-                    if (myValue === 'GainingAndLosingUnits') {
+                    if (myValue === 'Gain and Lose Units') {
                         this.myTurnPhase = TurnPhase.GainingAndLosingUnits;
+                    } else {
+                        if (myValue === 'Diplomatic') {
+                            this.myTurnPhase = TurnPhase.Diplomatic;
+                        }
                     }
                 }
             }
