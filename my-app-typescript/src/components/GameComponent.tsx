@@ -101,13 +101,16 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                     </div>
                 </div>
             );
-            theReturn.push(
-                <MovesForCountryComponent
-                    myGame={this.myGame}
-                    moveWarehouse={this.props.moveWarehouse}
-                    myTurn={this.myTurn}
-                />
-            );
+            if (this.myTurn && 
+                (this.myTurn.phase === TurnPhase.OrderWriting  || this.myTurn.phase === TurnPhase.OrderResolution)) {
+                theReturn.push(
+                    <MovesForCountryComponent
+                        myGame={this.myGame}
+                        moveWarehouse={this.props.moveWarehouse}
+                        myTurn={this.myTurn}
+                    />
+                );
+            }
         }
         return (
             <div className="container">

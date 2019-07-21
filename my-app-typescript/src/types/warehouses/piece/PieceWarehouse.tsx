@@ -3,7 +3,7 @@ import { Game } from '../game/Game';
 import { Piece } from '../piece/Piece';
 import { IPieceWarehouse } from './IPieceWarehouse';
 import { IPieceDataProvider } from './IPieceDataProvider';
-import { TurnPhase } from '../DomainTypes';
+import { TurnPhase, PieceTypes } from '../DomainTypes';
 
 export class PieceWarehouse implements IPieceWarehouse {
 
@@ -31,7 +31,7 @@ export class PieceWarehouse implements IPieceWarehouse {
 
         let myPromise = new Promise<Piece>((resolve, reject) => {
             this.dataProvider.createPiece(  forGame, forTurn, theLocationName, 
-                                            countryName, type).then((newPiece) => {
+                                            countryName, PieceTypes[type]).then((newPiece) => {
                 resolve(newPiece);
             }).catch((error) => {
                 reject('unable to create a piece' + error);
