@@ -121,7 +121,8 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
                         phaseOptions.push(<option selected key={'RetreatAndDisbanding'}>RetreatAndDisbanding</option>);
                     } else {
                         phaseOptions.push(<option key={'RetreatAndDisbanding'}>RetreatAndDisbanding</option>);
-                        phaseOptions.push(<option selected key={'GainingAndLosingUnits'}>GainingAndLosingUnits</option>);
+                        phaseOptions.push((
+                            <option selected key={'GainingAndLosingUnits'}>GainingAndLosingUnits</option>));
                     }
                 }
             }

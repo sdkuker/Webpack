@@ -125,7 +125,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 </div>
             );
             if (this.myTurn && 
-                (this.myTurn.phase === TurnPhase.OrderWriting  || this.myTurn.phase === TurnPhase.OrderResolution)) {
+                (this.myTurnPhase === TurnPhase.OrderWriting  || this.myTurnPhase === TurnPhase.OrderResolution)) {
                 theReturn.push(
                     <MovesForCountryComponent
                         myGame={this.myGame}
