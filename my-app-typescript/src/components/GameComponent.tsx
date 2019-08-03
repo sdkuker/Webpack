@@ -13,6 +13,8 @@ import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { IGameWarehouse } from '../types/warehouses/game/IGameWarehouse';
 import { ICapitalWarehouse } from '../types/warehouses/capital/ICapitalWarehouse';
+import { Piece } from '../types/warehouses/piece/Piece';
+import { Capital } from '../types/warehouses/capital/Capital';
 
 interface PropertyValues {
     turnWarehouse: ITurnWarehouse;
@@ -37,6 +39,10 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
     myTurn: Turn;
     @observable
     myTurnPhase: TurnPhase;
+    @observable
+    pieces = new Array<Piece>();
+    @observable
+    capitals = new Map<string, Capital>();
 
     constructor(props: PropertyValues) {
         super(props);
@@ -58,6 +64,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 this.props.turnWarehouse.getOpenTurn(selectedGame.id).then((myOpenTurn) => {
                     self.myTurnPhase = myOpenTurn.phase;
                     self.myTurn = myOpenTurn;
+                    self.getPiecesAndCapitals();
                 }).catch((error) => {
                     this.setState({ isModalOpen: true, 
                                     modalTitle: 'Unable to get the open turn', 
@@ -72,6 +79,24 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                         });
         });
     }
+
+    getPiecesAndCapitals = () => {
+
+        let self = this;
+        if (self.myTurn && self.myTurnPhase) {
+            this.props.pieceWarehouse.getPieces(self.myTurn, self.myTurnPhase).then((pieceArray) => {
+                self.pieces = pieceArray;
+                // @ts-ignore
+                this.props.capitalWarehouse.getCapitals(self.myTurn.id).then((capitalMap) => {
+                  self.capitals = capitalMap;
+                }).catch((error) => {
+                  this.setState({ isModalOpen: true, modalTitle: 'Unable to get capitals', modalDescription: error });
+                });
+            }).catch((error) => {
+                this.setState({ isModalOpen: true, modalTitle: 'Unable to get pieces', modalDescription: error });
+            });
+        }
+      }
 
     render() {
         // tslint:disable-next-line
@@ -93,10 +118,8 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 <div className="row">
                     <div className="col-md-12">
                         <GameMap
-                            pieceWarehouse={this.props.pieceWarehouse}
-                            capitalWarehouse={this.props.capitalWarehouse}
-                            turn={this.myTurn}
-                            turnPhase={this.myTurnPhase}
+                            pieces={this.pieces}
+                            capitals={this.capitals}
                         />
                     </div>
                 </div>
@@ -132,11 +155,13 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
     turnSelected(aTurn: Turn) {
         // this.setState({ selectedTurn: aTurn });
         this.myTurn = aTurn;
+        this.getPiecesAndCapitals();
     }
 
     turnPhaseSelected(aTurnPhase: TurnPhase) {
         // this.setState({ selectedTurnPhase: aTurnPhase });
         this.myTurnPhase = aTurnPhase;
+        this.getPiecesAndCapitals();
     }
 
     closeModal() {

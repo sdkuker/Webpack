@@ -2,20 +2,13 @@ import * as React from 'react';
 import '../gameMap.css';
 import ModalComponent from './ModalComponent';
 import MapBuilder from './MapBuilder';
-import { Turn } from '../types/warehouses/turn/Turn';
 import { Piece } from '../types/warehouses/piece/Piece';
 import { Capital } from '../types/warehouses/capital/Capital';
-import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { ICapitalWarehouse } from '../types/warehouses/capital/ICapitalWarehouse';
-import { TurnPhase } from '../types/warehouses/DomainTypes';
 
 interface PropValues {
-  pieceWarehouse: IPieceWarehouse;
-  capitalWarehouse: ICapitalWarehouse;
-  turn: Turn | null;
-  turnPhase: TurnPhase | null;
+  pieces: Piece[];
+  capitals: Map<string, Capital>;
 }
 interface StateValues {
   isModalOpen: boolean;
@@ -26,11 +19,6 @@ interface StateValues {
 @observer
 export class GameMap extends React.Component<PropValues, StateValues> {
 
-  @observable
-  pieces = new Array<Piece>();
-  @observable
-  capitals = new Map<string, Capital>();
-
   constructor(props: PropValues) {
     super(props);
     this.closeModal = this.closeModal.bind(this);
@@ -39,24 +27,6 @@ export class GameMap extends React.Component<PropValues, StateValues> {
         modalTitle: '',
         modalDescription: ''
     };
-}
-
-componentDidMount = () => {
-
-  let self = this;
-  if (this.props.turn && this.props.turnPhase) {
-      this.props.pieceWarehouse.getPieces(this.props.turn, this.props.turnPhase).then((pieceArray) => {
-          self.pieces = pieceArray;
-          // @ts-ignore
-          this.props.capitalWarehouse.getCapitals(this.props.turn.id).then((capitalMap) => {
-            self.capitals = capitalMap;
-          }).catch((error) => {
-            this.setState({ isModalOpen: true, modalTitle: 'Unable to get capitals', modalDescription: error });
-          });
-      }).catch((error) => {
-          this.setState({ isModalOpen: true, modalTitle: 'Unable to get pieces', modalDescription: error });
-      });
-  }
 }
 
 closeModal() {
@@ -891,7 +861,7 @@ closeModal() {
           />
           <text x="350" y="304">War</text>
         </g> 
-        <MapBuilder pieces={this.pieces} capitals={this.capitals}/>
+        <MapBuilder pieces={this.props.pieces} capitals={this.props.capitals}/>
       </svg>
       <div>
         <ModalComponent
