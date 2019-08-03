@@ -110,18 +110,18 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
         } else {
             phaseOptions.push(<option key={'Diplomatic'}>Diplomatic</option>);
             if (this.myTurn.phase === TurnPhase.OrderWriting) {
-                phaseOptions.push(<option selected key={'OrderWriting'}>Order Writing</option>);
+                phaseOptions.push(<option selected key={'OrderWriting'}>OrderWriting</option>);
             } else {
-                phaseOptions.push(<option key={'OrderWriting'}>Diplomatic</option>);
+                phaseOptions.push(<option key={'OrderWriting'}>OrderWriting</option>);
                 if (this.myTurn.phase === TurnPhase.OrderResolution) {
-                    phaseOptions.push(<option selected key={'OrderResolution'}>Order Resolution</option>);
+                    phaseOptions.push(<option selected key={'OrderResolution'}>OrderResolution</option>);
                 } else {
-                    phaseOptions.push(<option key={'OrderResolution'}>Diplomatic</option>);
+                    phaseOptions.push(<option key={'OrderResolution'}>OrderResolution</option>);
                     if (this.myTurn.phase === TurnPhase.RetreatAndDisbanding) {
-                        phaseOptions.push(<option selected key={'RetreatAndDisbanding'}>Retreat and Disband</option>);
+                        phaseOptions.push(<option selected key={'RetreatAndDisbanding'}>RetreatAndDisbanding</option>);
                     } else {
-                        phaseOptions.push(<option key={'RetreatAndDisbanding'}>Diplomatic</option>);
-                        phaseOptions.push(<option selected key={'GainingAndLosingUnits'}>Gain and Lose Units</option>);
+                        phaseOptions.push(<option key={'RetreatAndDisbanding'}>RetreatAndDisbanding</option>);
+                        phaseOptions.push(<option selected key={'GainingAndLosingUnits'}>GainingAndLosingUnits</option>);
                     }
                 }
             }
@@ -209,16 +209,16 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
 
     phaseSelected(event: React.FormEvent<HTMLSelectElement>) {
         const myValue: string = event.currentTarget.value;
-        if (myValue === 'Order Writing') {
+        if (myValue === 'OrderWriting') {
             this.myTurnPhase = TurnPhase.OrderWriting;
         } else {
-            if (myValue === 'Order Resolution') {
+            if (myValue === 'OrderResolution') {
                 this.myTurnPhase = TurnPhase.OrderResolution;
             } else {
-                if (myValue === 'Retreat and Disband') {
+                if (myValue === 'RetreatAndDisbanding') {
                     this.myTurnPhase = TurnPhase.RetreatAndDisbanding;
                 } else {
-                    if (myValue === 'Gain and Lose Units') {
+                    if (myValue === 'GainingAndLosingUnits') {
                         this.myTurnPhase = TurnPhase.GainingAndLosingUnits;
                     } else {
                         if (myValue === 'Diplomatic') {
@@ -229,9 +229,7 @@ class SeasonSelectorComponent extends React.Component<PropValues, StateValues> {
             }
 
         }
-        // figure out exactly what to do when these phases change...
-        // at a minimum, persist to the db but also trigger some lambda functions
-        // probably to do order resolution etc.
+        this.props.onTurnPhaseSelected(this.myTurnPhase);
     }
 
     closeModal() {

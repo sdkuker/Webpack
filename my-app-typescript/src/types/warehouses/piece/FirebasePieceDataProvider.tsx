@@ -36,22 +36,22 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                 type: type
             }).then((pieceDocRef) => {
                 db.collection(self.environmentName).doc(self.locationDocumentName)
-                .collection(self.locationCollectionName).add({
-                    pieceId: pieceDocRef.id,
-                    turnId: forTurn.id,
-                    gameId: forGame.id,
-                    phase: TurnPhase.Diplomatic,
-                    nameOfLocationAtBeginningOfPhase: aNameOfLocationAtBeginningOfTurn,
-                    mustRetreatAtEndOfTurn: false
-                }).then((locationDocRef) => {
-                    let newLocation = new PieceLocation(locationDocRef.id, pieceDocRef.id, forTurn.id, forGame.id,
-                        TurnPhase.Diplomatic, aNameOfLocationAtBeginningOfTurn, null, false);
-                    let newPiece = new Piece(pieceDocRef.id, forGame.id, countryName,
-                        type, newLocation);
-                    resolve(newPiece);
-                }).catch((error1) => {
-                    reject('error creating a piece location' + error1);
-                });
+                    .collection(self.locationCollectionName).add({
+                        pieceId: pieceDocRef.id,
+                        turnId: forTurn.id,
+                        gameId: forGame.id,
+                        turnPhase: TurnPhase.Diplomatic,
+                        nameOfLocationAtBeginningOfPhase: aNameOfLocationAtBeginningOfTurn,
+                        mustRetreatAtEndOfTurn: false
+                    }).then((locationDocRef) => {
+                        let newLocation = new PieceLocation(locationDocRef.id, pieceDocRef.id, forTurn.id, forGame.id,
+                            TurnPhase.Diplomatic, aNameOfLocationAtBeginningOfTurn, null, false);
+                        let newPiece = new Piece(pieceDocRef.id, forGame.id, countryName,
+                            type, newLocation);
+                        resolve(newPiece);
+                    }).catch((error1) => {
+                        reject('error creating a piece location' + error1);
+                    });
             }).catch((error) => {
                 reject('error creating a piece: ' + error);
             });
@@ -69,7 +69,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
             db.collection(self.environmentName).doc(self.pieceDocumentName).collection(self.pieceCollectionName)
                 .doc(aPieceId).get().then((documentSnapshot) => {
                     if (documentSnapshot.exists) {
-                        self.getPieceLocation(aPieceId, forPhase).then((aLocation) => {
+                        self.getPieceLocation(aPieceId, self.determinePersistentPhase(forPhase)).then((aLocation) => {
                             // @ts-ignore
                             resolve(new Piece(aPieceId, documentSnapshot.data().gameId,
                                 // @ts-ignore
@@ -77,7 +77,7 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
                                 // @ts-ignore
                                 documentSnapshot.data().type, aLocation));
                         }).catch((error1) => {
-                            reject('unable to get a location for piece: ' + aPieceId + ' phase: ' + forPhase);
+                            reject('unable to get a location for piece: ' + aPieceId + ' turn phase: ' + forPhase);
                         });
                     } else {
                         resolve(null);
@@ -130,6 +130,27 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
         return myPromise;
     }
 
+    determinePersistentPhase = (forPhase: TurnPhase) => {
+
+        // new locations are only persistent if it's starting location is different than
+        // the starting location of the previous phase
+
+        let persistentPhase = forPhase;
+
+        switch (forPhase) {
+            case TurnPhase.OrderWriting:
+                persistentPhase = TurnPhase.Diplomatic;
+                break;
+            case TurnPhase.OrderResolution:
+                persistentPhase = TurnPhase.Diplomatic;
+                break;
+            default:
+                persistentPhase = forPhase;
+        }
+
+        return persistentPhase;
+    }
+
     getPieces = (forTurn: Turn, forPhase: TurnPhase | null) => {
 
         let self = this;
@@ -137,11 +158,12 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
 
         let myPromise = new Promise<Array<Piece>>((resolve, reject) => {
             db.collection(self.environmentName).doc(self.locationDocumentName).collection(self.locationCollectionName)
-                .where('turnId', '==', forTurn.id).where('phase', '==', myPhase).get().then((querySnapshot) => {
+                .where('turnId', '==', forTurn.id)
+                .where('turnPhase', '==', self.determinePersistentPhase(myPhase)).get().then((querySnapshot) => {
                     let myPieceArray = new Array<Piece>();
                     let arrayOfPromises = new Array<Promise<Piece | null>>();
                     querySnapshot.forEach((doc) => {
-                        arrayOfPromises.push(this.getPiece(doc.data().pieceId, myPhase));
+                        arrayOfPromises.push(this.getPiece(doc.data().pieceId, self.determinePersistentPhase(myPhase)));
                     });
                     Promise.all(arrayOfPromises).then((returnedArrayOfPieces) => {
                         returnedArrayOfPieces.forEach((aReturnedPiece) => {
@@ -169,13 +191,14 @@ export class FirebasePieceDataProvider implements IPieceDataProvider {
 
             let locationsRef = db.collection(self.environmentName).doc(self.locationDocumentName)
                 .collection(self.locationCollectionName);
-            var query = locationsRef.where('pieceId', '==', aPieceId).where('phase', '==', forPhase);
+            var query = locationsRef.where('pieceId', '==', aPieceId)
+                .where('turnPhase', '==', self.determinePersistentPhase(forPhase));
             query.get().then((querySnapshot) => {
                 if (querySnapshot.size > 0) {
                     querySnapshot.forEach((doc) => {
                         // should be zero or 1 docs
-                        resolve(new PieceLocation(doc.id, doc.data().pieceId, doc.data().turnId, 
-                            doc.data().gameId, doc.data().phase, doc.data().nameOfLocationAtBeginningOfPhase, 
+                        resolve(new PieceLocation(doc.id, doc.data().pieceId, doc.data().turnId,
+                            doc.data().gameId, doc.data().phase, doc.data().nameOfLocationAtBeginningOfPhase,
                             doc.data().nameOfLocationAtEndOfPhase, doc.data().mustRetreatAtEndOfTurn));
                     });
                 } else {
