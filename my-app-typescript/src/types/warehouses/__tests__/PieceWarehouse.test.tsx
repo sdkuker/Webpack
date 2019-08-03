@@ -37,7 +37,7 @@ it('pieces added should be returned', () => {
     return myPieceWarehouse.getPieces(turnGame1Spring, TurnPhase.Diplomatic).then((pieces) => {
         expect(pieces).not.toBeNull();
         expect(pieces.length).toEqual(0);
-        return myPieceWarehouse.createPiece(game1, turnGame1Spring, 'London', 'England', 'FLEET').then((newPiece) => {
+        return myPieceWarehouse.createPiece(game1, turnGame1Spring, 'London', 'England', 'Fleet').then((newPiece) => {
             expect(newPiece).not.toBeNull();
             return myPieceWarehouse.getPieces(turnGame1Spring, TurnPhase.Diplomatic).then((newPieces) => {
                 expect(newPieces.length).toEqual(1);
@@ -62,10 +62,10 @@ it('deleting pieces', () => {
         return myPieceWarehouse.getPieces(turnGame1Fall).then((fallPieces) => {
             expect(fallPieces).not.toBeNull();
             expect(fallPieces.length).toEqual(0);
-            return myPieceWarehouse.createPiece(game1, turnGame1Fall, 'London', 'England', 'FLEET').then((newPiece1) => {
+            return myPieceWarehouse.createPiece(game1, turnGame1Fall, 'London', 'England', 'Fleet').then((newPiece1) => {
                 expect(newPiece1).not.toBeNull();
                 // @ts-ignore
-                return myPieceWarehouse.createPiece(game1, turnGame1Fall, 'Wales', 'England', 'FLEET').then((newPiece2) => {
+                return myPieceWarehouse.createPiece(game1, turnGame1Fall, 'Wales', 'England', 'Fleet').then((newPiece2) => {
                     expect(newPiece2).not.toBeNull();
                     return myPieceWarehouse.getPieces(turnGame1Fall, TurnPhase.Diplomatic).then((fallPieces2) => {
                         expect(fallPieces2.length).toEqual(2);
