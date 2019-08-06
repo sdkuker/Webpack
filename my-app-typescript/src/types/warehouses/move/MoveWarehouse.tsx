@@ -1,8 +1,10 @@
 import { Move } from './Move';
+import { MoveResults } from './MoveResults';
 import { Piece } from '../piece/Piece';
 import { IMoveDataProvider } from './IMoveDataProvider';
 import { IMoveWarehouse } from './IMoveWarehouse';
 import { action } from 'mobx';
+import { stringify } from 'querystring';
 
 export class MoveWarehouse implements IMoveWarehouse {
 
@@ -114,6 +116,20 @@ export class MoveWarehouse implements IMoveWarehouse {
                 }
             }).catch((error) => {
                 reject('unable to get moves ' + error);
+            });
+        });
+
+        return myPromise;
+    }
+
+    getMoveResults = (aTurnId: string) => {
+
+        const myMap = new Map<string, MoveResults>();
+        let myPromise = new Promise<Map<string, MoveResults>>((resolve, reject) => {
+            this.dataProvider.getMoveResults(aTurnId).then((theMoveResults) => {
+                resolve(theMoveResults);
+            }).catch((error) => {
+                reject('unable to get move results ' + error);
             });
         });
 

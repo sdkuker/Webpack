@@ -1,5 +1,6 @@
 import { IMoveDataProvider } from './IMoveDataProvider';
 import { Move } from './Move';
+import { MoveResults } from './MoveResults';
 import { observable, action } from 'mobx';
 
 export class StaticMoveDataProvider implements IMoveDataProvider {
@@ -17,6 +18,17 @@ export class StaticMoveDataProvider implements IMoveDataProvider {
 
             this.adjustCacheForTurn(forTurnId, forGameId);
             resolve(this.moves);
+        });
+
+        return myPromise;
+    }
+
+    getMoveResults = (aTurnId: string) => {
+
+        let myPromise = new Promise<Map<string, MoveResults>>((resolve, reject) => {
+
+            let dummyMoveResults = new Map<string, MoveResults>();
+            resolve(dummyMoveResults);
         });
 
         return myPromise;

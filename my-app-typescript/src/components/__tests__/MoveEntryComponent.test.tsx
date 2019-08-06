@@ -18,10 +18,11 @@ const createMoveMock = jest.fn();
 const deleteMoveMock = jest.fn();
 const deleteMovesMock = jest.fn();
 const getMovesMock = jest.fn();
+const getMoveResultsMock = jest.fn();
 const createInitialMovesMock = jest.fn();
 const moveWarehouseMock: IMoveWarehouse = 
     {updateMove : updateMoveMock, deleteMove : deleteMoveMock, deleteMoves: deleteMovesMock,
-     getMoves : getMovesMock, createInitialMoves: createInitialMovesMock, createMove: createMoveMock};
+     getMoves : getMovesMock, getMoveResults : getMoveResultsMock, createInitialMoves: createInitialMovesMock, createMove: createMoveMock};
 const onMovePersistedMock = jest.fn();
 
 it('not sure what Im testing yet', () => {

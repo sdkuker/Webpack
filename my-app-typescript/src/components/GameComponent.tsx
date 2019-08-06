@@ -66,17 +66,19 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                     self.myTurn = myOpenTurn;
                     self.getPiecesAndCapitals();
                 }).catch((error) => {
-                    this.setState({ isModalOpen: true, 
-                                    modalTitle: 'Unable to get the open turn', 
-                                    modalDescription: error 
-                                });
+                    this.setState({
+                        isModalOpen: true,
+                        modalTitle: 'Unable to get the open turn',
+                        modalDescription: error
+                    });
                 });
             }
         }).catch((error) => {
-            this.setState({ isModalOpen: true, 
-                            modalTitle: 'Error getting game for ID: ' + this.props.gameId, 
-                            modalDescription: error 
-                        });
+            this.setState({
+                isModalOpen: true,
+                modalTitle: 'Error getting game for ID: ' + this.props.gameId,
+                modalDescription: error
+            });
         });
     }
 
@@ -88,15 +90,15 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 self.pieces = pieceArray;
                 // @ts-ignore
                 this.props.capitalWarehouse.getCapitals(self.myTurn.id).then((capitalMap) => {
-                  self.capitals = capitalMap;
+                    self.capitals = capitalMap;
                 }).catch((error) => {
-                  this.setState({ isModalOpen: true, modalTitle: 'Unable to get capitals', modalDescription: error });
+                    this.setState({ isModalOpen: true, modalTitle: 'Unable to get capitals', modalDescription: error });
                 });
             }).catch((error) => {
                 this.setState({ isModalOpen: true, modalTitle: 'Unable to get pieces', modalDescription: error });
             });
         }
-      }
+    }
 
     render() {
         // tslint:disable-next-line
@@ -124,21 +126,24 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                     </div>
                 </div>
             );
-            if (this.myTurn && 
-                (this.myTurnPhase === TurnPhase.OrderWriting  || this.myTurnPhase === TurnPhase.OrderResolution)) {
+            if (this.myTurn &&
+                (this.myTurnPhase === TurnPhase.OrderWriting || this.myTurnPhase === TurnPhase.OrderResolution ||
+                    this.myTurnPhase === TurnPhase.RetreatAndDisbanding ||
+                    this.myTurnPhase === TurnPhase.GainingAndLosingUnits)) {
                 theReturn.push(
                     <MovesForCountryComponent
                         myGame={this.myGame}
                         moveWarehouse={this.props.moveWarehouse}
                         myTurn={this.myTurn}
+                        myTurnPhase={this.myTurnPhase}
                     />
                 );
             }
         }
         return (
             <div className="container">
-            <div>
-                {theReturn}
+                <div>
+                    {theReturn}
                 </div>
                 <div>
                     <ModalComponent
