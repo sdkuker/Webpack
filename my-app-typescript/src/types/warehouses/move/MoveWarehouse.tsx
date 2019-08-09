@@ -124,7 +124,6 @@ export class MoveWarehouse implements IMoveWarehouse {
 
     getMoveResults = (aTurnId: string) => {
 
-        const myMap = new Map<string, MoveResults>();
         let myPromise = new Promise<Map<string, MoveResults>>((resolve, reject) => {
             this.dataProvider.getMoveResults(aTurnId).then((theMoveResults) => {
                 resolve(theMoveResults);

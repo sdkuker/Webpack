@@ -3,6 +3,7 @@ import ModalComponent from './ModalComponent';
 import { observer } from 'mobx-react';
 import MoveCountrySelector from './MoveCountrySelector';
 import MovesListComponent from './MovesListComponent';
+import RetreatOrDisbandComponent from './RetreatOrDisbandComponent';
 import MovesEntryListComponent from './MovesEntryListComponent';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { Turn } from '../types/warehouses/turn/Turn';
@@ -60,11 +61,13 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                 this.setState({ isModalOpen: true, modalTitle: 'Error getting the moves', modalDescription: error });
             });
         this.props.moveWarehouse.getMoveResults(this.props.myTurn.id).then((myMoveResults) => {
-                self.moveResults = myMoveResults;
-            }).catch((error1) => {
-                this.setState({ isModalOpen: true, modalTitle: 'Error getting the move results', 
-                    modalDescription: error1 });
+            self.moveResults = myMoveResults;
+        }).catch((error1) => {
+            this.setState({
+                isModalOpen: true, modalTitle: 'Error getting the move results',
+                modalDescription: error1
             });
+        });
     }
     render() {
         // tslint:disable-next-line
@@ -82,15 +85,25 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                         />
                     );
             } else {
-                if (this.props.myTurnPhase === TurnPhase.RetreatAndDisbanding ||
-                    this.props.myTurnPhase === TurnPhase.GainingAndLosingUnits) {
+                if (this.props.myTurnPhase === TurnPhase.RetreatAndDisbanding ) {
                     theMovesComponent =
                         (
-                            <MovesListComponent
-                                key={this.countryToDisplay}
+                            <RetreatOrDisbandComponent
                                 moves={this.moves}
+                                moveResults={this.moveResults}
                             />
                         );
+                } else {
+                    if (this.props.myTurnPhase === TurnPhase.GainingAndLosingUnits) {
+                        theMovesComponent =
+                            (
+                                <MovesListComponent
+                                    key={this.countryToDisplay}
+                                    moves={this.moves}
+                                />
+                            );
+                    }
+
                 }
             }
         }
