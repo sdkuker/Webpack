@@ -136,6 +136,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                         moveWarehouse={this.props.moveWarehouse}
                         myTurn={this.myTurn}
                         myTurnPhase={this.myTurnPhase}
+                        myPieces={this.pieces}
                     />
                 );
             }

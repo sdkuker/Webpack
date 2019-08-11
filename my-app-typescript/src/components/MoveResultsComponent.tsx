@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { Piece } from '../types/warehouses/piece/Piece';
 import { Move } from '../types/warehouses/move/Move';
 import { MoveResults } from '../types/warehouses/move/MoveResults';
 
 interface PropValues {
     moves: Move[];
     moveResults: Map<string, MoveResults>;
+    piecesToRetreatOrDisband: Array<Piece>;
 }
 
 @observer
-class RetreatOrDisbandComponent extends React.Component<PropValues, {}> {
+class MoveResultsComponent extends React.Component<PropValues, {}> {
     constructor(props: PropValues) {
         super(props);
     }
@@ -19,18 +21,15 @@ class RetreatOrDisbandComponent extends React.Component<PropValues, {}> {
 
         this.props.moves.forEach((aMove: Move) => {
             let myMoveResults = this.props.moveResults.get(aMove.id);
-            let wasSuccessful = 'false';
             let myDescription = '';
 
             if (myMoveResults) {
-                wasSuccessful = myMoveResults.moveExecutedSuccessfully.toString();
                 myDescription = myMoveResults.executionDescription;
             }
 
             theReturn.push((
                 <tr>
                     <td>{aMove.order}</td>
-                    <td>{wasSuccessful}</td>
                     <td>{myDescription}</td>
                 </tr>));
         });
@@ -40,7 +39,6 @@ class RetreatOrDisbandComponent extends React.Component<PropValues, {}> {
                 <thead>
                     <tr>
                         <th>Move</th>
-                        <th>Successful</th>
                         <th>Description</th>
                     </tr>
                 </thead>
@@ -52,4 +50,4 @@ class RetreatOrDisbandComponent extends React.Component<PropValues, {}> {
     }
 }
 
-export default RetreatOrDisbandComponent;
+export default MoveResultsComponent;

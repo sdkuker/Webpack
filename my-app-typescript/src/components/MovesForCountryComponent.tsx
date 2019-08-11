@@ -3,7 +3,7 @@ import ModalComponent from './ModalComponent';
 import { observer } from 'mobx-react';
 import MoveCountrySelector from './MoveCountrySelector';
 import MovesListComponent from './MovesListComponent';
-import RetreatOrDisbandComponent from './RetreatOrDisbandComponent';
+import MoveResultsComponent from './MoveResultsComponent';
 import MovesEntryListComponent from './MovesEntryListComponent';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { Turn } from '../types/warehouses/turn/Turn';
@@ -11,6 +11,7 @@ import { TurnPhase } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/game/Game';
 import { Move } from '../types/warehouses/move/Move';
 import { MoveResults } from '../types/warehouses/move/MoveResults';
+import { Piece } from '../types/warehouses/piece/Piece';
 import { observable } from 'mobx';
 
 interface PropValues {
@@ -18,6 +19,7 @@ interface PropValues {
     myGame: Game;
     myTurn: Turn;
     myTurnPhase: TurnPhase;
+    myPieces: Array<Piece>;
 }
 interface StateValues {
     isModalOpen: boolean;
@@ -71,10 +73,17 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
     }
     render() {
         // tslint:disable-next-line
-        let theMovesComponent: any;
+        let theMovesComponents: any = [];
+
         if (this.props.myTurn) {
             if (this.props.myTurnPhase === TurnPhase.OrderWriting) {
-                theMovesComponent =
+                theMovesComponents.push(
+                    <MoveCountrySelector
+                        onCountrySelected={this.countrySelected}
+                        initialCountryName={this.countryToDisplay}
+                    />
+                );
+                theMovesComponents.push
                     (
                         <MovesEntryListComponent
                             key={this.countryToDisplay}
@@ -85,17 +94,30 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                         />
                     );
             } else {
-                if (this.props.myTurnPhase === TurnPhase.RetreatAndDisbanding ) {
-                    theMovesComponent =
+                if (this.props.myTurnPhase === TurnPhase.RetreatAndDisbanding) {
+                    theMovesComponents.push(
+                        <MoveCountrySelector
+                            onCountrySelected={this.countrySelected}
+                            initialCountryName={this.countryToDisplay}
+                        />
+                    );
+                    theMovesComponents.push
                         (
-                            <RetreatOrDisbandComponent
+                            <MoveResultsComponent
                                 moves={this.moves}
                                 moveResults={this.moveResults}
+                                piecesToRetreatOrDisband={this.getPiecesToRetreatOrDisband()}
                             />
                         );
                 } else {
                     if (this.props.myTurnPhase === TurnPhase.GainingAndLosingUnits) {
-                        theMovesComponent =
+                        theMovesComponents.push(
+                            <MoveCountrySelector
+                                onCountrySelected={this.countrySelected}
+                                initialCountryName={this.countryToDisplay}
+                            />
+                        );
+                        theMovesComponents.push
                             (
                                 <MovesListComponent
                                     key={this.countryToDisplay}
@@ -111,11 +133,7 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
         return (
             <div className="container">
                 <div>
-                    <MoveCountrySelector
-                        onCountrySelected={this.countrySelected}
-                        initialCountryName={this.countryToDisplay}
-                    />
-                    {theMovesComponent}
+                    {theMovesComponents}
                 </div>
                 <div>
                     <ModalComponent
@@ -136,6 +154,22 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
 
     closeModal() {
         this.setState({ isModalOpen: false, modalTitle: '', modalDescription: '' });
+    }
+
+    getPiecesToRetreatOrDisband() {
+
+        const selectedPieces = new Array<Piece>();
+
+        if (this.props.myPieces) {
+            this.props.myPieces.forEach((aPiece: Piece) => {
+                if (aPiece.owningCountryName === this.countryToDisplay &&
+                    aPiece.pieceLocation.mustRetreatAtEndOfTurn) {
+                        selectedPieces.push(aPiece);
+                    }
+            });
+        }
+
+        return selectedPieces;
     }
 
 }
