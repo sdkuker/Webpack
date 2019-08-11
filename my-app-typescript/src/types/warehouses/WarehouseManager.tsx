@@ -21,7 +21,9 @@ import { StaticPieceDataProvider } from './piece/StaticPieceDataProvider';
 import { FirebasePieceDataProvider } from './piece/FirebasePieceDataProvider';
 import { AwsWarehouse } from './aws/AwsWarehouse';
 import { IAwsWarehouse } from './aws/IAwsWarehouse';
-import { StaticAwsWarehouse } from './aws/StaticAwsWarehouse';
+import { IStandoffProvinceWarehouse } from './standoffProvince/IStandoffProvinceWarehouse';
+import { StandoffProvinceWarehouse } from './standoffProvince/StandoffProvinceWarehouse';
+import { FirebaseStandoffProvinceDataProvider } from './standoffProvince/FirebaseStandoffProvinceDataProvider';
 
 import { ICapitalWarehouse } from './capital/ICapitalWarehouse';
 import { CapitalWarehouse } from './capital/CapitalWarehouse';
@@ -43,6 +45,7 @@ export class WarehouseManager {
     capitalWarehouse: ICapitalWarehouse;
     gameCreator: IGameCreator;
     awsWarehouse: IAwsWarehouse;
+    standoffProvinceWarehouse: IStandoffProvinceWarehouse;
 
     constructor() {
 
@@ -97,6 +100,13 @@ export class WarehouseManager {
             this.turnWarehouse = new TurnWarehouse(new StaticTurnDataProvider(null, null), this.awsWarehouse);
         } else {
             this.turnWarehouse = new TurnWarehouse(new FirebaseTurnDataProvider(myEnvironment), this.awsWarehouse);
+        }
+
+        if (myConfig.standoffProvinceWarehouseDataProvider === 'static') {
+            // don't have a static one...
+        } else {
+            this.standoffProvinceWarehouse = new StandoffProvinceWarehouse(
+                new FirebaseStandoffProvinceDataProvider(myEnvironment));
         }
 
         this.gameCreator = new GameCreator(this.gameWarehouse, this.turnWarehouse,

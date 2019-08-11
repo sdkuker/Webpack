@@ -5,6 +5,7 @@ class Config {
     moveWarehouseDataProvider = 'firebase';
     pieceWarehouseDataProvider = 'firebase';
     capitalWarehouseDataProvider = 'firebase';
+    standoffProvinceWarehouseDataProvider = 'firebase';
     environment = 'TEST';
     awsEnvironment = 'LOCAL';
     awsLocalConnectionURL = 'http://localhost:3000/administer?';

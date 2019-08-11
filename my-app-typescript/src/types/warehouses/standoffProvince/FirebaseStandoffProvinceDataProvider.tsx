@@ -21,16 +21,18 @@ export class FirebaseStandoffProvinceDataProvider implements IStandoffProvinceDa
 
         let myPromise = new Promise<StandoffProvince>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc(self.standoffProvinceDocumentName).collection(self.standoffProvinceCollectionName).add({
-                provinceName: provinceName,
-                turnId: turnId,
-                gameId: gameId
-            }).then((standoffLocationDocRef) => {
-                let newStandoffProvince = new StandoffProvince(standoffLocationDocRef.id, provinceName, turnId, gameId);
-                resolve(newStandoffProvince);
-            }).catch((error) => {
-                reject('error creating a piece standoff province: ' + error);
-            });
+            db.collection(self.environmentName).doc(self.standoffProvinceDocumentName)
+                .collection(self.standoffProvinceCollectionName).add({
+                    provinceName: provinceName,
+                    turnId: turnId,
+                    gameId: gameId
+                }).then((standoffLocationDocRef) => {
+                    let newStandoffProvince = new StandoffProvince(standoffLocationDocRef.id,
+                        provinceName, turnId, gameId);
+                    resolve(newStandoffProvince);
+                }).catch((error) => {
+                    reject('error creating a piece standoff province: ' + error);
+                });
         });
 
         return myPromise;
@@ -42,7 +44,8 @@ export class FirebaseStandoffProvinceDataProvider implements IStandoffProvinceDa
 
         let myPromise = new Promise<boolean>((resolve, reject) => {
 
-            db.collection(self.environmentName).doc(self.standoffProvinceDocumentName).collection(self.standoffProvinceCollectionName)
+            db.collection(self.environmentName).doc(self.standoffProvinceDocumentName)
+                .collection(self.standoffProvinceCollectionName)
                 .doc(aStandoffProvince.id).delete().then(() => {
                     resolve(true);
                 }).catch((error) => {
@@ -58,12 +61,14 @@ export class FirebaseStandoffProvinceDataProvider implements IStandoffProvinceDa
         let self = this;
 
         let myPromise = new Promise<Array<StandoffProvince>>((resolve, reject) => {
-            db.collection(self.environmentName).doc(self.standoffProvinceDocumentName).collection(self.standoffProvinceCollectionName)
+            db.collection(self.environmentName).doc(self.standoffProvinceDocumentName)
+                .collection(self.standoffProvinceCollectionName)
                 .where('turnId', '==', forTurnId)
                 .get().then((querySnapshot) => {
                     let myStandoffProvinceArray = new Array<StandoffProvince>();
                     querySnapshot.forEach((doc) => {
-                        myStandoffProvinceArray.push(new StandoffProvince(doc.id, doc.data().provinceName, doc.data().turnId, doc.data().gameId));
+                        myStandoffProvinceArray.push(new StandoffProvince(doc.id,
+                            doc.data().provinceName, doc.data().turnId, doc.data().gameId));
                     });
                     resolve(myStandoffProvinceArray);
                 }).catch((error) => {
