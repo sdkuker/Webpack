@@ -7,7 +7,6 @@ import { MoveResults } from '../types/warehouses/move/MoveResults';
 interface PropValues {
     moves: Move[];
     moveResults: Map<string, MoveResults>;
-    piecesToRetreatOrDisband: Array<Piece>;
 }
 
 @observer
@@ -35,17 +34,20 @@ class MoveResultsComponent extends React.Component<PropValues, {}> {
         });
 
         return (
-            <table className="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Move</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {theReturn}
-                </tbody>
-            </table>
+            <div>
+                <h4>Move Results</h4>
+                <table className="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Move</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {theReturn}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

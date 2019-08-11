@@ -5,6 +5,7 @@ import MoveCountrySelector from './MoveCountrySelector';
 import MovesListComponent from './MovesListComponent';
 import MoveResultsComponent from './MoveResultsComponent';
 import MovesEntryListComponent from './MovesEntryListComponent';
+import RetreatAndDisbandComponent from './RetreatAndDisbandComponent';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { Turn } from '../types/warehouses/turn/Turn';
 import { TurnPhase } from '../types/warehouses/DomainTypes';
@@ -101,12 +102,21 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                             initialCountryName={this.countryToDisplay}
                         />
                     );
+                    const countriesPiecesToRetreatOrDisband = this.getPiecesToRetreatOrDisband();
+                    if (countriesPiecesToRetreatOrDisband.length > 0) {
+                        theMovesComponents.push(
+                            <RetreatAndDisbandComponent
+                                piecesToRetreatOrDisband={countriesPiecesToRetreatOrDisband}
+                                onActionEntered={this.retreatOrDisbandForPieceSpecified}
+                            />
+                        );
+                    }
+
                     theMovesComponents.push
                         (
                             <MoveResultsComponent
                                 moves={this.moves}
                                 moveResults={this.moveResults}
-                                piecesToRetreatOrDisband={this.getPiecesToRetreatOrDisband()}
                             />
                         );
                 } else {
@@ -164,12 +174,16 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
             this.props.myPieces.forEach((aPiece: Piece) => {
                 if (aPiece.owningCountryName === this.countryToDisplay &&
                     aPiece.pieceLocation.mustRetreatAtEndOfTurn) {
-                        selectedPieces.push(aPiece);
-                    }
+                    selectedPieces.push(aPiece);
+                }
             });
         }
 
         return selectedPieces;
+    }
+
+    retreatOrDisbandForPieceSpecified() {
+        // figure this out
     }
 
 }
