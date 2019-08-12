@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { Piece } from '../types/warehouses/piece/Piece';
+import { StandoffProvince } from '../types/warehouses/standoffProvince/StandoffProvince';
+import StandoffProvinceComponent from './StandoffProvinceComponent';
 
 interface PropValues {
     piecesToRetreatOrDisband: Array<Piece>;
+    standoffProvinces: Array<StandoffProvince>;
     onActionEntered: Function;
 }
 
@@ -54,6 +57,9 @@ class RetreatAndDisbandComponent extends React.Component<PropValues, {}> {
                         {theReturn}
                     </tbody>
                 </table>
+                <StandoffProvinceComponent
+                    standoffProvinces={this.props.standoffProvinces}
+                />
             </div>
         );
     }

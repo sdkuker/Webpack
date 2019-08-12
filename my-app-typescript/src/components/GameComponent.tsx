@@ -12,6 +12,8 @@ import { ITurnWarehouse } from '../types/warehouses/turn/ITurnWarehouse';
 import { IPieceWarehouse } from '../types/warehouses/piece/IPieceWarehouse';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
 import { IGameWarehouse } from '../types/warehouses/game/IGameWarehouse';
+import { IStandoffProvinceWarehouse } from '../types/warehouses/standoffProvince/IStandoffProvinceWarehouse';
+import { StandoffProvince } from '../types/warehouses/standoffProvince/StandoffProvince';
 import { ICapitalWarehouse } from '../types/warehouses/capital/ICapitalWarehouse';
 import { Piece } from '../types/warehouses/piece/Piece';
 import { Capital } from '../types/warehouses/capital/Capital';
@@ -22,6 +24,7 @@ interface PropertyValues {
     moveWarehouse: IMoveWarehouse;
     gameWarehouse: IGameWarehouse;
     capitalWarehouse: ICapitalWarehouse;
+    standoffProvinceWarehouse: IStandoffProvinceWarehouse;
     gameId: string;
 }
 interface StateValues {
@@ -43,6 +46,8 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
     pieces = new Array<Piece>();
     @observable
     capitals = new Map<string, Capital>();
+    @observable
+    myStandoffProvinces = new Array<StandoffProvince>();
 
     constructor(props: PropertyValues) {
         super(props);
@@ -64,7 +69,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 this.props.turnWarehouse.getOpenTurn(selectedGame.id).then((myOpenTurn) => {
                     self.myTurnPhase = myOpenTurn.phase;
                     self.myTurn = myOpenTurn;
-                    self.getPiecesAndCapitals();
+                    self.getPiecesCapitalsAndStandoffProvinces();
                 }).catch((error) => {
                     this.setState({
                         isModalOpen: true,
@@ -82,7 +87,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
         });
     }
 
-    getPiecesAndCapitals = () => {
+    getPiecesCapitalsAndStandoffProvinces = () => {
 
         let self = this;
         if (self.myTurn && self.myTurnPhase) {
@@ -91,6 +96,15 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 // @ts-ignore
                 this.props.capitalWarehouse.getCapitals(self.myTurn.id).then((capitalMap) => {
                     self.capitals = capitalMap;
+                    this.props.standoffProvinceWarehouse.getStandoffProvincesForTurn(self.myTurn.id)
+                        .then((standoffProvinceArray) => {
+                            self.myStandoffProvinces = standoffProvinceArray;
+                        }).catch((anError) => {
+                            this.setState({
+                                isModalOpen: true, modalTitle: 'Unable to get standoff provinces',
+                                modalDescription: anError
+                            });
+                        });
                 }).catch((error) => {
                     this.setState({ isModalOpen: true, modalTitle: 'Unable to get capitals', modalDescription: error });
                 });
@@ -133,6 +147,7 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
                 theReturn.push(
                     <MovesForCountryComponent
                         myGame={this.myGame}
+                        standoffProvinces={this.myStandoffProvinces}
                         moveWarehouse={this.props.moveWarehouse}
                         myTurn={this.myTurn}
                         myTurnPhase={this.myTurnPhase}
@@ -161,13 +176,13 @@ class GameComponent extends React.Component<PropertyValues, StateValues> {
     turnSelected(aTurn: Turn) {
         // this.setState({ selectedTurn: aTurn });
         this.myTurn = aTurn;
-        this.getPiecesAndCapitals();
+        this.getPiecesCapitalsAndStandoffProvinces();
     }
 
     turnPhaseSelected(aTurnPhase: TurnPhase) {
         // this.setState({ selectedTurnPhase: aTurnPhase });
         this.myTurnPhase = aTurnPhase;
-        this.getPiecesAndCapitals();
+        this.getPiecesCapitalsAndStandoffProvinces();
     }
 
     closeModal() {

@@ -7,6 +7,7 @@ import MoveResultsComponent from './MoveResultsComponent';
 import MovesEntryListComponent from './MovesEntryListComponent';
 import RetreatAndDisbandComponent from './RetreatAndDisbandComponent';
 import { IMoveWarehouse } from '../types/warehouses/move/IMoveWarehouse';
+import { StandoffProvince } from '../types/warehouses/standoffProvince/StandoffProvince';
 import { Turn } from '../types/warehouses/turn/Turn';
 import { TurnPhase } from '../types/warehouses/DomainTypes';
 import { Game } from '../types/warehouses/game/Game';
@@ -17,6 +18,7 @@ import { observable } from 'mobx';
 
 interface PropValues {
     moveWarehouse: IMoveWarehouse;
+    standoffProvinces: Array<StandoffProvince>;
     myGame: Game;
     myTurn: Turn;
     myTurnPhase: TurnPhase;
@@ -103,10 +105,11 @@ class MovesForCountryComponent extends React.Component<PropValues, StateValues> 
                         />
                     );
                     const countriesPiecesToRetreatOrDisband = this.getPiecesToRetreatOrDisband();
-                    if (countriesPiecesToRetreatOrDisband.length > 0) {
+                    if (countriesPiecesToRetreatOrDisband.length >= 0) {
                         theMovesComponents.push(
                             <RetreatAndDisbandComponent
                                 piecesToRetreatOrDisband={countriesPiecesToRetreatOrDisband}
+                                standoffProvinces={this.props.standoffProvinces}
                                 onActionEntered={this.retreatOrDisbandForPieceSpecified}
                             />
                         );
